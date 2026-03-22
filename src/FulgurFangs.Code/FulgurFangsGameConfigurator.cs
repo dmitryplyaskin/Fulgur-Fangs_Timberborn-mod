@@ -1,0 +1,27 @@
+using Bindito.Core;
+using FulgurFangs.Code.Electricity;
+using Timberborn.TemplateInstantiation;
+
+namespace FulgurFangs.Code;
+
+[Context("Game")]
+public sealed class FulgurFangsGameConfigurator : Configurator
+{
+    protected override void Configure()
+    {
+        Bind<ElectricityService>().AsSingleton();
+        Bind<ElectricityPoleComponent>().AsTransient();
+        Bind<MechanicalToElectricConverterComponent>().AsTransient();
+        Bind<ElectricityConsumerComponent>().AsTransient();
+        MultiBind<TemplateModule>().ToProvider(ProvideTemplateModule).AsSingleton();
+    }
+
+    private static TemplateModule ProvideTemplateModule()
+    {
+        var builder = new TemplateModule.Builder();
+        builder.AddDedicatedDecorator<ElectricityRangeSpec, ElectricityPoleComponent>(new ElectricityPoleInitializer());
+        builder.AddDedicatedDecorator<MechanicalToElectricConverterSpec, MechanicalToElectricConverterComponent>(new MechanicalToElectricConverterInitializer());
+        builder.AddDedicatedDecorator<ElectricityConsumerSpec, ElectricityConsumerComponent>(new ElectricityConsumerInitializer());
+        return builder.Build();
+    }
+}

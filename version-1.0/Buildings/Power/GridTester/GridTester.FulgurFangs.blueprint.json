@@ -1,0 +1,177 @@
+{
+  "BuildingSpec": {
+    "SelectionSoundName": "Shaft",
+    "LoopingSoundName": "",
+    "BuildingCost": [
+      {
+        "Id": "Plank",
+        "Amount": 4
+      },
+      {
+        "Id": "MetalBlock",
+        "Amount": 2
+      }
+    ],
+    "ScienceCost": 100,
+    "PlaceFinished": false,
+    "FinishableWithBeaversOnSite": false,
+    "DrawRangeBoundsOnIt": false
+  },
+  "BuildingModelSpec": {
+    "FinishedModelName": "#Finished",
+    "UnfinishedModelName": "#Unfinished",
+    "FinishedUncoveredModelName": "",
+    "UndergroundModelName": "",
+    "ConstructionModeModel": "Finished",
+    "UndergroundModelDepth": 0
+  },
+  "EnterableSpec": {
+    "OperatingState": "Finished",
+    "LimitedCapacityFinished": false,
+    "CapacityFinished": 0,
+    "LimitedCapacityUnfinished": false,
+    "CapacityUnfinished": 0
+  },
+  "TemplateSpec": {
+    "TemplateName": "GridTester.FulgurFangs",
+    "BackwardCompatibleTemplateNames": [],
+    "RequiredFeatureToggle": "",
+    "DisablingFeatureToggle": ""
+  },
+  "BlockObjectSpec": {
+    "Size": {
+      "X": 1,
+      "Y": 1,
+      "Z": 1
+    },
+    "Blocks": [
+      {
+        "MatterBelow": "GroundOrStackable",
+        "Occupations": "Bottom, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      }
+    ],
+    "Entrance": {
+      "HasEntrance": false,
+      "Coordinates": {
+        "X": 0,
+        "Y": 0,
+        "Z": 0
+      }
+    },
+    "BaseZ": 0,
+    "Overridable": false,
+    "Flippable": false
+  },
+  "ElectricityConsumerSpec": {
+    "Demand": 80
+  },
+  "PlaceableBlockObjectSpec": {
+    "ToolGroupId": "Power",
+    "ToolOrder": 72,
+    "ToolShape": "Square",
+    "Layout": "Single",
+    "CustomPivot": {
+      "HasCustomPivot": false,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    "CanBeAttachedToTerrainSide": false,
+    "DevModeTool": false
+  },
+  "LabeledEntitySpec": {
+    "DisplayNameLocKey": "Building.GridTester.DisplayName",
+    "DescriptionLocKey": "Building.GridTester.Description",
+    "FlavorDescriptionLocKey": "",
+    "Icon": "Buildings/Power/Clutch/ClutchIcon"
+  },
+  "ConstructionSiteProgressVisualizerSpec": {
+    "ProgressThresholds": [
+      0.0
+    ]
+  },
+  "Children": {
+    "#Finished": {
+      "TimbermeshSpec": {
+        "Model": "Buildings/Power/Clutch/ClutchDisengaged.IronTeeth.Model"
+      },
+      "CollidersSpec": {
+        "BoxColliders": [
+          {
+            "Center": {
+              "X": 0.5,
+              "Y": 0.100881577,
+              "Z": 0.5
+            },
+            "Size": {
+              "X": 1.0,
+              "Y": 0.200167924,
+              "Z": 1.0
+            }
+          },
+          {
+            "Center": {
+              "X": 0.5,
+              "Y": 0.428839326,
+              "Z": 0.5
+            },
+            "Size": {
+              "X": 1.0,
+              "Y": 0.457485,
+              "Z": 0.769405365
+            }
+          }
+        ],
+        "SphereColliders": [],
+        "CapsuleColliders": []
+      }
+    },
+    "#Unfinished": {
+      "Children": {
+        "ConstructionBase1x1#nested": {
+          "BlueprintPath": "ConstructionBases/ConstructionBase1x1/ConstructionBase1x1.blueprint"
+        },
+        "ConstructionStage0": {
+          "TimbermeshSpec": {
+            "Model": "Buildings/Power/Clutch/Clutch.IronTeeth.ConstructionStage0.Model"
+          },
+          "CollidersSpec": {
+            "BoxColliders": [
+              {
+                "Center": {
+                  "X": 0.5,
+                  "Y": 0.05137852,
+                  "Z": 0.5
+                },
+                "Size": {
+                  "X": 1.0,
+                  "Y": 0.105724119,
+                  "Z": 1.0
+                }
+              },
+              {
+                "Center": {
+                  "X": 0.5,
+                  "Y": 0.354584754,
+                  "Z": 0.5
+                },
+                "Size": {
+                  "X": 1.0,
+                  "Y": 0.5102291,
+                  "Z": 0.304008216
+                }
+              }
+            ],
+            "SphereColliders": [],
+            "CapsuleColliders": []
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+ID,Text,Comment
+Faction.FulgurFangs.DisplayName,Fulgur Fangs,Name of a faction
+Faction.FulgurFangs.Description,"A prototype faction built on Iron Teeth industry. For now it reuses Iron Teeth buildings, goods, and visuals while the electricity and badwater identity is still under construction.",Prototype faction description
+NaturalResource.RubberPine.DisplayName,Rubber Pine,Name of the new tree
+NaturalResource.RubberPine.FlavorDescription,A pine variant for Fulgur Fangs that yields rubber instead of resin.,Description of the new tree
+Good.Rubber.DisplayName,Rubber,Name of the new resource
+Good.Rubber.PluralDisplayName,Rubber,Plural name of the new resource
+Building.MechanicalToElectricConverter.DisplayName,Dynamo Converter 400,Mechanical to electric converter name
+Building.MechanicalToElectricConverter.Description,Consumes up to 400 mechanical power and injects up to 400 electricity into nearby pole networks.,Mechanical to electric converter description
+Building.UnlimitedMechanicalToElectricConverter.DisplayName,Unlimited Dynamo Converter,Unlimited mechanical to electric converter name
+Building.UnlimitedMechanicalToElectricConverter.Description,Consumes all available mechanical power from the connected mechanical network and injects it into nearby pole networks.,Unlimited mechanical to electric converter description
+Building.ElectricPole.DisplayName,Electric Pole,Electric pole name
+Building.ElectricPole.Description,Connect poles with visible wires. Each pole powers electric buildings in a local 8x8 area.,Electric pole description
+Building.GridTester.DisplayName,Grid Tester,Temporary electric consumer name
+Building.GridTester.Description,Consumes a fixed amount of electricity so the new grid can be tested in-game.,Temporary electric consumer description

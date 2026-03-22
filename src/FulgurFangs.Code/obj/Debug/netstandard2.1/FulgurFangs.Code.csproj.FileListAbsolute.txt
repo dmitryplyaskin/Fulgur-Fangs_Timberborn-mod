@@ -1,0 +1,9 @@
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\netstandard2.1\FulgurFangs.Code.csproj.AssemblyReference.cache
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\netstandard2.1\FulgurFangs.Code.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\netstandard2.1\FulgurFangs.Code.csproj.CoreCompileInputs.cache
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\version-1.0\netstandard2.1\Code.deps.json
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\version-1.0\netstandard2.1\Code.dll
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\version-1.0\netstandard2.1\Code.pdb
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\netstandard2.1\FulgurFa.3D25612D.Up2Date
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\netstandard2.1\Code.dll
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\netstandard2.1\Code.pdb

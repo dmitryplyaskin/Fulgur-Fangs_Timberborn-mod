@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "pk8k7EXg+h0=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dima2\\OneDrive\\Документы\\Timberborn\\Mods\\Fulgur Fangs\\src\\FulgurFangs.Code\\FulgurFangs.Code.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dima2\\.nuget\\packages\\lib.harmony\\2.3.3\\lib.harmony.2.3.3.nupkg.sha512",
+    "C:\\Users\\dima2\\.nuget\\packages\\lib.harmony.ref\\2.3.3\\lib.harmony.ref.2.3.3.nupkg.sha512",
+    "C:\\Users\\dima2\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

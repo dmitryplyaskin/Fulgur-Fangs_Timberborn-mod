@@ -1,0 +1,9 @@
+{
+  "Name": "Fulgur Fangs",
+  "Version": "0.1.0",
+  "Id": "Dima2.FulgurFangs",
+  "MinimumGameVersion": "1.0.0.0",
+  "Description": "Adds the Fulgur Fangs faction prototype based on Iron Teeth assets.",
+  "RequiredMods": [],
+  "OptionalMods": []
+}

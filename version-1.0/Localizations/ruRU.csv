@@ -1,0 +1,15 @@
+ID,Text,Comment
+Faction.FulgurFangs.DisplayName,Fulgur Fangs,Название фракции
+Faction.FulgurFangs.Description,"Прототип новой фракции на базе Iron Teeth. Пока она использует здания, товары и визуал Iron Teeth, а собственная идентичность с электричеством и грязной водой будет добавлена позже.",Описание прототипа фракции
+NaturalResource.RubberPine.DisplayName,Каучуковая сосна,Название нового дерева
+NaturalResource.RubberPine.FlavorDescription,Вид сосны для Fulgur Fangs. Вместо смолы из нее добывают каучук.,Описание нового дерева
+Good.Rubber.DisplayName,Каучук,Название нового ресурса
+Good.Rubber.PluralDisplayName,Каучук,Множественное название нового ресурса
+Building.MechanicalToElectricConverter.DisplayName,Динамо-конвертер 400,Название преобразователя механики в электричество
+Building.MechanicalToElectricConverter.Description,Потребляет до 400 ед. механической энергии и подает до 400 ед. электричества в ближайшую сеть столбов.,Описание преобразователя механики в электричество
+Building.UnlimitedMechanicalToElectricConverter.DisplayName,Динамо-конвертер без лимита,Название преобразователя без лимита
+Building.UnlimitedMechanicalToElectricConverter.Description,Забирает всю доступную механическую энергию из подключенной механической сети и подает ее в ближайшую сеть столбов.,Описание преобразователя без лимита
+Building.ElectricPole.DisplayName,Электростолб,Название электрического столба
+Building.ElectricPole.Description,Соединяй столбы видимыми проводами. Каждый столб питает электрические здания в локальной зоне 8x8 клеток.,Описание электрического столба
+Building.GridTester.DisplayName,Тестер сети,Название временного потребителя электричества
+Building.GridTester.Description,"Потребляет фиксированное количество электричества, чтобы новую сеть можно было проверить прямо в игре.",Описание временного потребителя электричества

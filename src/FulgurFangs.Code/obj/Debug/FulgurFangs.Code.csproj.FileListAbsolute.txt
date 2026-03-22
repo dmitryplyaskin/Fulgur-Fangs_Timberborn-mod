@@ -1,0 +1,8 @@
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\version-1.0\Code.deps.json
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\version-1.0\Code.dll
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\version-1.0\Code.pdb
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\FulgurFangs.Code.csproj.AssemblyReference.cache
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\FulgurFangs.Code.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\FulgurFangs.Code.csproj.CoreCompileInputs.cache
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\Code.dll
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\Code.pdb

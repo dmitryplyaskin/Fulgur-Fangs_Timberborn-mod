@@ -1,0 +1,8 @@
+{
+  "TemplateCollectionSpec": {
+    "CollectionId": "NaturalResources.FulgurFangs",
+    "Blueprints": [
+      "NaturalResources/Trees/RubberPine/RubberPine.blueprint"
+    ]
+  }
+}

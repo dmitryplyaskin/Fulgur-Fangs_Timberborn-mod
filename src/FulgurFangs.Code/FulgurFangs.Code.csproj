@@ -1,0 +1,96 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Code</AssemblyName>
+    <RootNamespace>FulgurFangs.Code</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>..\..\version-1.0\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TimberbornManagedDir>F:\SteamLibrary\steamapps\common\Timberborn\Timberborn_Data\Managed</TimberbornManagedDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="2.3.3" />
+  </ItemGroup>
+
+  <ItemDefinitionGroup>
+    <Reference>
+      <Private>false</Private>
+    </Reference>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <Reference Include="Bindito.Core">
+      <HintPath>$(TimberbornManagedDir)\Bindito.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.BaseComponentSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.BaseComponentSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.BlueprintSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.BlueprintSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.Buildings">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.Buildings.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.Common">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.EntitySystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.EntitySystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.GameDistricts">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.GameDistricts.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.Goods">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.Goods.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.MechanicalSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.MechanicalSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.ModManagerScene">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.ModManagerScene.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.SingletonSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.SingletonSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.TemplateInstantiation">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.TemplateInstantiation.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.TopBarSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.TopBarSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.UILayoutSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.UILayoutSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.WorldPersistence">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.WorldPersistence.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.ZiplineSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.ZiplineSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(TimberbornManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>$(TimberbornManagedDir)\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CopyHarmony" AfterTargets="Build">
+    <Copy
+      SourceFiles="$(NuGetPackageRoot)lib.harmony\2.3.3\lib\net48\0Harmony.dll"
+      DestinationFolder="$(OutputPath)"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="RemoveLegacyFrameworkOutput" AfterTargets="Build">
+    <RemoveDir Directories="$(OutputPath)netstandard2.1" Condition="Exists('$(OutputPath)netstandard2.1')" />
+  </Target>
+</Project>

@@ -1,0 +1,25 @@
+{
+  "GoodSpec": {
+    "Id": "Rubber",
+    "BackwardCompatibleIds": [],
+    "ConsumptionEffects": [],
+    "GoodType": "Box",
+    "StockpileVisualization": "Box",
+    "VisibleContainer": "Box",
+    "ContainerColor": {
+      "r": 0.16470589,
+      "g": 0.16470589,
+      "b": 0.16470589,
+      "a": 1.0
+    },
+    "ContainerMaterial": "",
+    "CarryingAnimation": "CarryInHands",
+    "Weight": 2,
+    "GoodGroupId": "Materials",
+    "GoodOrder": 1055,
+    "Icon": "Sprites/Goods/PineResinIcon",
+    "ForceImport": false,
+    "DisplayNameLocKey": "Good.Rubber.DisplayName",
+    "PluralDisplayNameLocKey": "Good.Rubber.PluralDisplayName"
+  }
+}

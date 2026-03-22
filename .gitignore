@@ -1,0 +1,16 @@
+# Ignore everything by default
+*
+
+# Version folders at repo root (directory + full tree)
+!/version-*/
+!/version-*/**
+!src/
+!src/** 
+
+# Root mod metadata (Workshop / game)
+!/manifest.json
+!/thumbnail.png
+!/thumbnail.jpg
+
+# This file
+!.gitignore

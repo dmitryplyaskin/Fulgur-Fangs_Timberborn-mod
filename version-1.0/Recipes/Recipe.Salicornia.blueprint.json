@@ -1,0 +1,30 @@
+{
+  "RecipeSpec": {
+    "Id": "Salicornia",
+    "BackwardCompatibleIds": [],
+    "DisplayLocKey": "Good.Salicornia.PluralDisplayName",
+    "CycleDurationInHours": 240.0,
+    "Ingredients": [
+      {
+        "Id": "Water",
+        "Amount": 30
+      },
+      {
+        "Id": "Badwater",
+        "Amount": 15
+      }
+    ],
+    "Products": [
+      {
+        "Id": "Salicornia",
+        "Amount": 50
+      }
+    ],
+    "ProducedSciencePoints": 0,
+    "Fuel": "",
+    "CyclesFuelLasts": 0,
+    "FuelCapacity": 0,
+    "CyclesCapacity": 1,
+    "Icon": "Sprites/Goods/AlgaeIcon"
+  }
+}

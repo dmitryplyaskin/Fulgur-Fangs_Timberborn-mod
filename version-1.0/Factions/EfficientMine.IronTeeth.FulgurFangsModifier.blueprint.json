@@ -1,0 +1,16 @@
+{
+  "ManufactorySpec": {
+    "ProductionRecipeIds": [
+      "ScrapMetal.FulgurMine.Electric"
+    ]
+  },
+  "LabeledEntitySpec": {
+    "DisplayNameLocKey": "Building.FulgurElectricMine.DisplayName",
+    "DescriptionLocKey": "Building.FulgurElectricMine.Description",
+    "FlavorDescriptionLocKey": "",
+    "Icon": "Buildings/Metal/EfficientMine/EfficientMineIcon"
+  },
+  "ElectricityConsumerSpec": {
+    "Demand": 300
+  }
+}

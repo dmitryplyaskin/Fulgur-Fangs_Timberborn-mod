@@ -2,7 +2,12 @@
   "GoodCollectionSpec": {
     "CollectionId": "FulgurFangs",
     "Goods": [
-      "Rubber"
+      "Rubber",
+      "RareEarthConcentrate",
+      "ConductiveComponents",
+      "AccumulatorCell",
+      "Salicornia",
+      "FermentedSalicornia"
     ]
   }
 }

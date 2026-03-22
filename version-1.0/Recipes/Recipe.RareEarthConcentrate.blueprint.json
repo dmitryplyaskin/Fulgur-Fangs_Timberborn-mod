@@ -1,0 +1,26 @@
+{
+  "RecipeSpec": {
+    "Id": "RareEarthConcentrate",
+    "BackwardCompatibleIds": [],
+    "DisplayLocKey": "Good.RareEarthConcentrate.PluralDisplayName",
+    "CycleDurationInHours": 2.5,
+    "Ingredients": [
+      {
+        "Id": "Badwater",
+        "Amount": 6
+      }
+    ],
+    "Products": [
+      {
+        "Id": "RareEarthConcentrate",
+        "Amount": 1
+      }
+    ],
+    "ProducedSciencePoints": 0,
+    "Fuel": "Log",
+    "CyclesFuelLasts": 8,
+    "FuelCapacity": 5,
+    "CyclesCapacity": 15,
+    "Icon": "Sprites/Goods/CatalystIcon"
+  }
+}

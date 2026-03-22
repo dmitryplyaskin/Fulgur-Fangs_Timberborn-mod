@@ -1,0 +1,25 @@
+{
+  "GoodSpec": {
+    "Id": "AccumulatorCell",
+    "BackwardCompatibleIds": [],
+    "ConsumptionEffects": [],
+    "GoodType": "Box",
+    "StockpileVisualization": "Box",
+    "VisibleContainer": "Box",
+    "ContainerColor": {
+      "r": 0.854901969,
+      "g": 0.6509804,
+      "b": 0.23137255,
+      "a": 1.0
+    },
+    "ContainerMaterial": "",
+    "CarryingAnimation": "CarryInHands",
+    "Weight": 4,
+    "GoodGroupId": "Materials",
+    "GoodOrder": 1070,
+    "Icon": "Sprites/Goods/BotHeadIcon",
+    "ForceImport": false,
+    "DisplayNameLocKey": "Good.AccumulatorCell.DisplayName",
+    "PluralDisplayNameLocKey": "Good.AccumulatorCell.PluralDisplayName"
+  }
+}

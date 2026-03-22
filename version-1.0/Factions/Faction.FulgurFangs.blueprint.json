@@ -43,7 +43,40 @@
       "FulgurFangs",
       "IronTeeth"
     ],
-    "BlueprintModifiers": [],
+    "BlueprintModifiers": [
+      {
+        "Original": "buildings/metal/mine/mine.folktails.blueprint",
+        "Modifier": "Factions/Mine.Folktails.FulgurFangsModifier.blueprint"
+      },
+      {
+        "Original": "buildings/metal/efficientmine/efficientmine.ironteeth.blueprint",
+        "Modifier": "Factions/EfficientMine.IronTeeth.FulgurFangsModifier.blueprint"
+      },
+      {
+        "Original": "buildings/food/hydroponicgarden/hydroponicgarden.ironteeth.blueprint",
+        "Modifier": "Factions/HydroponicGarden.IronTeeth.FulgurFangsModifier.blueprint"
+      },
+      {
+        "Original": "buildings/food/fermenter/fermenter.ironteeth.blueprint",
+        "Modifier": "Factions/Fermenter.IronTeeth.FulgurFangsModifier.blueprint"
+      },
+      {
+        "Original": "needcollections/needcollection.ironteeth.blueprint",
+        "Modifier": "Factions/NeedCollection.IronTeeth.FulgurFangsModifier.blueprint"
+      },
+      {
+        "Original": "buildings/water/centrifuge/centrifuge.ironteeth.blueprint",
+        "Modifier": "Factions/Centrifuge.IronTeeth.FulgurFangsModifier.blueprint"
+      },
+      {
+        "Original": "buildings/metal/metalsmith/metalsmith.ironteeth.blueprint",
+        "Modifier": "Factions/Metalsmith.IronTeeth.FulgurFangsModifier.blueprint"
+      },
+      {
+        "Original": "buildings/science/botpartfactory/botpartfactory.ironteeth.blueprint",
+        "Modifier": "Factions/BotPartFactory.IronTeeth.FulgurFangsModifier.blueprint"
+      }
+    ],
     "StartingBuildingId": "DistrictCenter.IronTeeth",
     "SoundId": "Common",
     "DisplayNameLocKey": "Faction.FulgurFangs.DisplayName",

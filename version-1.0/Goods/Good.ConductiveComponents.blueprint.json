@@ -1,0 +1,25 @@
+{
+  "GoodSpec": {
+    "Id": "ConductiveComponents",
+    "BackwardCompatibleIds": [],
+    "ConsumptionEffects": [],
+    "GoodType": "Box",
+    "StockpileVisualization": "Box",
+    "VisibleContainer": "Box",
+    "ContainerColor": {
+      "r": 0.3529412,
+      "g": 0.670588255,
+      "b": 0.694117665,
+      "a": 1.0
+    },
+    "ContainerMaterial": "",
+    "CarryingAnimation": "CarryInHands",
+    "Weight": 3,
+    "GoodGroupId": "Materials",
+    "GoodOrder": 1065,
+    "Icon": "Sprites/Goods/MetalPartIcon",
+    "ForceImport": false,
+    "DisplayNameLocKey": "Good.ConductiveComponents.DisplayName",
+    "PluralDisplayNameLocKey": "Good.ConductiveComponents.PluralDisplayName"
+  }
+}

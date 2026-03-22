@@ -1,0 +1,25 @@
+{
+  "GoodSpec": {
+    "Id": "RareEarthConcentrate",
+    "BackwardCompatibleIds": [],
+    "ConsumptionEffects": [],
+    "GoodType": "Box",
+    "StockpileVisualization": "Box",
+    "VisibleContainer": "Box",
+    "ContainerColor": {
+      "r": 0.42352942,
+      "g": 0.5137255,
+      "b": 0.2627451,
+      "a": 1.0
+    },
+    "ContainerMaterial": "",
+    "CarryingAnimation": "CarryInHands",
+    "Weight": 2,
+    "GoodGroupId": "Materials",
+    "GoodOrder": 1060,
+    "Icon": "Sprites/Goods/CatalystIcon",
+    "ForceImport": false,
+    "DisplayNameLocKey": "Good.RareEarthConcentrate.DisplayName",
+    "PluralDisplayNameLocKey": "Good.RareEarthConcentrate.PluralDisplayName"
+  }
+}

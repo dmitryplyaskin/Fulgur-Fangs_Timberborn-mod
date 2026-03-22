@@ -1,0 +1,15 @@
+{
+  "ManufactorySpec": {
+    "ProductionRecipeIds#append": [
+      "Salicornia"
+    ]
+  },
+  "ManufactoryRecipeVisualizerSpec": {
+    "RecipeModels#append": [
+      {
+        "RecipeId": "Salicornia",
+        "ModelName": "Algae"
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "RecipeSpec": {
+    "Id": "FermentedSalicornia",
+    "BackwardCompatibleIds": [],
+    "DisplayLocKey": "Good.FermentedSalicornia.PluralDisplayName",
+    "CycleDurationInHours": 2.5,
+    "Ingredients": [
+      {
+        "Id": "Salicornia",
+        "Amount": 4
+      }
+    ],
+    "Products": [
+      {
+        "Id": "FermentedSalicornia",
+        "Amount": 12
+      }
+    ],
+    "ProducedSciencePoints": 0,
+    "Fuel": "",
+    "CyclesFuelLasts": 0,
+    "FuelCapacity": 0,
+    "CyclesCapacity": 6,
+    "Icon": "Sprites/Goods/FermentedSoybeanIcon"
+  }
+}

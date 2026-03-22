@@ -1,0 +1,34 @@
+{
+  "RecipeSpec": {
+    "Id": "AccumulatorCell",
+    "BackwardCompatibleIds": [],
+    "DisplayLocKey": "Good.AccumulatorCell.PluralDisplayName",
+    "CycleDurationInHours": 8.0,
+    "Ingredients": [
+      {
+        "Id": "ConductiveComponents",
+        "Amount": 2
+      },
+      {
+        "Id": "RareEarthConcentrate",
+        "Amount": 1
+      },
+      {
+        "Id": "Extract",
+        "Amount": 1
+      }
+    ],
+    "Products": [
+      {
+        "Id": "AccumulatorCell",
+        "Amount": 1
+      }
+    ],
+    "ProducedSciencePoints": 0,
+    "Fuel": "",
+    "CyclesFuelLasts": 0,
+    "FuelCapacity": 0,
+    "CyclesCapacity": 6,
+    "Icon": "Sprites/Goods/BotHeadIcon"
+  }
+}

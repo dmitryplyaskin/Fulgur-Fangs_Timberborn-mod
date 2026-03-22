@@ -1,0 +1,31 @@
+{
+  "BuildingSpec": {
+    "BuildingCost": [
+      {
+        "Id": "Log",
+        "Amount": 100
+      },
+      {
+        "Id": "Gear",
+        "Amount": 120
+      },
+      {
+        "Id": "Plank",
+        "Amount": 60
+      }
+    ],
+    "ScienceCost": 600
+  },
+  "ManufactorySpec": {
+    "ProductionRecipeIds": [
+      "ScrapMetal.FulgurMine.Basic",
+      "ScrapMetal.FulgurMine.Supported"
+    ]
+  },
+  "LabeledEntitySpec": {
+    "DisplayNameLocKey": "Building.FulgurMine.DisplayName",
+    "DescriptionLocKey": "Building.FulgurMine.Description",
+    "FlavorDescriptionLocKey": "",
+    "Icon": "Buildings/Metal/Mine/MineIcon"
+  }
+}

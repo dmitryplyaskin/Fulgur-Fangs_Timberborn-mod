@@ -1,0 +1,25 @@
+{
+  "GoodSpec": {
+    "Id": "Salicornia",
+    "BackwardCompatibleIds": [],
+    "ConsumptionEffects": [],
+    "GoodType": "Box",
+    "StockpileVisualization": "Box",
+    "VisibleContainer": "Box",
+    "ContainerColor": {
+      "r": 0.407843143,
+      "g": 0.694117665,
+      "b": 0.329411775,
+      "a": 1.0
+    },
+    "ContainerMaterial": "",
+    "CarryingAnimation": "CarryInHands",
+    "Weight": 1,
+    "GoodGroupId": "Ingredients",
+    "GoodOrder": 10070,
+    "Icon": "Sprites/Goods/AlgaeIcon",
+    "ForceImport": false,
+    "DisplayNameLocKey": "Good.Salicornia.DisplayName",
+    "PluralDisplayNameLocKey": "Good.Salicornia.PluralDisplayName"
+  }
+}

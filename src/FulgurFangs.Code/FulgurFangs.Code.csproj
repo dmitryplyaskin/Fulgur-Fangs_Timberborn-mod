@@ -36,8 +36,14 @@
     <Reference Include="Timberborn.BlueprintSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.BlueprintSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.BlockSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.BlockSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.Buildings">
       <HintPath>$(TimberbornManagedDir)\Timberborn.Buildings.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.BuildingRange">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.BuildingRange.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.Common">
       <HintPath>$(TimberbornManagedDir)\Timberborn.Common.dll</HintPath>
@@ -57,11 +63,20 @@
     <Reference Include="Timberborn.ModManagerScene">
       <HintPath>$(TimberbornManagedDir)\Timberborn.ModManagerScene.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.RangedEffectBuildingUI">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.RangedEffectBuildingUI.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.SingletonSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.SingletonSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.SelectionSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.SelectionSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.TemplateInstantiation">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TemplateInstantiation.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.TerrainSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.TerrainSystem.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.TopBarSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TopBarSystem.dll</HintPath>

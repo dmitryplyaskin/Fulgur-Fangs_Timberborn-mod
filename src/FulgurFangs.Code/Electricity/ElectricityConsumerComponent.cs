@@ -25,7 +25,6 @@ public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializ
     public void PostInitializeEntity()
     {
         _electricityService.RegisterConsumer(this);
-        Debug.Log($"[FulgurFangs] Consumer registered at {WorldPosition} demand={_demand}");
     }
 
     public void DeleteEntity()

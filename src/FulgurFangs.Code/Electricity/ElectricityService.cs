@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Timberborn.BaseComponentSystem;
 using Timberborn.MechanicalSystem;
 using Timberborn.SingletonSystem;
+using Timberborn.ZiplineSystem;
 using UnityEngine;
 
 namespace FulgurFangs.Code.Electricity;
@@ -11,12 +13,6 @@ public sealed class ElectricityService : IUpdatableSingleton
     private readonly HashSet<ElectricityPoleComponent> _poles = new();
     private readonly HashSet<MechanicalToElectricConverterComponent> _converters = new();
     private readonly HashSet<ElectricityConsumerComponent> _consumers = new();
-    private ElectricityNetworkState _lastLoggedState;
-    private int _lastLoggedPoleCount = -1;
-    private int _lastLoggedConverterCount = -1;
-    private int _lastLoggedConsumerCount = -1;
-    private int _lastLoggedNetworkConverterCount = -1;
-    private int _lastLoggedNetworkConsumerCount = -1;
 
     public static ElectricityService? Instance { get; private set; }
 
@@ -38,6 +34,63 @@ public sealed class ElectricityService : IUpdatableSingleton
     public void RegisterConsumer(ElectricityConsumerComponent consumer) => _consumers.Add(consumer);
 
     public void UnregisterConsumer(ElectricityConsumerComponent consumer) => _consumers.Remove(consumer);
+
+    public IEnumerable<BaseComponent> GetElectricObjectsInRange(ElectricityPoleComponent pole)
+    {
+        foreach (MechanicalToElectricConverterComponent converter in _converters)
+        {
+            if (converter != null && converter.GameObject && converter.IsReady && pole.InRangeOf(converter.WorldPosition))
+            {
+                yield return converter;
+            }
+        }
+
+        foreach (ElectricityConsumerComponent consumer in _consumers)
+        {
+            if (consumer != null && consumer.GameObject && consumer.IsReady && pole.InRangeOf(consumer.WorldPosition))
+            {
+                yield return consumer;
+            }
+        }
+    }
+
+    public IReadOnlyCollection<ElectricityPoleComponent> GetConnectedPoles(ElectricityPoleComponent rootPole)
+    {
+        if (rootPole == null)
+        {
+            return Array.Empty<ElectricityPoleComponent>();
+        }
+
+        Dictionary<ZiplineTower, ElectricityPoleComponent> polesByTower = _poles
+            .Where(static pole => pole != null && pole.GameObject && pole.IsReady && pole.Tower != null)
+            .GroupBy(static pole => pole.Tower!)
+            .ToDictionary(static group => group.Key, static group => group.First());
+
+        HashSet<ElectricityPoleComponent> visitedPoles = new();
+        Queue<ElectricityPoleComponent> queue = new();
+
+        visitedPoles.Add(rootPole);
+        queue.Enqueue(rootPole);
+
+        while (queue.Count > 0)
+        {
+            ElectricityPoleComponent pole = queue.Dequeue();
+            foreach (ZiplineTower targetTower in pole.GetConnectionTargetsSafe())
+            {
+                if (!polesByTower.TryGetValue(targetTower, out ElectricityPoleComponent? connectedPole))
+                {
+                    continue;
+                }
+
+                if (visitedPoles.Add(connectedPole))
+                {
+                    queue.Enqueue(connectedPole);
+                }
+            }
+        }
+
+        return visitedPoles.ToArray();
+    }
 
     public void UpdateSingleton()
     {
@@ -69,13 +122,10 @@ public sealed class ElectricityService : IUpdatableSingleton
             .ToArray();
 
         Dictionary<MechanicalGraph, int> availableGraphPower = new();
-        Dictionary<MechanicalGraph, int> initialGraphPower = new();
-        List<string> converterDebugStates = new();
 
         foreach (MechanicalToElectricConverterComponent converter in networkConverters)
         {
             MechanicalGraph? graph = converter.MechanicalGraph;
-            converterDebugStates.Add(converter.DebugMechanicalState);
             if (graph == null)
             {
                 continue;
@@ -88,7 +138,6 @@ public sealed class ElectricityService : IUpdatableSingleton
 
             int graphPowerBudget = Mathf.Max(0, graph.PowerSupply);
             availableGraphPower.Add(graph, graphPowerBudget);
-            initialGraphPower.Add(graph, graphPowerBudget);
         }
 
         int totalSupply = 0;
@@ -123,26 +172,5 @@ public sealed class ElectricityService : IUpdatableSingleton
         }
 
         CurrentState = new ElectricityNetworkState(totalSupply, totalDemand, totalConsumption);
-
-        if (_lastLoggedPoleCount != poles.Length ||
-            _lastLoggedConverterCount != converters.Length ||
-            _lastLoggedConsumerCount != consumers.Length ||
-            _lastLoggedNetworkConverterCount != networkConverters.Length ||
-            _lastLoggedNetworkConsumerCount != networkConsumers.Length ||
-            !_lastLoggedState.Equals(CurrentState))
-        {
-            Debug.Log(
-                $"[FulgurFangs] Electricity state poles={poles.Length} converters={converters.Length} consumers={consumers.Length} " +
-                $"inRangeConverters={networkConverters.Length} inRangeConsumers={networkConsumers.Length} " +
-                $"mechanicalSurplus={initialGraphPower.Values.Sum()} supply={CurrentState.Supply} demand={CurrentState.Demand} consumption={CurrentState.Consumption} " +
-                $"converterStates=[{string.Join(" | ", converterDebugStates)}]");
-
-            _lastLoggedPoleCount = poles.Length;
-            _lastLoggedConverterCount = converters.Length;
-            _lastLoggedConsumerCount = consumers.Length;
-            _lastLoggedNetworkConverterCount = networkConverters.Length;
-            _lastLoggedNetworkConsumerCount = networkConsumers.Length;
-            _lastLoggedState = CurrentState;
-        }
     }
 }

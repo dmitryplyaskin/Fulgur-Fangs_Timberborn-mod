@@ -6,3 +6,4 @@ C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\Fulg
 C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\FulgurFangs.Code.csproj.CoreCompileInputs.cache
 C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\Code.dll
 C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\Code.pdb
+C:\Users\dima2\OneDrive\Документы\Timberborn\Mods\Fulgur Fangs\src\FulgurFangs.Code\obj\Debug\FulgurFangs.Code.sourcelink.json

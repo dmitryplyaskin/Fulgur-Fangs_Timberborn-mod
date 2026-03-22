@@ -76,42 +76,10 @@ public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPos
         }
     }
 
-    public string DebugMechanicalState
-    {
-        get
-        {
-            if (ReferenceEquals(_mechanicalNode, null))
-            {
-                return "node=null";
-            }
-
-            try
-            {
-                MechanicalGraph? graph = MechanicalGraph;
-                if (graph == null)
-                {
-                    return
-                        $"graph=null powered={_mechanicalNode.Powered} active={_mechanicalNode.Active} activePowered={_mechanicalNode.ActiveAndPowered} " +
-                        $"actualIn={_mechanicalNode.Actuals.PowerInput} actualOut={_mechanicalNode.Actuals.PowerOutput}";
-                }
-
-                return
-                    $"graphValid={graph.Valid} powered={_mechanicalNode.Powered} active={_mechanicalNode.Active} activePowered={_mechanicalNode.ActiveAndPowered} " +
-                    $"actualIn={_mechanicalNode.Actuals.PowerInput} actualOut={_mechanicalNode.Actuals.PowerOutput} " +
-                    $"graphSupply={graph.PowerSupply} graphDemand={graph.PowerDemand} graphSurplus={graph.PowerSurplus} graphPowered={graph.Powered}";
-            }
-            catch (NullReferenceException)
-            {
-                return "state=NullReferenceException";
-            }
-        }
-    }
-
     public void PostInitializeEntity()
     {
         _mechanicalNode = GetComponent<MechanicalNode>() ?? GetComponentInChildren<MechanicalNode>(true);
         _electricityService.RegisterConverter(this);
-        Debug.Log($"[FulgurFangs] Converter registered at {WorldPosition} maxOutput={_maxOutput} nodeFound={!ReferenceEquals(_mechanicalNode, null)}");
     }
 
     public void DeleteEntity()

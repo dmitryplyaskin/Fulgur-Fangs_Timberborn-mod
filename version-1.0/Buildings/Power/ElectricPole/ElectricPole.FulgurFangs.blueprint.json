@@ -19,7 +19,7 @@
     "ScienceCost": 500,
     "PlaceFinished": false,
     "FinishableWithBeaversOnSite": false,
-    "DrawRangeBoundsOnIt": false
+    "DrawRangeBoundsOnIt": true
   },
   "BuildingModelSpec": {
     "FinishedModelName": "#Finished",

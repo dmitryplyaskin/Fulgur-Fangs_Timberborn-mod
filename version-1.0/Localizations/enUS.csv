@@ -23,23 +23,23 @@ Manufactory.Recipe.FulgurMine.Basic,Basic metal extraction,Name of the basic min
 Manufactory.Recipe.FulgurMine.Supported,Supported metal extraction,Name of the boosted mine recipe
 Manufactory.Recipe.FulgurMine.Electric,Electrified metal extraction,Name of the electrified mine recipe
 Building.MechanicalToElectricConverter.DisplayName,Basic Dynamo Converter,Mechanical to electric converter name
-Building.MechanicalToElectricConverter.Description,"An early bridge between mechanical power and the Fulgur Fangs electric grid. Pulls rotation from shafts and feeds up to 500 EL into the wire network.",Mechanical to electric converter description
+Building.MechanicalToElectricConverter.Description,"An early bridge between mechanical power and the Fulgur Fangs electric grid. Pulls rotation from shafts and feeds up to 500 kW into the wire network.",Mechanical to electric converter description
 Building.UnlimitedMechanicalToElectricConverter.DisplayName,Advanced Dynamo Converter,Advanced mechanical to electric converter name
 Building.UnlimitedMechanicalToElectricConverter.Description,"A heavy-duty converter for industrial districts. Draws up to 2000 mechanical power and feeds it into the electric network.",Advanced mechanical to electric converter description
 Building.ElectricPole.DisplayName,Electric Pole,Electric pole name
-Building.ElectricPole.Description,"The basic support for local transmission lines. Carries electricity for 20 m, only supports a straight pass-through, and loses 10 EL while the line is actively serving consumers.",Electric pole description
+Building.ElectricPole.Description,"The basic support for local transmission lines. Carries electricity for 20 m, only supports a straight pass-through, and loses 10 kW while the line is actively serving consumers.",Electric pole description
 Building.Splitter.DisplayName,Splitter,Splitter name
 Building.Splitter.Description,"A compact junction for dense electrical layouts. Works over short distance and can branch the network in up to four directions.",Splitter description
 Building.TransmissionTower.DisplayName,Transmission Tower,Transmission tower name
-Building.TransmissionTower.Description,"A long-distance backbone tower for moving power between districts. Carries electricity for 200 m and loses 30 EL under active load.",Transmission tower description
+Building.TransmissionTower.Description,"A long-distance backbone tower for moving power between districts. Carries electricity for 200 m and loses 30 kW under active load.",Transmission tower description
 Building.Distributor.DisplayName,Distributor,Distributor name
 Building.Distributor.Description,"A local substation for neighborhood supply. Connects to the wire network, creates a powered service area, and feeds nearby electric buildings.",Distributor description
 Building.Accumulator.DisplayName,Accumulator,Accumulator name
-Building.Accumulator.Description,"A buffer for the local electric grid. It does not connect by wire directly: instead it works inside a distributor's service area, stores up to 20000 EL, and supports the district during shortages.",Accumulator description
+Building.Accumulator.Description,"A buffer for the local electric grid. It does not connect by wire directly: instead it works inside a distributor's service area, stores up to 20000 kWh, and supports the district during shortages.",Accumulator description
 Building.GridTester.DisplayName,Grid Tester,Temporary electric consumer name
 Building.GridTester.Description,"A technical consumer for validating the electric grid. Useful for quickly checking connectivity, losses, and delivered power in-game.",Temporary electric consumer description
 ToolGroups.Electricity,Electric Grid,Electric grid build tab name
 Electricity.Panel.Title,Electric Grid,Electric section title in the entity panel
-Electricity.Panel.Active,Active energy,Active energy label in the entity panel
+Electricity.Panel.Active,Active power,Active power label in the entity panel
 Electricity.Panel.NetworkCharge,Network charge,Network charge label in the entity panel
 Electricity.Panel.AccumulatorCharge,Accumulator charge,Accumulator local charge label in the entity panel

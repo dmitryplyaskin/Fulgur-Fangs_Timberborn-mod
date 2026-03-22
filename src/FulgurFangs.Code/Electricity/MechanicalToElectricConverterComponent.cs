@@ -1,13 +1,16 @@
 using Timberborn.BaseComponentSystem;
+using Timberborn.BlockSystem;
 using Timberborn.EntitySystem;
 using Timberborn.MechanicalSystem;
 using UnityEngine;
 
 namespace FulgurFangs.Code.Electricity;
 
-public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPostInitializableEntity, IDeletableEntity
+public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPostInitializableEntity, IDeletableEntity, IFinishedStateListener
 {
     private readonly ElectricityService _electricityService;
+    private BlockObject? _blockObject;
+    private bool _isFinished;
     private MechanicalNode? _mechanicalNode;
     private int _maxOutput;
 
@@ -17,7 +20,7 @@ public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPos
         _electricityService = electricityService;
     }
 
-    public bool IsReady => Enabled;
+    public bool IsReady => Enabled && _isFinished;
 
     public Vector3 WorldPosition => Transform.position;
 
@@ -82,6 +85,8 @@ public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPos
 
     public void PostInitializeEntity()
     {
+        _blockObject = GetComponent<BlockObject>() ?? Transform.GetComponentInParent<BlockObject>();
+        _isFinished = _blockObject != null && _blockObject.IsFinished;
         _mechanicalNode = GetComponent<MechanicalNode>() ?? GetComponentInChildren<MechanicalNode>(true);
         NetworkNode = GetComponent<ElectricityPoleComponent>();
         _electricityService.RegisterConverter(this);
@@ -95,5 +100,15 @@ public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPos
     public void SetMaxOutput(int maxOutput)
     {
         _maxOutput = maxOutput;
+    }
+
+    public void OnEnterFinishedState()
+    {
+        _isFinished = true;
+    }
+
+    public void OnExitFinishedState()
+    {
+        _isFinished = false;
     }
 }

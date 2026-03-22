@@ -3,19 +3,16 @@ using System.Linq;
 using Timberborn.BaseComponentSystem;
 using Timberborn.BlockSystem;
 using Timberborn.BuildingRange;
-using Timberborn.EntityPanelSystem;
 using Timberborn.EntitySystem;
-using Timberborn.Localization;
 using Timberborn.RangedEffectBuildingUI;
 using Timberborn.SelectionSystem;
 using Timberborn.TerrainSystem;
-using Timberborn.UIFormatters;
 using Timberborn.ZiplineSystem;
 using UnityEngine;
 
 namespace FulgurFangs.Code.Electricity;
 
-public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostInitializableEntity, IDeletableEntity, IBuildingWithRange, ISelectionListener, IEntityDescriber
+public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostInitializableEntity, IDeletableEntity, IBuildingWithRange, ISelectionListener, IFinishedStateListener
 {
     private static readonly Color NetworkHighlightColor = new(0.055f, 0.26f, 0.275f, 1f);
 
@@ -24,9 +21,8 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
     private readonly RangeObjectHighlighterService _rangeObjectHighlighterService;
     private readonly RangeTileMarkerService _rangeTileMarkerService;
     private readonly ITerrainService _terrainService;
-    private readonly ILoc _loc;
-    private readonly DescribedAmountFactory _describedAmountFactory;
     private BlockObject? _blockObject;
+    private bool _isFinished;
     private ZiplineTower? _tower;
     private int _range;
     private int _transmissionLoss;
@@ -39,20 +35,16 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
         Highlighter highlighter,
         RangeObjectHighlighterService rangeObjectHighlighterService,
         RangeTileMarkerService rangeTileMarkerService,
-        ITerrainService terrainService,
-        ILoc loc,
-        DescribedAmountFactory describedAmountFactory)
+        ITerrainService terrainService)
     {
         _electricityService = electricityService;
         _highlighter = highlighter;
         _rangeObjectHighlighterService = rangeObjectHighlighterService;
         _rangeTileMarkerService = rangeTileMarkerService;
         _terrainService = terrainService;
-        _loc = loc;
-        _describedAmountFactory = describedAmountFactory;
     }
 
-    public bool IsReady => Enabled;
+    public bool IsReady => Enabled && _isFinished;
 
     public string RangeName => _rangeName;
 
@@ -75,7 +67,8 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
 
     public void PostInitializeEntity()
     {
-        _blockObject = GetComponent<BlockObject>();
+        _blockObject = GetComponent<BlockObject>() ?? Transform.GetComponentInParent<BlockObject>();
+        _isFinished = _blockObject != null && _blockObject.IsFinished;
         _tower = GetComponent<ZiplineTower>() ?? GetComponentInChildren<ZiplineTower>(true);
         _rangeName = $"ElectricityPole.{Transform.GetInstanceID()}";
         if (HasDistributionRange)
@@ -186,12 +179,15 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
         _highlightedPoles.Clear();
     }
 
-    public IEnumerable<EntityDescription> DescribeEntity()
+    public void OnEnterFinishedState()
     {
-        ElectricitySubnetworkSnapshot snapshot = _electricityService.GetNodeSnapshot(this) ?? default;
-        return ElectricityEntityDescriptions.CreateNetworkDescriptions(_loc, _describedAmountFactory, snapshot, 40);
+        _isFinished = true;
     }
 
+    public void OnExitFinishedState()
+    {
+        _isFinished = false;
+    }
     public IEnumerable<ZiplineTower> GetConnectionTargetsSafe()
     {
         if (ReferenceEquals(_tower, null) || !_tower.Enabled || !_tower.IsActive)

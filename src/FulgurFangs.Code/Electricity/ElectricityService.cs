@@ -4,12 +4,13 @@ using Timberborn.BaseComponentSystem;
 using Timberborn.MechanicalSystem;
 using Timberborn.SingletonSystem;
 using Timberborn.TimeSystem;
+using Timberborn.TickSystem;
 using Timberborn.ZiplineSystem;
 using UnityEngine;
 
 namespace FulgurFangs.Code.Electricity;
 
-public sealed class ElectricityService : IUpdatableSingleton
+public sealed class ElectricityService : ITickableSingleton
 {
     private readonly IDayNightCycle _dayNightCycle;
     private readonly HashSet<ElectricityPoleComponent> _nodes = new();
@@ -139,25 +140,28 @@ public sealed class ElectricityService : IUpdatableSingleton
         return visitedNodes.ToArray();
     }
 
-    public void UpdateSingleton()
+    public void Tick()
     {
         CleanupRegistries();
         _nodeSnapshots.Clear();
         _accumulatorSnapshots.Clear();
 
-        ElectricityConsumerComponent[] consumers = _consumers.ToArray();
+        ElectricityConsumerComponent[] consumers = _consumers
+            .Where(static consumer => consumer.IsReady)
+            .ToArray();
         foreach (ElectricityConsumerComponent consumer in consumers)
         {
             consumer.SetSupplyFraction(0f);
         }
 
         float deltaHours = Mathf.Max(0f, _dayNightCycle.FixedDeltaTimeInHours);
-        foreach (ElectricityAccumulatorComponent accumulator in _accumulators)
+        foreach (ElectricityAccumulatorComponent accumulator in _accumulators.Where(static accumulator => accumulator.IsReady))
         {
             accumulator.ApplyLeakage(deltaHours);
         }
 
         ElectricityPoleComponent[] nodes = _nodes
+            .Where(static node => node.IsReady)
             .OrderBy(static node => node.InstanceId)
             .ToArray();
 
@@ -186,7 +190,7 @@ public sealed class ElectricityService : IUpdatableSingleton
             ElectricityAccumulatorComponent[] networkAccumulators = subnetwork.Distributors.Count == 0
                 ? System.Array.Empty<ElectricityAccumulatorComponent>()
                 : _accumulators
-                    .Where(accumulator => !assignedAccumulators.Contains(accumulator) && subnetwork.Distributors.Any(distributor => distributor.InRangeOf(accumulator.WorldPosition)))
+                    .Where(accumulator => accumulator.IsReady && !assignedAccumulators.Contains(accumulator) && subnetwork.Distributors.Any(distributor => distributor.InRangeOf(accumulator.WorldPosition)))
                     .OrderBy(static accumulator => accumulator.InstanceId)
                     .ToArray();
 
@@ -261,10 +265,10 @@ public sealed class ElectricityService : IUpdatableSingleton
 
     private void CleanupRegistries()
     {
-        _nodes.RemoveWhere(static node => node == null || !node.GameObject || !node.IsReady);
-        _converters.RemoveWhere(static converter => converter == null || !converter.GameObject || !converter.IsReady);
-        _consumers.RemoveWhere(static consumer => consumer == null || !consumer.GameObject || !consumer.IsReady);
-        _accumulators.RemoveWhere(static accumulator => accumulator == null || !accumulator.GameObject || !accumulator.IsReady);
+        _nodes.RemoveWhere(static node => node == null || !node.GameObject);
+        _converters.RemoveWhere(static converter => converter == null || !converter.GameObject);
+        _consumers.RemoveWhere(static consumer => consumer == null || !consumer.GameObject);
+        _accumulators.RemoveWhere(static accumulator => accumulator == null || !accumulator.GameObject);
     }
 
     private static float ComputeGeneration(IReadOnlyCollection<MechanicalToElectricConverterComponent> converters)
@@ -313,14 +317,16 @@ public sealed class ElectricityService : IUpdatableSingleton
         }
 
         float dischargedPower = 0f;
-        foreach (ElectricityAccumulatorComponent accumulator in accumulators)
+        for (int index = 0; index < accumulators.Count; index++)
         {
             if (remainingPower <= 0f)
             {
                 break;
             }
 
-            float releasedPower = accumulator.DischargePower(remainingPower, deltaHours);
+            ElectricityAccumulatorComponent accumulator = accumulators[index];
+            float requestedShare = remainingPower / (accumulators.Count - index);
+            float releasedPower = accumulator.DischargePower(requestedShare, deltaHours);
             dischargedPower += releasedPower;
             remainingPower -= releasedPower;
         }
@@ -337,14 +343,16 @@ public sealed class ElectricityService : IUpdatableSingleton
         }
 
         float chargedPower = 0f;
-        foreach (ElectricityAccumulatorComponent accumulator in accumulators)
+        for (int index = 0; index < accumulators.Count; index++)
         {
             if (remainingPower <= 0f)
             {
                 break;
             }
 
-            float acceptedPower = accumulator.ChargePower(remainingPower, deltaHours);
+            ElectricityAccumulatorComponent accumulator = accumulators[index];
+            float requestedShare = remainingPower / (accumulators.Count - index);
+            float acceptedPower = accumulator.ChargePower(requestedShare, deltaHours);
             chargedPower += acceptedPower;
             remainingPower -= acceptedPower;
         }
@@ -355,7 +363,7 @@ public sealed class ElectricityService : IUpdatableSingleton
     private List<ElectricitySubnetwork> BuildSubnetworks(IReadOnlyList<ElectricityPoleComponent> nodes)
     {
         Dictionary<ZiplineTower, ElectricityPoleComponent> nodesByTower = nodes
-            .Where(static node => node.Tower != null)
+            .Where(static node => node.IsReady && node.Tower != null)
             .GroupBy(static node => node.Tower!)
             .ToDictionary(static group => group.Key, static group => group.First());
 
@@ -394,11 +402,11 @@ public sealed class ElectricityService : IUpdatableSingleton
 
             HashSet<ElectricityPoleComponent> nodeSet = subnetworkNodes.ToHashSet();
             List<ElectricityPoleComponent> distributors = subnetworkNodes
-                .Where(static node => node.HasDistributionRange)
+                .Where(static node => node.IsReady && node.HasDistributionRange)
                 .OrderBy(static node => node.InstanceId)
                 .ToList();
             List<MechanicalToElectricConverterComponent> converters = _converters
-                .Where(converter => converter.NetworkNode != null && nodeSet.Contains(converter.NetworkNode))
+                .Where(converter => converter.IsReady && converter.NetworkNode != null && nodeSet.Contains(converter.NetworkNode))
                 .OrderBy(static converter => converter.InstanceId)
                 .ToList();
             subnetworks.Add(new ElectricitySubnetwork(subnetworkNodes, distributors, converters));

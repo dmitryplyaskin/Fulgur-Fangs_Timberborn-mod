@@ -1,43 +1,42 @@
 using Timberborn.BaseComponentSystem;
-using Timberborn.EntityPanelSystem;
+using Timberborn.BlockSystem;
 using Timberborn.EntitySystem;
-using Timberborn.Localization;
 using Timberborn.Persistence;
-using Timberborn.UIFormatters;
 using Timberborn.WorldPersistence;
 using UnityEngine;
 
 namespace FulgurFangs.Code.Electricity;
 
-public sealed class ElectricityAccumulatorComponent : BaseComponent, IPostInitializableEntity, IDeletableEntity, IPersistentEntity, IEntityDescriber
+public sealed class ElectricityAccumulatorComponent : BaseComponent, IPostInitializableEntity, IDeletableEntity, IPersistentEntity, IFinishedStateListener
 {
     private static readonly ComponentKey SaveKey = new("FulgurFangs.ElectricityAccumulator");
     private static readonly PropertyKey<float> ChargeKey = new("Charge");
 
     private readonly ElectricityService _electricityService;
-    private readonly ILoc _loc;
-    private readonly DescribedAmountFactory _describedAmountFactory;
+    private BlockObject? _blockObject;
+    private bool _isFinished;
     private float _capacity;
     private float _currentCharge;
     private float _leakagePerHour;
     private float _maxDischargePerHour;
     private bool _loadedFromSave;
 
-    public ElectricityAccumulatorComponent(
-        ElectricityService electricityService,
-        ILoc loc,
-        DescribedAmountFactory describedAmountFactory)
+    public ElectricityAccumulatorComponent(ElectricityService electricityService)
     {
         _electricityService = electricityService;
-        _loc = loc;
-        _describedAmountFactory = describedAmountFactory;
     }
 
-    public bool IsReady => Enabled;
+    public bool IsReady => Enabled && _isFinished;
 
     public float Capacity => _capacity;
 
     public float CurrentCharge => _currentCharge;
+
+    public int RoundedCapacity => Mathf.RoundToInt(_capacity);
+
+    public int RoundedCurrentCharge => Mathf.RoundToInt(_currentCharge);
+
+    public float ChargeLevel => _capacity > 0f ? Mathf.Clamp01(_currentCharge / _capacity) : 0f;
 
     public float MaxDischargePerHour => _maxDischargePerHour;
 
@@ -47,6 +46,8 @@ public sealed class ElectricityAccumulatorComponent : BaseComponent, IPostInitia
 
     public void PostInitializeEntity()
     {
+        _blockObject = GetComponent<BlockObject>() ?? Transform.GetComponentInParent<BlockObject>();
+        _isFinished = _blockObject != null && _blockObject.IsFinished;
         _electricityService.RegisterAccumulator(this);
     }
 
@@ -118,7 +119,7 @@ public sealed class ElectricityAccumulatorComponent : BaseComponent, IPostInitia
             return 0f;
         }
 
-        return Mathf.Min(_maxDischargePerHour, (_capacity - _currentCharge) / deltaHours);
+        return Mathf.Max(0f, (_capacity - _currentCharge) / deltaHours);
     }
 
     public float ChargePower(float availablePower, float deltaHours)
@@ -133,15 +134,13 @@ public sealed class ElectricityAccumulatorComponent : BaseComponent, IPostInitia
         return acceptedPower;
     }
 
-    public IEnumerable<EntityDescription> DescribeEntity()
+    public void OnEnterFinishedState()
     {
-        ElectricitySubnetworkSnapshot snapshot = _electricityService.GetAccumulatorSnapshot(this) ?? default;
-        return ElectricityEntityDescriptions.CreateAccumulatorDescriptions(
-            _loc,
-            _describedAmountFactory,
-            snapshot,
-            Mathf.RoundToInt(_currentCharge),
-            Mathf.RoundToInt(_capacity),
-            40);
+        _isFinished = true;
+    }
+
+    public void OnExitFinishedState()
+    {
+        _isFinished = false;
     }
 }

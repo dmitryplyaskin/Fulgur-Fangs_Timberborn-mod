@@ -87,6 +87,9 @@
     <Reference Include="Timberborn.TemplateInstantiation">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TemplateInstantiation.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.TickSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.TickSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.TerrainSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TerrainSystem.dll</HintPath>
     </Reference>

@@ -1,12 +1,15 @@
 using Timberborn.BaseComponentSystem;
+using Timberborn.BlockSystem;
 using Timberborn.EntitySystem;
 using UnityEngine;
 
 namespace FulgurFangs.Code.Electricity;
 
-public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializableEntity, IDeletableEntity
+public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializableEntity, IDeletableEntity, IFinishedStateListener
 {
     private readonly ElectricityService _electricityService;
+    private BlockObject? _blockObject;
+    private bool _isFinished;
     private int _demand;
 
     public ElectricityConsumerComponent(ElectricityService electricityService)
@@ -14,7 +17,7 @@ public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializ
         _electricityService = electricityService;
     }
 
-    public bool IsReady => Enabled;
+    public bool IsReady => Enabled && _isFinished;
 
     public int Demand => _demand;
 
@@ -28,6 +31,8 @@ public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializ
 
     public void PostInitializeEntity()
     {
+        _blockObject = GetComponent<BlockObject>() ?? Transform.GetComponentInParent<BlockObject>();
+        _isFinished = _blockObject != null && _blockObject.IsFinished;
         _electricityService.RegisterConsumer(this);
     }
 
@@ -49,5 +54,16 @@ public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializ
     public void SetSupplyFraction(float supplyFraction)
     {
         SupplyFraction = Mathf.Clamp01(supplyFraction);
+    }
+
+    public void OnEnterFinishedState()
+    {
+        _isFinished = true;
+    }
+
+    public void OnExitFinishedState()
+    {
+        _isFinished = false;
+        SetSupplyFraction(0f);
     }
 }

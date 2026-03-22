@@ -1,5 +1,7 @@
 using Bindito.Core;
 using FulgurFangs.Code.Electricity;
+using FulgurFangs.Code.UI;
+using Timberborn.EntityPanelSystem;
 using Timberborn.TemplateInstantiation;
 
 namespace FulgurFangs.Code;
@@ -14,6 +16,9 @@ public sealed class FulgurFangsGameConfigurator : Configurator
         Bind<MechanicalToElectricConverterComponent>().AsTransient();
         Bind<ElectricityConsumerComponent>().AsTransient();
         Bind<ElectricityAccumulatorComponent>().AsTransient();
+        Bind<ElectricityBatteryFragment>().AsSingleton();
+        Bind<ElectricityNetworkFragment>().AsSingleton();
+        MultiBind<EntityPanelModule>().ToProvider<ElectricityEntityPanelModuleProvider>().AsSingleton();
         MultiBind<TemplateModule>().ToProvider(ProvideTemplateModule).AsSingleton();
     }
 

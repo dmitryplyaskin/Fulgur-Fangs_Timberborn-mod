@@ -84,7 +84,7 @@
     "Flippable": false
   },
   "PlaceableBlockObjectSpec": {
-    "ToolGroupId": "Power",
+    "ToolGroupId": "Electricity",
     "ToolOrder": 71,
     "ToolShape": "Square",
     "Layout": "Single",
@@ -124,7 +124,7 @@
       "Z": 0.5
     },
     "MaxConnections": 2,
-    "MaxDistance": 30,
+    "MaxDistance": 20,
     "UnobstructedCoordinates": [
       {
         "X": 0,
@@ -134,7 +134,8 @@
     ]
   },
   "ElectricityRangeSpec": {
-    "Range": 4
+    "Range": 0,
+    "TransmissionLoss": 10
   },
   "BlockObjectWithPathRangeSpec": {},
   "MovementSpeedBoostingBuildingSpec": {

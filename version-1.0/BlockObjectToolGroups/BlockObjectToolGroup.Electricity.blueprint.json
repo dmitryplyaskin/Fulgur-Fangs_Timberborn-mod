@@ -1,0 +1,9 @@
+{
+  "BlockObjectToolGroupSpec": {
+    "Id": "Electricity",
+    "Order": 71,
+    "NameLocKey": "ToolGroups.Electricity",
+    "Icon": "Sprites/BottomBar/BuildingGroups/Power",
+    "FallbackGroup": false
+  }
+}

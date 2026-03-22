@@ -23,6 +23,10 @@ public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPos
 
     public int MaxOutput => _maxOutput;
 
+    public ElectricityPoleComponent? NetworkNode { get; private set; }
+
+    public int InstanceId => Transform.GetInstanceID();
+
     public MechanicalGraph? MechanicalGraph
     {
         get
@@ -79,6 +83,7 @@ public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPos
     public void PostInitializeEntity()
     {
         _mechanicalNode = GetComponent<MechanicalNode>() ?? GetComponentInChildren<MechanicalNode>(true);
+        NetworkNode = GetComponent<ElectricityPoleComponent>();
         _electricityService.RegisterConverter(this);
     }
 

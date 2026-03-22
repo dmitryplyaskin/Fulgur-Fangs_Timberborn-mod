@@ -48,8 +48,14 @@
     <Reference Include="Timberborn.Common">
       <HintPath>$(TimberbornManagedDir)\Timberborn.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.CoreUI">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.CoreUI.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.EntitySystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.EntitySystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.EntityPanelSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.EntityPanelSystem.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.GameDistricts">
       <HintPath>$(TimberbornManagedDir)\Timberborn.GameDistricts.dll</HintPath>
@@ -59,6 +65,12 @@
     </Reference>
     <Reference Include="Timberborn.MechanicalSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.MechanicalSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.Localization">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.Persistence">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.Persistence.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.ModManagerScene">
       <HintPath>$(TimberbornManagedDir)\Timberborn.ModManagerScene.dll</HintPath>
@@ -78,14 +90,26 @@
     <Reference Include="Timberborn.TerrainSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TerrainSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.TimeSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.TimeSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.TooltipSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.TooltipSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.TopBarSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TopBarSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.UIFormatters">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.UIFormatters.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.UILayoutSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.UILayoutSystem.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.WorldPersistence">
       <HintPath>$(TimberbornManagedDir)\Timberborn.WorldPersistence.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.Workshops">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.Workshops.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.ZiplineSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.ZiplineSystem.dll</HintPath>

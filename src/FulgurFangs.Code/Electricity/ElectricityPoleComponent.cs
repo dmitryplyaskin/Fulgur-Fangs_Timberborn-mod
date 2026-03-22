@@ -3,16 +3,19 @@ using System.Linq;
 using Timberborn.BaseComponentSystem;
 using Timberborn.BlockSystem;
 using Timberborn.BuildingRange;
+using Timberborn.EntityPanelSystem;
 using Timberborn.EntitySystem;
+using Timberborn.Localization;
 using Timberborn.RangedEffectBuildingUI;
 using Timberborn.SelectionSystem;
 using Timberborn.TerrainSystem;
+using Timberborn.UIFormatters;
 using Timberborn.ZiplineSystem;
 using UnityEngine;
 
 namespace FulgurFangs.Code.Electricity;
 
-public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostInitializableEntity, IDeletableEntity, IBuildingWithRange, ISelectionListener
+public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostInitializableEntity, IDeletableEntity, IBuildingWithRange, ISelectionListener, IEntityDescriber
 {
     private static readonly Color NetworkHighlightColor = new(0.055f, 0.26f, 0.275f, 1f);
 
@@ -21,9 +24,13 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
     private readonly RangeObjectHighlighterService _rangeObjectHighlighterService;
     private readonly RangeTileMarkerService _rangeTileMarkerService;
     private readonly ITerrainService _terrainService;
+    private readonly ILoc _loc;
+    private readonly DescribedAmountFactory _describedAmountFactory;
     private BlockObject? _blockObject;
     private ZiplineTower? _tower;
     private int _range;
+    private int _transmissionLoss;
+    private bool _rangeServicesRegistered;
     private List<ElectricityPoleComponent> _highlightedPoles = new();
     private string _rangeName = "ElectricityPole.Uninitialized";
 
@@ -32,13 +39,17 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
         Highlighter highlighter,
         RangeObjectHighlighterService rangeObjectHighlighterService,
         RangeTileMarkerService rangeTileMarkerService,
-        ITerrainService terrainService)
+        ITerrainService terrainService,
+        ILoc loc,
+        DescribedAmountFactory describedAmountFactory)
     {
         _electricityService = electricityService;
         _highlighter = highlighter;
         _rangeObjectHighlighterService = rangeObjectHighlighterService;
         _rangeTileMarkerService = rangeTileMarkerService;
         _terrainService = terrainService;
+        _loc = loc;
+        _describedAmountFactory = describedAmountFactory;
     }
 
     public bool IsReady => Enabled;
@@ -46,6 +57,12 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
     public string RangeName => _rangeName;
 
     public ZiplineTower? Tower => _tower;
+
+    public int TransmissionLoss => Mathf.Max(0, _transmissionLoss);
+
+    public bool HasDistributionRange => _range > 0;
+
+    public int InstanceId => Transform.GetInstanceID();
 
     public Vector3 WorldPosition => Transform.position;
 
@@ -61,15 +78,25 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
         _blockObject = GetComponent<BlockObject>();
         _tower = GetComponent<ZiplineTower>() ?? GetComponentInChildren<ZiplineTower>(true);
         _rangeName = $"ElectricityPole.{Transform.GetInstanceID()}";
-        _rangeTileMarkerService.AddBuildingWithRange(this);
-        _rangeObjectHighlighterService.AddBuildingWithObjectRange(this);
+        if (HasDistributionRange)
+        {
+            _rangeTileMarkerService.AddBuildingWithRange(this);
+            _rangeObjectHighlighterService.AddBuildingWithObjectRange(this);
+            _rangeServicesRegistered = true;
+        }
+
         _electricityService.RegisterPole(this);
     }
 
     public void DeleteEntity()
     {
-        _rangeTileMarkerService.RemoveBuildingWithRange(this);
-        _rangeObjectHighlighterService.RemoveBuildingWithObjectRange(this);
+        if (_rangeServicesRegistered)
+        {
+            _rangeTileMarkerService.RemoveBuildingWithRange(this);
+            _rangeObjectHighlighterService.RemoveBuildingWithObjectRange(this);
+            _rangeServicesRegistered = false;
+        }
+
         _electricityService.UnregisterPole(this);
     }
 
@@ -78,14 +105,29 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
         _range = range;
     }
 
+    public void SetTransmissionLoss(int transmissionLoss)
+    {
+        _transmissionLoss = transmissionLoss;
+    }
+
     public bool InRangeOf(Vector3 position)
     {
+        if (!HasDistributionRange)
+        {
+            return false;
+        }
+
         return Mathf.Abs(position.x - WorldPosition.x) <= _range &&
                Mathf.Abs(position.z - WorldPosition.z) <= _range;
     }
 
     public IEnumerable<Vector3Int> GetBlocksInRange()
     {
+        if (!HasDistributionRange)
+        {
+            yield break;
+        }
+
         Vector3Int center = BlockCoordinates;
         for (int x = center.x - _range; x <= center.x + _range; x++)
         {
@@ -103,15 +145,20 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
 
     public IEnumerable<BaseComponent> GetObjectsInRange()
     {
-        return _electricityService.GetElectricObjectsInRange(this);
+        return HasDistributionRange
+            ? _electricityService.GetElectricObjectsInRange(this)
+            : System.Array.Empty<BaseComponent>();
     }
 
     public void OnSelect()
     {
-        _rangeTileMarkerService.RecalculateArea(RangeName);
-        _rangeTileMarkerService.DrawArea();
-        _rangeTileMarkerService.ShowArea();
-        _rangeObjectHighlighterService.RecalculateAreaAndHighlightObjects(RangeName);
+        if (_rangeServicesRegistered)
+        {
+            _rangeTileMarkerService.RecalculateArea(RangeName);
+            _rangeTileMarkerService.DrawArea();
+            _rangeTileMarkerService.ShowArea();
+            _rangeObjectHighlighterService.RecalculateAreaAndHighlightObjects(RangeName);
+        }
 
         _highlightedPoles = _electricityService.GetConnectedPoles(this).Where(static pole => pole != null).ToList();
         foreach (ElectricityPoleComponent pole in _highlightedPoles)
@@ -122,8 +169,11 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
 
     public void OnUnselect()
     {
-        _rangeTileMarkerService.HideArea();
-        _rangeObjectHighlighterService.ClearHighlights();
+        if (_rangeServicesRegistered)
+        {
+            _rangeTileMarkerService.HideArea();
+            _rangeObjectHighlighterService.ClearHighlights();
+        }
 
         foreach (ElectricityPoleComponent pole in _highlightedPoles)
         {
@@ -134,6 +184,12 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
         }
 
         _highlightedPoles.Clear();
+    }
+
+    public IEnumerable<EntityDescription> DescribeEntity()
+    {
+        ElectricitySubnetworkSnapshot snapshot = _electricityService.GetNodeSnapshot(this) ?? default;
+        return ElectricityEntityDescriptions.CreateNetworkDescriptions(_loc, _describedAmountFactory, snapshot, 40);
     }
 
     public IEnumerable<ZiplineTower> GetConnectionTargetsSafe()

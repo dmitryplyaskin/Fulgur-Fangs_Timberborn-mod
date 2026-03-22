@@ -25,13 +25,6 @@
     "ConstructionModeModel": "Finished",
     "UndergroundModelDepth": 0
   },
-  "EnterableSpec": {
-    "OperatingState": "Finished",
-    "LimitedCapacityFinished": false,
-    "CapacityFinished": 0,
-    "LimitedCapacityUnfinished": false,
-    "CapacityUnfinished": 0
-  },
   "TemplateSpec": {
     "TemplateName": "UnlimitedMechanicalToElectricConverter.FulgurFangs",
     "BackwardCompatibleTemplateNames": [],
@@ -42,12 +35,33 @@
     "Size": {
       "X": 1,
       "Y": 1,
-      "Z": 1
+      "Z": 4
     },
     "Blocks": [
       {
         "MatterBelow": "GroundOrStackable",
-        "Occupations": "Bottom, Path, Middle",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
         "Stackable": "None",
         "OccupyAllBelow": false,
         "Underground": false
@@ -67,12 +81,12 @@
   },
   "MechanicalNodeSpec": {
     "PowerOutput": 0,
-    "PowerInput": 100000,
+    "PowerInput": 2000,
     "IsShaft": false
   },
   "MechanicalBuildingSpec": {},
   "MechanicalToElectricConverterSpec": {
-    "MaxOutput": 100000
+    "MaxOutput": 2000
   },
   "TransputProviderSpec": {
     "Transputs": [
@@ -90,7 +104,7 @@
   },
   "MechanicalConnectorTargetSpec": {},
   "PlaceableBlockObjectSpec": {
-    "ToolGroupId": "Power",
+    "ToolGroupId": "Electricity",
     "ToolOrder": 71,
     "ToolShape": "Square",
     "Layout": "Single",
@@ -116,35 +130,117 @@
       0.0
     ]
   },
+  "PathSpec": {
+    "MainPathCoordinates": {
+      "X": 0,
+      "Y": 0,
+      "Z": 3
+    }
+  },
+  "ZiplineTowerSpec": {
+    "CableAnchorPoint": {
+      "X": 0.5,
+      "Y": 3.85,
+      "Z": 0.5
+    },
+    "MaxConnections": 2,
+    "MaxDistance": 20,
+    "UnobstructedCoordinates": [
+      {
+        "X": 0,
+        "Y": 0,
+        "Z": 2
+      }
+    ]
+  },
+  "ElectricityRangeSpec": {
+    "Range": 0,
+    "TransmissionLoss": 0
+  },
+  "BlockObjectWithPathRangeSpec": {},
+  "MovementSpeedBoostingBuildingSpec": {
+    "BoostPercentage": 150
+  },
+  "BlockObjectNavMeshSettingsSpec": {
+    "NoAutoWalls": false,
+    "GenerateFloorsOnStackable": false,
+    "EdgeGroups": [],
+    "UnblockedCoordinates": [
+      {
+        "Group": "Zipline",
+        "Coordinates": {
+          "X": 0,
+          "Y": 0,
+          "Z": 3
+        }
+      }
+    ],
+    "BlockedEdges": []
+  },
+  "BlockObjectAccessesSpec": {
+    "BlockingCoordinates": [
+      {
+        "X": 0,
+        "Y": 0,
+        "Z": 3
+      }
+    ],
+    "AllowedCoordinates": []
+  },
+  "CustomizableIlluminatorSpec": {},
   "Children": {
     "#Finished": {
       "TimbermeshSpec": {
-        "Model": "Buildings/Power/Clutch/ClutchEngaged.IronTeeth.Model"
+        "Model": "Buildings/Paths/ZiplinePylon/ZiplinePylon.Folktails.Model"
       },
       "CollidersSpec": {
         "BoxColliders": [
           {
             "Center": {
               "X": 0.5,
-              "Y": 0.100881577,
-              "Z": 0.5
+              "Y": 0.150933176,
+              "Z": 0.49614802
             },
             "Size": {
-              "X": 1.0,
-              "Y": 0.200167924,
-              "Z": 1.0
+              "X": 0.202542871,
+              "Y": 0.301866353,
+              "Z": 0.998630345
             }
           },
           {
             "Center": {
               "X": 0.5,
-              "Y": 0.428839326,
-              "Z": 0.5
+              "Y": 0.150933176,
+              "Z": 0.49614802
             },
             "Size": {
-              "X": 1.0,
-              "Y": 0.457485,
-              "Z": 0.769405365
+              "X": 0.9969142,
+              "Y": 0.301866353,
+              "Z": 0.198696554
+            }
+          },
+          {
+            "Center": {
+              "X": 0.5,
+              "Y": 2.135786,
+              "Z": 0.498648167
+            },
+            "Size": {
+              "X": 0.2202704,
+              "Y": 3.671637,
+              "Z": 0.271639466
+            }
+          },
+          {
+            "Center": {
+              "X": 0.501802146,
+              "Y": 3.84321022,
+              "Z": 0.49614805
+            },
+            "Size": {
+              "X": 0.627329946,
+              "Y": 0.08920932,
+              "Z": 0.6239952
             }
           }
         ],
@@ -159,32 +255,32 @@
         },
         "ConstructionStage0": {
           "TimbermeshSpec": {
-            "Model": "Buildings/Power/Clutch/Clutch.IronTeeth.ConstructionStage0.Model"
+            "Model": "Buildings/Paths/ZiplinePylon/ZiplinePylon.Folktails.ConstructionStage0.Model"
           },
           "CollidersSpec": {
             "BoxColliders": [
               {
                 "Center": {
                   "X": 0.5,
-                  "Y": 0.05137852,
+                  "Y": 0.05,
                   "Z": 0.5
                 },
                 "Size": {
                   "X": 1.0,
-                  "Y": 0.105724119,
+                  "Y": 0.1,
                   "Z": 1.0
                 }
               },
               {
                 "Center": {
-                  "X": 0.5,
-                  "Y": 0.354584754,
-                  "Z": 0.5
+                  "X": 0.4997606,
+                  "Y": 0.7903824,
+                  "Z": 0.49432835
                 },
                 "Size": {
-                  "X": 1.0,
-                  "Y": 0.5102291,
-                  "Z": 0.304008216
+                  "X": 0.228630364,
+                  "Y": 1.38568449,
+                  "Z": 0.217766225
                 }
               }
             ],

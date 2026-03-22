@@ -1,18 +1,22 @@
 {
   "BuildingSpec": {
-    "SelectionSoundName": "Shaft",
+    "SelectionSoundName": "ZiplinePylon",
     "LoopingSoundName": "",
     "BuildingCost": [
       {
+        "Id": "Plank",
+        "Amount": 30
+      },
+      {
         "Id": "Gear",
-        "Amount": 4
+        "Amount": 15
       },
       {
         "Id": "MetalBlock",
-        "Amount": 8
+        "Amount": 10
       }
     ],
-    "ScienceCost": 200,
+    "ScienceCost": 600,
     "PlaceFinished": false,
     "FinishableWithBeaversOnSite": false,
     "DrawRangeBoundsOnIt": false
@@ -26,7 +30,7 @@
     "UndergroundModelDepth": 0
   },
   "TemplateSpec": {
-    "TemplateName": "MechanicalToElectricConverter.FulgurFangs",
+    "TemplateName": "Splitter.FulgurFangs",
     "BackwardCompatibleTemplateNames": [],
     "RequiredFeatureToggle": "",
     "DisablingFeatureToggle": ""
@@ -79,33 +83,9 @@
     "Overridable": false,
     "Flippable": false
   },
-  "MechanicalNodeSpec": {
-    "PowerOutput": 0,
-    "PowerInput": 500,
-    "IsShaft": false
-  },
-  "MechanicalBuildingSpec": {},
-  "MechanicalToElectricConverterSpec": {
-    "MaxOutput": 500
-  },
-  "TransputProviderSpec": {
-    "Transputs": [
-      {
-        "Coordinates": {
-          "X": 0,
-          "Y": 0,
-          "Z": 0
-        },
-        "Directions": "Left, Right",
-        "ReverseRotation": false
-      }
-    ],
-    "IgnoreRotation": true
-  },
-  "MechanicalConnectorTargetSpec": {},
   "PlaceableBlockObjectSpec": {
     "ToolGroupId": "Electricity",
-    "ToolOrder": 70,
+    "ToolOrder": 72,
     "ToolShape": "Square",
     "Layout": "Single",
     "CustomPivot": {
@@ -120,10 +100,10 @@
     "DevModeTool": false
   },
   "LabeledEntitySpec": {
-    "DisplayNameLocKey": "Building.MechanicalToElectricConverter.DisplayName",
-    "DescriptionLocKey": "Building.MechanicalToElectricConverter.Description",
+    "DisplayNameLocKey": "Building.Splitter.DisplayName",
+    "DescriptionLocKey": "Building.Splitter.Description",
     "FlavorDescriptionLocKey": "",
-    "Icon": "Buildings/Power/Clutch/ClutchIcon"
+    "Icon": "Buildings/Paths/ZiplinePylon/ZiplinePylonIcon"
   },
   "ConstructionSiteProgressVisualizerSpec": {
     "ProgressThresholds": [
@@ -143,7 +123,7 @@
       "Y": 3.85,
       "Z": 0.5
     },
-    "MaxConnections": 2,
+    "MaxConnections": 4,
     "MaxDistance": 20,
     "UnobstructedCoordinates": [
       {
@@ -155,7 +135,7 @@
   },
   "ElectricityRangeSpec": {
     "Range": 0,
-    "TransmissionLoss": 0
+    "TransmissionLoss": 15
   },
   "BlockObjectWithPathRangeSpec": {},
   "MovementSpeedBoostingBuildingSpec": {

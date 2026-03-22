@@ -7,5 +7,6 @@ public sealed class ElectricityPoleInitializer : IDedicatedDecoratorInitializer<
     public void Initialize(ElectricityRangeSpec subject, ElectricityPoleComponent decorator)
     {
         decorator.SetRange(subject.Range);
+        decorator.SetTransmissionLoss(subject.TransmissionLoss);
     }
 }

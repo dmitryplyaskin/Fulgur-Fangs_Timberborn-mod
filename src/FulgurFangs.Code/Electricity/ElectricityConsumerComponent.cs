@@ -18,7 +18,11 @@ public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializ
 
     public int Demand => _demand;
 
-    public bool Powered { get; private set; }
+    public bool Powered => SupplyFraction > 0f;
+
+    public float SupplyFraction { get; private set; }
+
+    public int InstanceId => Transform.GetInstanceID();
 
     public Vector3 WorldPosition => Transform.position;
 
@@ -39,6 +43,11 @@ public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializ
 
     public void SetPowered(bool powered)
     {
-        Powered = powered;
+        SetSupplyFraction(powered ? 1f : 0f);
+    }
+
+    public void SetSupplyFraction(float supplyFraction)
+    {
+        SupplyFraction = Mathf.Clamp01(supplyFraction);
     }
 }

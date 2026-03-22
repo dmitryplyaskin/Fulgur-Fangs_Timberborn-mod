@@ -1,18 +1,22 @@
 {
   "BuildingSpec": {
-    "SelectionSoundName": "Shaft",
+    "SelectionSoundName": "GravityBattery",
     "LoopingSoundName": "",
     "BuildingCost": [
       {
         "Id": "Plank",
-        "Amount": 4
+        "Amount": 40
+      },
+      {
+        "Id": "Gear",
+        "Amount": 20
       },
       {
         "Id": "MetalBlock",
-        "Amount": 2
+        "Amount": 20
       }
     ],
-    "ScienceCost": 100,
+    "ScienceCost": 600,
     "PlaceFinished": false,
     "FinishableWithBeaversOnSite": false,
     "DrawRangeBoundsOnIt": false
@@ -25,15 +29,8 @@
     "ConstructionModeModel": "Finished",
     "UndergroundModelDepth": 0
   },
-  "EnterableSpec": {
-    "OperatingState": "Finished",
-    "LimitedCapacityFinished": false,
-    "CapacityFinished": 0,
-    "LimitedCapacityUnfinished": false,
-    "CapacityUnfinished": 0
-  },
   "TemplateSpec": {
-    "TemplateName": "GridTester.FulgurFangs",
+    "TemplateName": "Accumulator.FulgurFangs",
     "BackwardCompatibleTemplateNames": [],
     "RequiredFeatureToggle": "",
     "DisablingFeatureToggle": ""
@@ -42,12 +39,19 @@
     "Size": {
       "X": 1,
       "Y": 1,
-      "Z": 1
+      "Z": 2
     },
     "Blocks": [
       {
         "MatterBelow": "GroundOrStackable",
-        "Occupations": "Bottom, Path, Middle",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
         "Stackable": "None",
         "OccupyAllBelow": false,
         "Underground": false
@@ -65,12 +69,9 @@
     "Overridable": false,
     "Flippable": false
   },
-  "ElectricityConsumerSpec": {
-    "Demand": 80
-  },
   "PlaceableBlockObjectSpec": {
     "ToolGroupId": "Electricity",
-    "ToolOrder": 72,
+    "ToolOrder": 75,
     "ToolShape": "Square",
     "Layout": "Single",
     "CustomPivot": {
@@ -85,45 +86,50 @@
     "DevModeTool": false
   },
   "LabeledEntitySpec": {
-    "DisplayNameLocKey": "Building.GridTester.DisplayName",
-    "DescriptionLocKey": "Building.GridTester.Description",
+    "DisplayNameLocKey": "Building.Accumulator.DisplayName",
+    "DescriptionLocKey": "Building.Accumulator.Description",
     "FlavorDescriptionLocKey": "",
-    "Icon": "Buildings/Power/Clutch/ClutchIcon"
+    "Icon": "Buildings/Power/GravityBattery/GravityBatteryIcon"
   },
   "ConstructionSiteProgressVisualizerSpec": {
     "ProgressThresholds": [
       0.0
     ]
   },
+  "ElectricityAccumulatorSpec": {
+    "Capacity": 20000.0,
+    "LeakagePerHour": 0.1,
+    "MaxDischargePerHour": 250.0
+  },
   "Children": {
     "#Finished": {
       "TimbermeshSpec": {
-        "Model": "Buildings/Power/Clutch/ClutchDisengaged.IronTeeth.Model"
+        "Model": "Buildings/Power/GravityBattery/GravityBattery.IronTeeth.ConstructionStage0.Model"
       },
       "CollidersSpec": {
         "BoxColliders": [
           {
             "Center": {
               "X": 0.5,
-              "Y": 0.100881577,
+              "Y": 0.497311056,
               "Z": 0.5
             },
             "Size": {
               "X": 1.0,
-              "Y": 0.200167924,
+              "Y": 0.9946221,
               "Z": 1.0
             }
           },
           {
             "Center": {
-              "X": 0.5,
-              "Y": 0.428839326,
-              "Z": 0.5
+              "X": 0.5014939,
+              "Y": 1.847909,
+              "Z": 0.5003257
             },
             "Size": {
-              "X": 1.0,
-              "Y": 0.457485,
-              "Z": 0.769405365
+              "X": 0.128897309,
+              "Y": 1.717597,
+              "Z": 0.122270823
             }
           }
         ],
@@ -138,32 +144,20 @@
         },
         "ConstructionStage0": {
           "TimbermeshSpec": {
-            "Model": "Buildings/Power/Clutch/Clutch.IronTeeth.ConstructionStage0.Model"
+            "Model": "Buildings/Power/GravityBattery/GravityBattery.IronTeeth.ConstructionStage0.Model"
           },
           "CollidersSpec": {
             "BoxColliders": [
               {
                 "Center": {
                   "X": 0.5,
-                  "Y": 0.05137852,
+                  "Y": 0.497311056,
                   "Z": 0.5
                 },
                 "Size": {
                   "X": 1.0,
-                  "Y": 0.105724119,
+                  "Y": 0.9946221,
                   "Z": 1.0
-                }
-              },
-              {
-                "Center": {
-                  "X": 0.5,
-                  "Y": 0.354584754,
-                  "Z": 0.5
-                },
-                "Size": {
-                  "X": 1.0,
-                  "Y": 0.5102291,
-                  "Z": 0.304008216
                 }
               }
             ],

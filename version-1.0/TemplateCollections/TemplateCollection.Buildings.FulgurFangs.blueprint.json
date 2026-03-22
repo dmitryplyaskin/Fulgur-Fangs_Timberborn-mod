@@ -5,6 +5,10 @@
       "Buildings/Power/MechanicalToElectricConverter/MechanicalToElectricConverter.FulgurFangs.blueprint",
       "Buildings/Power/UnlimitedMechanicalToElectricConverter/UnlimitedMechanicalToElectricConverter.FulgurFangs.blueprint",
       "Buildings/Power/ElectricPole/ElectricPole.FulgurFangs.blueprint",
+      "Buildings/Power/Splitter/Splitter.FulgurFangs.blueprint",
+      "Buildings/Power/TransmissionTower/TransmissionTower.FulgurFangs.blueprint",
+      "Buildings/Power/Distributor/Distributor.FulgurFangs.blueprint",
+      "Buildings/Power/Accumulator/Accumulator.FulgurFangs.blueprint",
       "Buildings/Power/GridTester/GridTester.FulgurFangs.blueprint",
       "Buildings/Metal/Mine/Mine.Folktails.blueprint"
     ]

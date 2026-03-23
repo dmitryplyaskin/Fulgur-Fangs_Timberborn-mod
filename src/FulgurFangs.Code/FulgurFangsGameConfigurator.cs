@@ -16,6 +16,7 @@ public sealed class FulgurFangsGameConfigurator : Configurator
         Bind<MechanicalToElectricConverterComponent>().AsTransient();
         Bind<ElectricityConsumerComponent>().AsTransient();
         Bind<ElectricityAccumulatorComponent>().AsTransient();
+        Bind<PoweredDwellingNeedComponent>().AsTransient();
         Bind<ElectricityBatteryFragment>().AsSingleton();
         Bind<ElectricityNetworkFragment>().AsSingleton();
         MultiBind<EntityPanelModule>().ToProvider<ElectricityEntityPanelModuleProvider>().AsSingleton();
@@ -29,6 +30,7 @@ public sealed class FulgurFangsGameConfigurator : Configurator
         builder.AddDedicatedDecorator<MechanicalToElectricConverterSpec, MechanicalToElectricConverterComponent>(new MechanicalToElectricConverterInitializer());
         builder.AddDedicatedDecorator<ElectricityConsumerSpec, ElectricityConsumerComponent>(new ElectricityConsumerInitializer());
         builder.AddDedicatedDecorator<ElectricityAccumulatorSpec, ElectricityAccumulatorComponent>(new ElectricityAccumulatorInitializer());
+        builder.AddDedicatedDecorator<PoweredDwellingNeedSpec, PoweredDwellingNeedComponent>(new PoweredDwellingNeedInitializer());
         return builder.Build();
     }
 }

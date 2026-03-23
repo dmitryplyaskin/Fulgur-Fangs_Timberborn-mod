@@ -15,13 +15,22 @@ Good.Salicornia.DisplayName,Salicornia,Name of the new hydroponic crop
 Good.Salicornia.PluralDisplayName,Salicornia,Plural name of the new hydroponic crop
 Good.FermentedSalicornia.DisplayName,Pickled Salicornia,Name of the new fermented food
 Good.FermentedSalicornia.PluralDisplayName,Pickled Salicornia,Plural name of the new fermented food
+Need.ElectricComfort.DisplayName,Electric Comfort,Name of the powered-home need
 Building.FulgurMine.DisplayName,Mine,Name of the basic Fulgur Fangs mine
 Building.FulgurMine.Description,"A cheaper early mine for Fulgur Fangs. It can run in a barebones mode without additives or in a boosted mode using extract and planks.",Description of the basic Fulgur Fangs mine
 Building.FulgurElectricMine.DisplayName,Electrified Mine,Name of the electrified Fulgur Fangs mine
 Building.FulgurElectricMine.Description,"A late Fulgur Fangs mine. Electricity is currently a placeholder requirement while the building converts extract, conductive components, and planks into large metal output.",Description of the electrified Fulgur Fangs mine
+Building.ElectricRowhouse.DisplayName,Electric Rowhouse,Name of the test house with optional electricity
+Building.ElectricRowhouse.Description,"A test Fulgur Fangs dwelling. It still works as a normal home, but when connected to the electric grid it consumes 20 kW and improves resident comfort.",Description of the test house with optional electricity
+Building.ElectricRowhouse.FlavorDescription,Light in the window and a bit more comfort.,Flavor text for the test electric house
+Building.ElectricLumberMill.DisplayName,Electric Lumber Mill,Name of the first real electric Fulgur Fangs sawmill
+Building.ElectricLumberMill.Description,"The first real electric workshop for Fulgur Fangs. It works inside a distributor area, draws 100 kW, and currently reuses the Iron Teeth industrial lumber mill shell as placeholder visuals.",Description of the electric Fulgur Fangs sawmill
+Building.ElectricLumberMill.FlavorDescription,One saw is good. An electric drive is better.,Flavor text for the electric lumber mill
 Manufactory.Recipe.FulgurMine.Basic,Basic metal extraction,Name of the basic mine recipe
 Manufactory.Recipe.FulgurMine.Supported,Supported metal extraction,Name of the boosted mine recipe
 Manufactory.Recipe.FulgurMine.Electric,Electrified metal extraction,Name of the electrified mine recipe
+Manufactory.Recipe.ElectricLumberMill.Basic,Electric sawing,Name of the basic electric lumber mill recipe
+Manufactory.Recipe.ElectricLumberMill.Concentrated,Concentrate-assisted sawing,Name of the boosted electric lumber mill recipe
 Building.MechanicalToElectricConverter.DisplayName,Basic Dynamo Converter,Mechanical to electric converter name
 Building.MechanicalToElectricConverter.Description,"An early bridge between mechanical power and the Fulgur Fangs electric grid. Pulls rotation from shafts and feeds up to 500 kW into the wire network.",Mechanical to electric converter description
 Building.UnlimitedMechanicalToElectricConverter.DisplayName,Advanced Dynamo Converter,Advanced mechanical to electric converter name
@@ -41,5 +50,9 @@ Building.GridTester.Description,"A technical consumer for validating the electri
 ToolGroups.Electricity,Electric Grid,Electric grid build tab name
 Electricity.Panel.Title,Electric Grid,Electric section title in the entity panel
 Electricity.Panel.Active,Active power,Active power label in the entity panel
+Electricity.Panel.InputAndMax,Power input / maximum,Input and maximum power label for an electric consumer
+Electricity.Panel.GenerationAndConsumption,Generation / network consumption,Generation and network consumption label for an electric consumer
 Electricity.Panel.NetworkCharge,Network charge,Network charge label in the entity panel
 Electricity.Panel.AccumulatorCharge,Accumulator charge,Accumulator local charge label in the entity panel
+Status.Electricity.NoPower,No electricity,Status for a building without electrical supply
+Status.Electricity.NoPower.Short,The building is disconnected from the electric grid or the grid cannot cover its demand.,Short warning about missing electricity

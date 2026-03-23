@@ -2,6 +2,8 @@
   "TemplateCollectionSpec": {
     "CollectionId": "Buildings.FulgurFangs",
     "Blueprints": [
+      "Buildings/Housing/ElectricRowhouse/ElectricRowhouse.FulgurFangs.blueprint",
+      "Buildings/Wood/ElectricLumberMill/ElectricLumberMill.FulgurFangs.blueprint",
       "Buildings/Power/MechanicalToElectricConverter/MechanicalToElectricConverter.FulgurFangs.blueprint",
       "Buildings/Power/UnlimitedMechanicalToElectricConverter/UnlimitedMechanicalToElectricConverter.FulgurFangs.blueprint",
       "Buildings/Power/ElectricPole/ElectricPole.FulgurFangs.blueprint",

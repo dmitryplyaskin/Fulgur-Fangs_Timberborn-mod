@@ -11,6 +11,11 @@
 !/manifest.json
 !/thumbnail.png
 !/thumbnail.jpg
+!/AGENTS.md
+!/DEVELOPMENT.md
+!/МЕХАНИКИ.md
+!/docs/
+!/docs/**
 
 # This file
 !.gitignore

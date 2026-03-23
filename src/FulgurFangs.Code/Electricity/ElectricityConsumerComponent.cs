@@ -1,20 +1,32 @@
+using System.Collections.Generic;
 using Timberborn.BaseComponentSystem;
 using Timberborn.BlockSystem;
 using Timberborn.EntitySystem;
+using Timberborn.Localization;
+using Timberborn.StatusSystem;
+using Timberborn.TickSystem;
 using UnityEngine;
+using System.Linq;
 
 namespace FulgurFangs.Code.Electricity;
 
-public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializableEntity, IDeletableEntity, IFinishedStateListener
+public sealed class ElectricityConsumerComponent : TickableComponent, IPostInitializableEntity, IDeletableEntity, IFinishedStateListener
 {
+    private static readonly Color NetworkHighlightColor = new(0.055f, 0.26f, 0.275f, 1f);
+
     private readonly ElectricityService _electricityService;
+    private readonly ILoc _loc;
     private BlockObject? _blockObject;
+    private StatusSubject? _statusSubject;
+    private StatusToggle? _noPowerStatusToggle;
+    private List<ElectricityPoleComponent> _highlightedNodes = new();
     private bool _isFinished;
     private int _demand;
 
-    public ElectricityConsumerComponent(ElectricityService electricityService)
+    public ElectricityConsumerComponent(ElectricityService electricityService, ILoc loc)
     {
         _electricityService = electricityService;
+        _loc = loc;
     }
 
     public bool IsReady => Enabled && _isFinished;
@@ -32,6 +44,7 @@ public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializ
     public void PostInitializeEntity()
     {
         _blockObject = GetComponent<BlockObject>() ?? Transform.GetComponentInParent<BlockObject>();
+        _statusSubject = GetComponent<StatusSubject>();
         _isFinished = _blockObject != null && _blockObject.IsFinished;
         _electricityService.RegisterConsumer(this);
     }
@@ -44,6 +57,7 @@ public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializ
     public void SetDemand(int demand)
     {
         _demand = demand;
+        UpdateStatus();
     }
 
     public void SetPowered(bool powered)
@@ -54,16 +68,79 @@ public sealed class ElectricityConsumerComponent : BaseComponent, IPostInitializ
     public void SetSupplyFraction(float supplyFraction)
     {
         SupplyFraction = Mathf.Clamp01(supplyFraction);
+        UpdateStatus();
+    }
+
+    public override void StartTickable()
+    {
+        InitializeStatus();
+        UpdateStatus();
+    }
+
+    public override void Tick()
+    {
+        UpdateStatus();
     }
 
     public void OnEnterFinishedState()
     {
         _isFinished = true;
+        UpdateStatus();
     }
 
     public void OnExitFinishedState()
     {
         _isFinished = false;
         SetSupplyFraction(0f);
+        UpdateStatus();
+    }
+
+    public void HighlightNetworkSelection()
+    {
+        ClearNetworkSelection();
+
+        _highlightedNodes = _electricityService
+            .GetConsumerNetworkNodes(this)
+            .Where(static node => node != null)
+            .Distinct()
+            .ToList();
+
+        foreach (ElectricityPoleComponent node in _highlightedNodes)
+        {
+            node.HighlightSecondary(NetworkHighlightColor);
+        }
+    }
+
+    public void ClearNetworkSelection()
+    {
+        foreach (ElectricityPoleComponent node in _highlightedNodes)
+        {
+            if (node != null)
+            {
+                node.UnhighlightSecondary();
+            }
+        }
+
+        _highlightedNodes.Clear();
+    }
+
+    private void InitializeStatus()
+    {
+        if (_statusSubject == null || _noPowerStatusToggle != null)
+        {
+            return;
+        }
+
+        _noPowerStatusToggle = StatusToggle.CreateNormalStatusWithAlertAndFloatingIcon(
+            "NoPower",
+            _loc.T("Status.Electricity.NoPower"),
+            _loc.T("Status.Electricity.NoPower.Short"),
+            0f);
+        _statusSubject.RegisterStatus(_noPowerStatusToggle);
+    }
+
+    private void UpdateStatus()
+    {
+        _noPowerStatusToggle?.Toggle(IsReady && _demand > 0 && SupplyFraction < 0.999f);
     }
 }

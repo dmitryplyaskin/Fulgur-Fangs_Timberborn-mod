@@ -2,7 +2,8 @@
   "NeedCollectionSpec": {
     "CollectionId": "IronTeeth",
     "Needs#append": [
-      "FermentedSalicornia"
+      "FermentedSalicornia",
+      "ElectricComfort"
     ]
   }
 }

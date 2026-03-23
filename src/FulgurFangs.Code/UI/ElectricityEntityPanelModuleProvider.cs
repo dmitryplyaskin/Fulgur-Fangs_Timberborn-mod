@@ -20,7 +20,7 @@ public sealed class ElectricityEntityPanelModuleProvider : IProvider<EntityPanel
     {
         var builder = new EntityPanelModule.Builder();
         builder.AddMiddleFragment(_electricityBatteryFragment, 0);
-        builder.AddMiddleFragment(_electricityNetworkFragment, 0);
+        builder.AddTopFragment(_electricityNetworkFragment, 10);
         return builder.Build();
     }
 }

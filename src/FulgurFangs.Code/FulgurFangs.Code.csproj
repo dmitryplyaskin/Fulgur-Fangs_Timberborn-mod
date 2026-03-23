@@ -57,17 +57,32 @@
     <Reference Include="Timberborn.EntityPanelSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.EntityPanelSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.Effects">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.Effects.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.GameDistricts">
       <HintPath>$(TimberbornManagedDir)\Timberborn.GameDistricts.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.Goods">
       <HintPath>$(TimberbornManagedDir)\Timberborn.Goods.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.DwellingSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.DwellingSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.MechanicalSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.MechanicalSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.MechanicalSystemUI">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.MechanicalSystemUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.NeedSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.NeedSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.Localization">
       <HintPath>$(TimberbornManagedDir)\Timberborn.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.StatusSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.StatusSystem.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.Persistence">
       <HintPath>$(TimberbornManagedDir)\Timberborn.Persistence.dll</HintPath>

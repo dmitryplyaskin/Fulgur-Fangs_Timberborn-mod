@@ -1,0 +1,30 @@
+{
+  "RecipeSpec": {
+    "Id": "Plank.ElectricLumberMill.Concentrated",
+    "BackwardCompatibleIds": [],
+    "DisplayLocKey": "Manufactory.Recipe.ElectricLumberMill.Concentrated",
+    "CycleDurationInHours": 1.0,
+    "Ingredients": [
+      {
+        "Id": "Log",
+        "Amount": 3
+      },
+      {
+        "Id": "RareEarthConcentrate",
+        "Amount": 1
+      }
+    ],
+    "Products": [
+      {
+        "Id": "Plank",
+        "Amount": 3
+      }
+    ],
+    "ProducedSciencePoints": 0,
+    "Fuel": "",
+    "CyclesFuelLasts": 0,
+    "FuelCapacity": 0,
+    "CyclesCapacity": 4,
+    "Icon": "Sprites/Goods/PlankIcon"
+  }
+}

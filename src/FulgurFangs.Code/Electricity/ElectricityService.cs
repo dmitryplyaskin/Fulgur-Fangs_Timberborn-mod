@@ -18,6 +18,8 @@ public sealed class ElectricityService : ITickableSingleton
     private readonly HashSet<ElectricityConsumerComponent> _consumers = new();
     private readonly HashSet<ElectricityAccumulatorComponent> _accumulators = new();
     private readonly Dictionary<int, ElectricitySubnetworkSnapshot> _nodeSnapshots = new();
+    private readonly Dictionary<int, ElectricitySubnetworkSnapshot> _consumerSnapshots = new();
+    private readonly Dictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> _consumerNetworkNodes = new();
     private readonly Dictionary<int, ElectricitySubnetworkSnapshot> _accumulatorSnapshots = new();
 
     public static ElectricityService? Instance { get; private set; }
@@ -68,6 +70,50 @@ public sealed class ElectricityService : ITickableSingleton
         return _accumulatorSnapshots.TryGetValue(accumulator.InstanceId, out ElectricitySubnetworkSnapshot snapshot)
             ? snapshot
             : null;
+    }
+
+    public ElectricitySubnetworkSnapshot? GetConsumerSnapshot(ElectricityConsumerComponent? consumer)
+    {
+        if (consumer == null)
+        {
+            return null;
+        }
+
+        return _consumerSnapshots.TryGetValue(consumer.InstanceId, out ElectricitySubnetworkSnapshot snapshot)
+            ? snapshot
+            : null;
+    }
+
+    public IReadOnlyCollection<ElectricityPoleComponent> GetConsumerNetworkNodes(ElectricityConsumerComponent? consumer)
+    {
+        if (consumer == null || !consumer.IsReady)
+        {
+            return System.Array.Empty<ElectricityPoleComponent>();
+        }
+
+        if (_consumerNetworkNodes.TryGetValue(consumer.InstanceId, out IReadOnlyCollection<ElectricityPoleComponent>? nodes))
+        {
+            return nodes;
+        }
+
+        ElectricityPoleComponent[] activeNodes = _nodes
+            .Where(static node => node.IsReady)
+            .OrderBy(static node => node.InstanceId)
+            .ToArray();
+        if (activeNodes.Length == 0)
+        {
+            return System.Array.Empty<ElectricityPoleComponent>();
+        }
+
+        foreach (ElectricitySubnetwork subnetwork in BuildSubnetworks(activeNodes))
+        {
+            if (subnetwork.Distributors.Any(distributor => distributor.InRangeOf(consumer.WorldPosition)))
+            {
+                return subnetwork.Nodes;
+            }
+        }
+
+        return System.Array.Empty<ElectricityPoleComponent>();
     }
 
     public IEnumerable<BaseComponent> GetElectricObjectsInRange(ElectricityPoleComponent node)
@@ -144,6 +190,8 @@ public sealed class ElectricityService : ITickableSingleton
     {
         CleanupRegistries();
         _nodeSnapshots.Clear();
+        _consumerSnapshots.Clear();
+        _consumerNetworkNodes.Clear();
         _accumulatorSnapshots.Clear();
 
         ElectricityConsumerComponent[] consumers = _consumers
@@ -245,6 +293,12 @@ public sealed class ElectricityService : ITickableSingleton
             foreach (ElectricityPoleComponent node in subnetwork.Nodes)
             {
                 _nodeSnapshots[node.InstanceId] = snapshot;
+            }
+
+            foreach (ElectricityConsumerComponent consumer in networkConsumers)
+            {
+                _consumerSnapshots[consumer.InstanceId] = snapshot;
+                _consumerNetworkNodes[consumer.InstanceId] = subnetwork.Nodes;
             }
 
             foreach (ElectricityAccumulatorComponent accumulator in networkAccumulators)

@@ -156,7 +156,7 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
         _highlightedPoles = _electricityService.GetConnectedPoles(this).Where(static pole => pole != null).ToList();
         foreach (ElectricityPoleComponent pole in _highlightedPoles)
         {
-            _highlighter.HighlightSecondary(pole, NetworkHighlightColor);
+            pole.HighlightSecondary(NetworkHighlightColor);
         }
     }
 
@@ -172,7 +172,7 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
         {
             if (pole != null)
             {
-                _highlighter.UnhighlightSecondary(pole);
+                pole.UnhighlightSecondary();
             }
         }
 
@@ -233,6 +233,16 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
                 yield return current;
             }
         }
+    }
+
+    public void HighlightSecondary(Color color)
+    {
+        _highlighter.HighlightSecondary(this, color);
+    }
+
+    public void UnhighlightSecondary()
+    {
+        _highlighter.UnhighlightSecondary(this);
     }
 
     private Vector3Int GetProjectedTerrainCoordinates(int x, int y, int fallbackZ)

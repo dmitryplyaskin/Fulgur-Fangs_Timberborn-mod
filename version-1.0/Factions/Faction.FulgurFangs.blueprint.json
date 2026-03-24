@@ -69,6 +69,10 @@
         "Modifier": "Factions/Centrifuge.IronTeeth.FulgurFangsModifier.blueprint"
       },
       {
+        "Original": "buildings/metal/smelter/smelter.ironteeth.blueprint",
+        "Modifier": "Factions/Smelter.IronTeeth.FulgurFangsModifier.blueprint"
+      },
+      {
         "Original": "buildings/metal/metalsmith/metalsmith.ironteeth.blueprint",
         "Modifier": "Factions/Metalsmith.IronTeeth.FulgurFangsModifier.blueprint"
       },

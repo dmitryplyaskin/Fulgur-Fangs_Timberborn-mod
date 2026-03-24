@@ -1,0 +1,25 @@
+{
+  "GoodSpec": {
+    "Id": "Copper",
+    "BackwardCompatibleIds": [],
+    "ConsumptionEffects": [],
+    "GoodType": "Pileable",
+    "StockpileVisualization": "MetalBlock",
+    "VisibleContainer": "MetalBlock",
+    "ContainerColor": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.0
+    },
+    "ContainerMaterial": "",
+    "CarryingAnimation": "CarryOnArm",
+    "Weight": 4,
+    "GoodGroupId": "Materials",
+    "GoodOrder": 3015,
+    "Icon": "Sprites/Goods/MetalBlockIcon",
+    "ForceImport": false,
+    "DisplayNameLocKey": "Good.Copper.DisplayName",
+    "PluralDisplayNameLocKey": "Good.Copper.PluralDisplayName"
+  }
+}

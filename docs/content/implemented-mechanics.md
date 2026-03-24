@@ -42,6 +42,7 @@
 - `Rubber Pine`
 - `Rubber`
 - `Rare Earth Concentrate`
+- `Copper`
 - `Conductive Components`
 - `Accumulator Cell`
 - `Salicornia`

@@ -1,0 +1,26 @@
+{
+  "RecipeSpec": {
+    "Id": "Copper",
+    "BackwardCompatibleIds": [],
+    "DisplayLocKey": "Good.Copper.PluralDisplayName",
+    "CycleDurationInHours": 2.5,
+    "Ingredients": [
+      {
+        "Id": "ScrapMetal",
+        "Amount": 3
+      }
+    ],
+    "Products": [
+      {
+        "Id": "Copper",
+        "Amount": 1
+      }
+    ],
+    "ProducedSciencePoints": 0,
+    "Fuel": "Log",
+    "CyclesFuelLasts": 5,
+    "FuelCapacity": 13,
+    "CyclesCapacity": 13,
+    "Icon": "Sprites/Goods/MetalBlockIcon"
+  }
+}

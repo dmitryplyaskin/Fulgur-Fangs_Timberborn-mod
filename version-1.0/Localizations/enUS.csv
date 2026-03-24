@@ -7,6 +7,8 @@ Good.Rubber.DisplayName,Rubber,Name of the new resource
 Good.Rubber.PluralDisplayName,Rubber,Plural name of the new resource
 Good.RareEarthConcentrate.DisplayName,Rare Earth Concentrate,Name of the badwater concentrate
 Good.RareEarthConcentrate.PluralDisplayName,Rare Earth Concentrate,Plural name of the badwater concentrate
+Good.Copper.DisplayName,Copper,Name of the new metal resource
+Good.Copper.PluralDisplayName,Copper,Plural name of the new metal resource
 Good.ConductiveComponents.DisplayName,Conductive Components,Name of the electrical intermediate
 Good.ConductiveComponents.PluralDisplayName,Conductive Components,Plural name of the electrical intermediate
 Good.AccumulatorCell.DisplayName,Accumulator Cell,Name of the late electrical resource

@@ -85,6 +85,7 @@ public sealed class ElectricityConsumerComponent : TickableComponent, IPostIniti
     public void OnEnterFinishedState()
     {
         _isFinished = true;
+        _electricityService.RefreshStateWithoutAdvancingTime();
         UpdateStatus();
     }
 
@@ -92,6 +93,7 @@ public sealed class ElectricityConsumerComponent : TickableComponent, IPostIniti
     {
         _isFinished = false;
         SetSupplyFraction(0f);
+        _electricityService.RefreshStateWithoutAdvancingTime();
         UpdateStatus();
     }
 

@@ -139,6 +139,85 @@ So for electric poles and towers:
 This is separate from `#Slot#Entrance`,
 which is still needed for enterable workshops.
 
+## Buildable Roofs
+
+For buildings that should allow construction on the roof,
+do not rely only on the visual roof mesh.
+
+The gameplay behavior comes from `BlockObjectSpec`.
+
+### Proven Reference
+
+The current reference pattern is:
+
+- vanilla `BotPartFactory.IronTeeth`
+- active test case:
+  `version-1.0/Buildings/Wood/ElectricLumberMill/ElectricLumberMill.FulgurFangs.blueprint.json`
+
+### Important Rule
+
+If the model visually looks like a `3x3x2` building,
+`BlockObjectSpec.Size` must also be `3x3x2`.
+
+Do not describe the building as `3x3x3`
+just because the roof mesh or decorative details extend upward.
+
+If the visual model height and `BlockObjectSpec.Z` disagree,
+roof building and placement logic become misleading.
+
+### Roof Pattern That Worked
+
+For a roof that should accept buildings on top,
+use the top layer like `BotPartFactory`:
+
+- top cells:
+  `Occupations: "All"`
+- top cells:
+  `Stackable: "BlockObject"`
+- add:
+  `BlockObjectNavMeshSettingsSpec`
+- set:
+  `GenerateFloorsOnStackable: true`
+
+This is different from a simple decorative top surface.
+
+### Why `Floor` Alone Is Not Enough
+
+Using only:
+
+- `Occupations: "Floor, Bottom, Corners, Path, Middle"`
+
+can be correct for some structures,
+but for the tested industrial roof case
+the reliable pattern was the `BotPartFactory` style stackable top layer.
+
+When a copied roof behaves strangely,
+first compare against `BotPartFactory.IronTeeth`
+before experimenting with custom occupation strings.
+
+### Minimal Checklist For A Roof-Buildable Workshop
+
+1. Match the real building dimensions in `BlockObjectSpec.Size`.
+2. Ensure `Blocks.Count == X * Y * Z`.
+3. Use `Stackable: "BlockObject"` on the roof layer.
+4. Enable `GenerateFloorsOnStackable: true`.
+5. Keep colliders aligned with the actual visible shell.
+6. Confirm the imported model is not vertically offset from the gameplay grid.
+
+### Practical Warning
+
+If construction on the roof still does not work
+even with the correct block pattern,
+the problem is often in the exported model:
+
+- wrong pivot
+- wrong vertical offset
+- unapplied transforms
+- roof geometry not matching the intended gameplay top layer
+
+In that case, the blueprint can be correct
+while the roof still feels "wrong" in-game.
+
 ## Recommended Test Loop
 
 When importing a new building model:

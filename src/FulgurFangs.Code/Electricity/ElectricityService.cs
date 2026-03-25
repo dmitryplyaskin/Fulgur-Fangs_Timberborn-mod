@@ -32,21 +32,53 @@ public sealed class ElectricityService : ITickableSingleton
         Instance = this;
     }
 
-    public void RegisterPole(ElectricityPoleComponent pole) => _nodes.Add(pole);
+    public void RegisterPole(ElectricityPoleComponent pole)
+    {
+        _nodes.Add(pole);
+        RefreshStateWithoutAdvancingTime();
+    }
 
-    public void UnregisterPole(ElectricityPoleComponent pole) => _nodes.Remove(pole);
+    public void UnregisterPole(ElectricityPoleComponent pole)
+    {
+        _nodes.Remove(pole);
+        RefreshStateWithoutAdvancingTime();
+    }
 
-    public void RegisterConverter(MechanicalToElectricConverterComponent converter) => _converters.Add(converter);
+    public void RegisterConverter(MechanicalToElectricConverterComponent converter)
+    {
+        _converters.Add(converter);
+        RefreshStateWithoutAdvancingTime();
+    }
 
-    public void UnregisterConverter(MechanicalToElectricConverterComponent converter) => _converters.Remove(converter);
+    public void UnregisterConverter(MechanicalToElectricConverterComponent converter)
+    {
+        _converters.Remove(converter);
+        RefreshStateWithoutAdvancingTime();
+    }
 
-    public void RegisterConsumer(ElectricityConsumerComponent consumer) => _consumers.Add(consumer);
+    public void RegisterConsumer(ElectricityConsumerComponent consumer)
+    {
+        _consumers.Add(consumer);
+        RefreshStateWithoutAdvancingTime();
+    }
 
-    public void UnregisterConsumer(ElectricityConsumerComponent consumer) => _consumers.Remove(consumer);
+    public void UnregisterConsumer(ElectricityConsumerComponent consumer)
+    {
+        _consumers.Remove(consumer);
+        RefreshStateWithoutAdvancingTime();
+    }
 
-    public void RegisterAccumulator(ElectricityAccumulatorComponent accumulator) => _accumulators.Add(accumulator);
+    public void RegisterAccumulator(ElectricityAccumulatorComponent accumulator)
+    {
+        _accumulators.Add(accumulator);
+        RefreshStateWithoutAdvancingTime();
+    }
 
-    public void UnregisterAccumulator(ElectricityAccumulatorComponent accumulator) => _accumulators.Remove(accumulator);
+    public void UnregisterAccumulator(ElectricityAccumulatorComponent accumulator)
+    {
+        _accumulators.Remove(accumulator);
+        RefreshStateWithoutAdvancingTime();
+    }
 
     public ElectricitySubnetworkSnapshot? GetNodeSnapshot(ElectricityPoleComponent? node)
     {
@@ -188,6 +220,16 @@ public sealed class ElectricityService : ITickableSingleton
 
     public void Tick()
     {
+        RecalculateState(advanceAccumulators: true);
+    }
+
+    public void RefreshStateWithoutAdvancingTime()
+    {
+        RecalculateState(advanceAccumulators: false);
+    }
+
+    private void RecalculateState(bool advanceAccumulators)
+    {
         CleanupRegistries();
         _nodeSnapshots.Clear();
         _consumerSnapshots.Clear();
@@ -203,10 +245,20 @@ public sealed class ElectricityService : ITickableSingleton
         }
 
         float deltaHours = Mathf.Max(0f, _dayNightCycle.FixedDeltaTimeInHours);
-        foreach (ElectricityAccumulatorComponent accumulator in _accumulators.Where(static accumulator => accumulator.IsReady))
+        ElectricityAccumulatorComponent[] readyAccumulators = _accumulators
+            .Where(static accumulator => accumulator.IsReady)
+            .OrderBy(static accumulator => accumulator.InstanceId)
+            .ToArray();
+        if (advanceAccumulators)
         {
-            accumulator.ApplyLeakage(deltaHours);
+            foreach (ElectricityAccumulatorComponent accumulator in readyAccumulators)
+            {
+                accumulator.ApplyLeakage(deltaHours);
+            }
         }
+
+        Dictionary<ElectricityAccumulatorComponent, float> simulatedAccumulatorCharge = readyAccumulators
+            .ToDictionary(static accumulator => accumulator, static accumulator => accumulator.CurrentCharge);
 
         ElectricityPoleComponent[] nodes = _nodes
             .Where(static node => node.IsReady)
@@ -237,8 +289,8 @@ public sealed class ElectricityService : ITickableSingleton
                     .ToArray();
             ElectricityAccumulatorComponent[] networkAccumulators = subnetwork.Distributors.Count == 0
                 ? System.Array.Empty<ElectricityAccumulatorComponent>()
-                : _accumulators
-                    .Where(accumulator => accumulator.IsReady && !assignedAccumulators.Contains(accumulator) && subnetwork.Distributors.Any(distributor => distributor.InRangeOf(accumulator.WorldPosition)))
+                : readyAccumulators
+                    .Where(accumulator => !assignedAccumulators.Contains(accumulator) && subnetwork.Distributors.Any(distributor => distributor.InRangeOf(accumulator.WorldPosition)))
                     .OrderBy(static accumulator => accumulator.InstanceId)
                     .ToArray();
 
@@ -262,7 +314,7 @@ public sealed class ElectricityService : ITickableSingleton
             float discharged = 0f;
             if (networkLoad > generation)
             {
-                discharged = DischargeAccumulators(networkAccumulators, networkLoad - generation, deltaHours);
+                discharged = DischargeAccumulators(networkAccumulators, simulatedAccumulatorCharge, networkLoad - generation, deltaHours);
             }
 
             float availablePower = generation + discharged;
@@ -278,10 +330,10 @@ public sealed class ElectricityService : ITickableSingleton
             float charged = 0f;
             if (generation > networkLoad)
             {
-                charged = ChargeAccumulators(networkAccumulators, generation - networkLoad, deltaHours);
+                charged = ChargeAccumulators(networkAccumulators, simulatedAccumulatorCharge, generation - networkLoad, deltaHours);
             }
 
-            int storedCharge = Mathf.RoundToInt(networkAccumulators.Sum(static accumulator => accumulator.CurrentCharge));
+            int storedCharge = Mathf.RoundToInt(networkAccumulators.Sum(accumulator => simulatedAccumulatorCharge[accumulator]));
             int storageCapacity = Mathf.RoundToInt(networkAccumulators.Sum(static accumulator => accumulator.Capacity));
             ElectricitySubnetworkSnapshot snapshot = new(
                 Mathf.RoundToInt(availablePower),
@@ -315,6 +367,16 @@ public sealed class ElectricityService : ITickableSingleton
             Mathf.RoundToInt(totalSupply),
             Mathf.RoundToInt(totalDemand),
             Mathf.RoundToInt(totalConsumption));
+
+        if (!advanceAccumulators)
+        {
+            return;
+        }
+
+        foreach (KeyValuePair<ElectricityAccumulatorComponent, float> accumulatorState in simulatedAccumulatorCharge)
+        {
+            accumulatorState.Key.SetCurrentCharge(accumulatorState.Value);
+        }
     }
 
     private void CleanupRegistries()
@@ -362,7 +424,11 @@ public sealed class ElectricityService : ITickableSingleton
         return totalSupply;
     }
 
-    private static float DischargeAccumulators(IReadOnlyList<ElectricityAccumulatorComponent> accumulators, float requestedPower, float deltaHours)
+    private static float DischargeAccumulators(
+        IReadOnlyList<ElectricityAccumulatorComponent> accumulators,
+        IDictionary<ElectricityAccumulatorComponent, float> simulatedAccumulatorCharge,
+        float requestedPower,
+        float deltaHours)
     {
         float remainingPower = Mathf.Max(0f, requestedPower);
         if (remainingPower <= 0f || deltaHours <= 0f)
@@ -379,8 +445,11 @@ public sealed class ElectricityService : ITickableSingleton
             }
 
             ElectricityAccumulatorComponent accumulator = accumulators[index];
+            float currentCharge = simulatedAccumulatorCharge[accumulator];
+            float availableDischargePower = Mathf.Min(accumulator.MaxDischargePerHour, currentCharge / deltaHours);
             float requestedShare = remainingPower / (accumulators.Count - index);
-            float releasedPower = accumulator.DischargePower(requestedShare, deltaHours);
+            float releasedPower = Mathf.Min(Mathf.Max(0f, requestedShare), availableDischargePower);
+            simulatedAccumulatorCharge[accumulator] = Mathf.Max(0f, currentCharge - releasedPower * deltaHours);
             dischargedPower += releasedPower;
             remainingPower -= releasedPower;
         }
@@ -388,7 +457,11 @@ public sealed class ElectricityService : ITickableSingleton
         return dischargedPower;
     }
 
-    private static float ChargeAccumulators(IReadOnlyList<ElectricityAccumulatorComponent> accumulators, float availablePower, float deltaHours)
+    private static float ChargeAccumulators(
+        IReadOnlyList<ElectricityAccumulatorComponent> accumulators,
+        IDictionary<ElectricityAccumulatorComponent, float> simulatedAccumulatorCharge,
+        float availablePower,
+        float deltaHours)
     {
         float remainingPower = Mathf.Max(0f, availablePower);
         if (remainingPower <= 0f || deltaHours <= 0f)
@@ -405,8 +478,11 @@ public sealed class ElectricityService : ITickableSingleton
             }
 
             ElectricityAccumulatorComponent accumulator = accumulators[index];
+            float currentCharge = simulatedAccumulatorCharge[accumulator];
+            float availableChargePower = Mathf.Max(0f, (accumulator.Capacity - currentCharge) / deltaHours);
             float requestedShare = remainingPower / (accumulators.Count - index);
-            float acceptedPower = accumulator.ChargePower(requestedShare, deltaHours);
+            float acceptedPower = Mathf.Min(Mathf.Max(0f, requestedShare), availableChargePower);
+            simulatedAccumulatorCharge[accumulator] = Mathf.Min(accumulator.Capacity, currentCharge + acceptedPower * deltaHours);
             chargedPower += acceptedPower;
             remainingPower -= acceptedPower;
         }

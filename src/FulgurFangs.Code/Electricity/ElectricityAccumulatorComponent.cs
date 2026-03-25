@@ -80,6 +80,11 @@ public sealed class ElectricityAccumulatorComponent : BaseComponent, IPostInitia
             : 0f;
     }
 
+    public void SetCurrentCharge(float currentCharge)
+    {
+        _currentCharge = Mathf.Clamp(currentCharge, 0f, _capacity);
+    }
+
     public void ApplyLeakage(float deltaHours)
     {
         if (_currentCharge <= 0f || _leakagePerHour <= 0f || deltaHours <= 0f)
@@ -137,10 +142,12 @@ public sealed class ElectricityAccumulatorComponent : BaseComponent, IPostInitia
     public void OnEnterFinishedState()
     {
         _isFinished = true;
+        _electricityService.RefreshStateWithoutAdvancingTime();
     }
 
     public void OnExitFinishedState()
     {
         _isFinished = false;
+        _electricityService.RefreshStateWithoutAdvancingTime();
     }
 }

@@ -182,11 +182,13 @@ public sealed class ElectricityPoleComponent : BuildingWithTerrainRange, IPostIn
     public void OnEnterFinishedState()
     {
         _isFinished = true;
+        _electricityService.RefreshStateWithoutAdvancingTime();
     }
 
     public void OnExitFinishedState()
     {
         _isFinished = false;
+        _electricityService.RefreshStateWithoutAdvancingTime();
     }
     public IEnumerable<ZiplineTower> GetConnectionTargetsSafe()
     {

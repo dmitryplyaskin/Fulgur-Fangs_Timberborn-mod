@@ -2,23 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Timberborn.TickSystem;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace FulgurFangs.Code.Electricity;
 
 public sealed class ElectricityCableRendererService : ITickableSingleton
 {
-    private static readonly Color CableColor = new(0.13f, 0.17f, 0.19f, 1f);
-    private const float DefaultWidth = 0.06f;
-    private const float HighlightWidth = 0.085f;
-    private static readonly string[] ShaderNames =
-    {
-        "Sprites/Default",
-        "Unlit/Color",
-        "UI/Default"
-    };
-
-    private readonly Dictionary<ElectricityCableEdgeKey, LineRenderer> _lineRenderers = new();
+    private readonly Dictionary<ElectricityCableEdgeKey, CablePair> _cablePairs = new();
     private readonly ElectricityService _electricityService;
     private readonly Material _cableMaterial;
     private readonly GameObject _rootObject;
@@ -31,7 +20,7 @@ public sealed class ElectricityCableRendererService : ITickableSingleton
             hideFlags = HideFlags.HideAndDontSave
         };
         UnityEngine.Object.DontDestroyOnLoad(_rootObject);
-        _cableMaterial = CreateCableMaterial();
+        _cableMaterial = ElectricityCableVisuals.CreateCableMaterial();
         _electricityService.ConnectionsChanged += SyncConnections;
         SyncConnections(_electricityService.CurrentConnections);
     }
@@ -48,113 +37,60 @@ public sealed class ElectricityCableRendererService : ITickableSingleton
             ElectricityCableEdgeKey key = new(connection.FirstNodeId, connection.SecondNodeId);
             activeKeys.Add(key);
 
-            if (!_lineRenderers.TryGetValue(key, out LineRenderer? lineRenderer) || lineRenderer == null)
+            if (!_cablePairs.TryGetValue(key, out CablePair? cablePair) || cablePair == null || !cablePair.IsValid)
             {
-                lineRenderer = CreateLineRenderer(key);
-                _lineRenderers[key] = lineRenderer;
+                cablePair = CreateCablePair(key);
+                _cablePairs[key] = cablePair;
             }
 
-            UpdateLineRenderer(lineRenderer, connection);
+            cablePair.Update(connection);
         }
 
-        ElectricityCableEdgeKey[] staleKeys = _lineRenderers.Keys
+        ElectricityCableEdgeKey[] staleKeys = _cablePairs.Keys
             .Where(key => !activeKeys.Contains(key))
             .ToArray();
         foreach (ElectricityCableEdgeKey staleKey in staleKeys)
         {
-            LineRenderer lineRenderer = _lineRenderers[staleKey];
-            if (lineRenderer != null)
-            {
-                UnityEngine.Object.Destroy(lineRenderer.gameObject);
-            }
-
-            _lineRenderers.Remove(staleKey);
+            _cablePairs[staleKey].Destroy();
+            _cablePairs.Remove(staleKey);
         }
     }
 
-    private LineRenderer CreateLineRenderer(ElectricityCableEdgeKey key)
+    private CablePair CreateCablePair(ElectricityCableEdgeKey key)
     {
-        GameObject cableObject = new($"ElectricityCable.{key.FirstNodeId}.{key.SecondNodeId}")
+        GameObject cableRoot = new($"ElectricityCable.{key.FirstNodeId}.{key.SecondNodeId}")
         {
             hideFlags = HideFlags.HideAndDontSave
         };
-        cableObject.transform.SetParent(_rootObject.transform, false);
+        cableRoot.transform.SetParent(_rootObject.transform, false);
 
-        LineRenderer lineRenderer = cableObject.AddComponent<LineRenderer>();
-        lineRenderer.hideFlags = HideFlags.HideAndDontSave;
-        lineRenderer.sharedMaterial = _cableMaterial;
-        lineRenderer.useWorldSpace = true;
-        lineRenderer.loop = false;
-        lineRenderer.positionCount = 4;
-        lineRenderer.widthMultiplier = DefaultWidth;
-        lineRenderer.numCornerVertices = 4;
-        lineRenderer.numCapVertices = 2;
-        lineRenderer.shadowCastingMode = ShadowCastingMode.Off;
-        lineRenderer.receiveShadows = false;
-        lineRenderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
-        ApplyColor(lineRenderer, CableColor);
-        lineRenderer.textureMode = LineTextureMode.Stretch;
-        lineRenderer.alignment = LineAlignment.View;
-        lineRenderer.enabled = true;
-        return lineRenderer;
+        GameObject firstCable = new("CableA") { hideFlags = HideFlags.HideAndDontSave };
+        firstCable.transform.SetParent(cableRoot.transform, false);
+        GameObject secondCable = new("CableB") { hideFlags = HideFlags.HideAndDontSave };
+        secondCable.transform.SetParent(cableRoot.transform, false);
+
+        return new CablePair(
+            cableRoot,
+            ElectricityCableVisuals.CreateLineRenderer(firstCable, _cableMaterial, ElectricityCableVisuals.DefaultWidth),
+            ElectricityCableVisuals.CreateLineRenderer(secondCable, _cableMaterial, ElectricityCableVisuals.DefaultWidth));
     }
 
     public void HighlightConnection(ElectricityPoleComponent first, ElectricityPoleComponent second, Color color)
     {
-        if (_lineRenderers.TryGetValue(new ElectricityCableEdgeKey(first.InstanceId, second.InstanceId), out LineRenderer? lineRenderer) &&
-            lineRenderer != null)
+        if (_cablePairs.TryGetValue(new ElectricityCableEdgeKey(first.InstanceId, second.InstanceId), out CablePair? cablePair) &&
+            cablePair != null)
         {
-            lineRenderer.widthMultiplier = HighlightWidth;
-            ApplyColor(lineRenderer, color);
+            cablePair.SetVisuals(color, ElectricityCableVisuals.HighlightWidth);
         }
     }
 
     public void UnhighlightConnection(ElectricityPoleComponent first, ElectricityPoleComponent second)
     {
-        if (_lineRenderers.TryGetValue(new ElectricityCableEdgeKey(first.InstanceId, second.InstanceId), out LineRenderer? lineRenderer) &&
-            lineRenderer != null)
+        if (_cablePairs.TryGetValue(new ElectricityCableEdgeKey(first.InstanceId, second.InstanceId), out CablePair? cablePair) &&
+            cablePair != null)
         {
-            lineRenderer.widthMultiplier = DefaultWidth;
-            ApplyColor(lineRenderer, CableColor);
+            cablePair.SetVisuals(ElectricityCableVisuals.CableColor, ElectricityCableVisuals.DefaultWidth);
         }
-    }
-
-    private static void UpdateLineRenderer(LineRenderer lineRenderer, ElectricityCableConnectionSnapshot connection)
-    {
-        Vector3 start = connection.FirstAnchorWorldPosition;
-        Vector3 end = connection.SecondAnchorWorldPosition;
-        float horizontalDistance = Vector2.Distance(new Vector2(start.x, start.z), new Vector2(end.x, end.z));
-        float sag = Mathf.Clamp(horizontalDistance * 0.03f, 0.05f, 0.45f);
-
-        lineRenderer.SetPosition(0, start);
-        lineRenderer.SetPosition(1, Vector3.Lerp(start, end, 0.33f) + Vector3.down * sag);
-        lineRenderer.SetPosition(2, Vector3.Lerp(start, end, 0.66f) + Vector3.down * sag);
-        lineRenderer.SetPosition(3, end);
-    }
-
-    private static Material CreateCableMaterial()
-    {
-        Shader? shader = ShaderNames
-            .Select(Shader.Find)
-            .FirstOrDefault(static candidate => candidate != null);
-
-        if (shader == null)
-        {
-            throw new MissingReferenceException("No supported shader was found for electricity cables.");
-        }
-
-        Material material = new(shader)
-        {
-            color = CableColor,
-            hideFlags = HideFlags.HideAndDontSave
-        };
-        return material;
-    }
-
-    private static void ApplyColor(LineRenderer lineRenderer, Color color)
-    {
-        lineRenderer.startColor = color;
-        lineRenderer.endColor = color;
     }
 
     private readonly struct ElectricityCableEdgeKey
@@ -177,5 +113,46 @@ public sealed class ElectricityCableRendererService : ITickableSingleton
         public override bool Equals(object? obj) => obj is ElectricityCableEdgeKey other && Equals(other);
 
         public override int GetHashCode() => System.HashCode.Combine(FirstNodeId, SecondNodeId);
+    }
+
+    private sealed class CablePair
+    {
+        private readonly GameObject _rootObject;
+        private readonly LineRenderer _firstCable;
+        private readonly LineRenderer _secondCable;
+
+        public CablePair(GameObject rootObject, LineRenderer firstCable, LineRenderer secondCable)
+        {
+            _rootObject = rootObject;
+            _firstCable = firstCable;
+            _secondCable = secondCable;
+        }
+
+        public bool IsValid => _rootObject != null && _firstCable != null && _secondCable != null;
+
+        public void Update(ElectricityCableConnectionSnapshot connection)
+        {
+            ElectricityCableVisuals.UpdateParallelCablePair(
+                _firstCable,
+                _secondCable,
+                connection.FirstAnchorWorldPosition,
+                connection.SecondAnchorWorldPosition);
+        }
+
+        public void SetVisuals(Color color, float width)
+        {
+            _firstCable.widthMultiplier = width;
+            _secondCable.widthMultiplier = width;
+            ElectricityCableVisuals.ApplyColor(_firstCable, color);
+            ElectricityCableVisuals.ApplyColor(_secondCable, color);
+        }
+
+        public void Destroy()
+        {
+            if (_rootObject != null)
+            {
+                UnityEngine.Object.Destroy(_rootObject);
+            }
+        }
     }
 }

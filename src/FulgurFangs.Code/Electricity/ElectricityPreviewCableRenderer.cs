@@ -1,7 +1,5 @@
-using System.Linq;
 using Timberborn.SelectionSystem;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace FulgurFangs.Code.Electricity;
 
@@ -9,15 +7,10 @@ public sealed class ElectricityPreviewCableRenderer
 {
     private static readonly Color ValidPreviewColor = new(0.21f, 0.66f, 0.3f, 1f);
     private static readonly Color InvalidPreviewColor = new(0.78f, 0.2f, 0.2f, 1f);
-    private static readonly string[] ShaderNames =
-    {
-        "Sprites/Default",
-        "Unlit/Color",
-        "UI/Default"
-    };
 
     private readonly Highlighter _highlighter;
-    private readonly LineRenderer _lineRenderer;
+    private readonly LineRenderer _firstLineRenderer;
+    private readonly LineRenderer _secondLineRenderer;
     private ElectricityPoleComponent? _highlightedTarget;
 
     public ElectricityPreviewCableRenderer(Highlighter highlighter)
@@ -29,7 +22,15 @@ public sealed class ElectricityPreviewCableRenderer
             hideFlags = HideFlags.HideAndDontSave
         };
         UnityEngine.Object.DontDestroyOnLoad(rootObject);
-        _lineRenderer = CreateLineRenderer(rootObject);
+        Material material = ElectricityCableVisuals.CreateCableMaterial();
+
+        GameObject firstPreview = new("PreviewCableA") { hideFlags = HideFlags.HideAndDontSave };
+        firstPreview.transform.SetParent(rootObject.transform, false);
+        GameObject secondPreview = new("PreviewCableB") { hideFlags = HideFlags.HideAndDontSave };
+        secondPreview.transform.SetParent(rootObject.transform, false);
+
+        _firstLineRenderer = ElectricityCableVisuals.CreateLineRenderer(firstPreview, material, ElectricityCableVisuals.DefaultWidth);
+        _secondLineRenderer = ElectricityCableVisuals.CreateLineRenderer(secondPreview, material, ElectricityCableVisuals.DefaultWidth);
         HidePreview();
     }
 
@@ -42,10 +43,14 @@ public sealed class ElectricityPreviewCableRenderer
         }
 
         Color color = canConnect ? ValidPreviewColor : InvalidPreviewColor;
-        _lineRenderer.startColor = color;
-        _lineRenderer.endColor = color;
-        _lineRenderer.enabled = true;
-        UpdateLineRenderer(_lineRenderer, start.CableAnchorWorldPosition, target.CableAnchorWorldPosition);
+        SetPreviewVisible(true);
+        ElectricityCableVisuals.ApplyColor(_firstLineRenderer, color);
+        ElectricityCableVisuals.ApplyColor(_secondLineRenderer, color);
+        ElectricityCableVisuals.UpdateParallelCablePair(
+            _firstLineRenderer,
+            _secondLineRenderer,
+            start.CableAnchorWorldPosition,
+            target.CableAnchorWorldPosition);
 
         if (_highlightedTarget != null && _highlightedTarget != target)
         {
@@ -58,7 +63,7 @@ public sealed class ElectricityPreviewCableRenderer
 
     public void HidePreview()
     {
-        _lineRenderer.enabled = false;
+        SetPreviewVisible(false);
         if (_highlightedTarget != null)
         {
             ClearTargetHighlight(_highlightedTarget);
@@ -72,49 +77,9 @@ public sealed class ElectricityPreviewCableRenderer
         _highlighter.UnhighlightPrimary(target);
     }
 
-    private static LineRenderer CreateLineRenderer(GameObject rootObject)
+    private void SetPreviewVisible(bool visible)
     {
-        LineRenderer lineRenderer = rootObject.AddComponent<LineRenderer>();
-        lineRenderer.hideFlags = HideFlags.HideAndDontSave;
-        lineRenderer.useWorldSpace = true;
-        lineRenderer.loop = false;
-        lineRenderer.positionCount = 4;
-        lineRenderer.widthMultiplier = 0.065f;
-        lineRenderer.numCornerVertices = 4;
-        lineRenderer.numCapVertices = 2;
-        lineRenderer.shadowCastingMode = ShadowCastingMode.Off;
-        lineRenderer.receiveShadows = false;
-        lineRenderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
-        lineRenderer.textureMode = LineTextureMode.Stretch;
-        lineRenderer.alignment = LineAlignment.View;
-        lineRenderer.sharedMaterial = CreateMaterial();
-        return lineRenderer;
-    }
-
-    private static void UpdateLineRenderer(LineRenderer lineRenderer, Vector3 start, Vector3 end)
-    {
-        float horizontalDistance = Vector2.Distance(new Vector2(start.x, start.z), new Vector2(end.x, end.z));
-        float sag = Mathf.Clamp(horizontalDistance * 0.03f, 0.05f, 0.45f);
-
-        lineRenderer.SetPosition(0, start);
-        lineRenderer.SetPosition(1, Vector3.Lerp(start, end, 0.33f) + Vector3.down * sag);
-        lineRenderer.SetPosition(2, Vector3.Lerp(start, end, 0.66f) + Vector3.down * sag);
-        lineRenderer.SetPosition(3, end);
-    }
-
-    private static Material CreateMaterial()
-    {
-        Shader? shader = ShaderNames
-            .Select(Shader.Find)
-            .FirstOrDefault(static candidate => candidate != null);
-        if (shader == null)
-        {
-            throw new MissingReferenceException("No supported shader was found for electricity cable previews.");
-        }
-
-        return new Material(shader)
-        {
-            hideFlags = HideFlags.HideAndDontSave
-        };
+        _firstLineRenderer.enabled = visible;
+        _secondLineRenderer.enabled = visible;
     }
 }

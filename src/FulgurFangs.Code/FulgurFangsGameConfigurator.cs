@@ -11,14 +11,22 @@ public sealed class FulgurFangsGameConfigurator : Configurator
 {
     protected override void Configure()
     {
+        Bind<ElectricityConnectionService>().AsSingleton();
         Bind<ElectricityService>().AsSingleton();
+        Bind<ElectricityCableRendererService>().AsSingleton();
+        Bind<ElectricityConnectionCandidates>().AsSingleton();
+        Bind<ElectricityPreviewCableRenderer>().AsSingleton();
+        Bind<ElectricityConnectionAddingTool>().AsSingleton();
+        Bind<ElectricityConnectionButtonFactory>().AsSingleton();
         Bind<ElectricityPoleComponent>().AsTransient();
+        Bind<ElectricityTowerPreview>().AsTransient();
         Bind<MechanicalToElectricConverterComponent>().AsTransient();
         Bind<ElectricityConsumerComponent>().AsTransient();
         Bind<ElectricityAccumulatorComponent>().AsTransient();
         Bind<PoweredDwellingNeedComponent>().AsTransient();
         Bind<ElectricityBatteryFragment>().AsSingleton();
         Bind<ElectricityNetworkFragment>().AsSingleton();
+        Bind<ElectricityTowerFragment>().AsSingleton();
         MultiBind<EntityPanelModule>().ToProvider<ElectricityEntityPanelModuleProvider>().AsSingleton();
         MultiBind<TemplateModule>().ToProvider(ProvideTemplateModule).AsSingleton();
     }
@@ -27,6 +35,7 @@ public sealed class FulgurFangsGameConfigurator : Configurator
     {
         var builder = new TemplateModule.Builder();
         builder.AddDedicatedDecorator<ElectricityRangeSpec, ElectricityPoleComponent>(new ElectricityPoleInitializer());
+        builder.AddDecorator<ElectricityPoleComponent, ElectricityTowerPreview>();
         builder.AddDedicatedDecorator<MechanicalToElectricConverterSpec, MechanicalToElectricConverterComponent>(new MechanicalToElectricConverterInitializer());
         builder.AddDedicatedDecorator<ElectricityConsumerSpec, ElectricityConsumerComponent>(new ElectricityConsumerInitializer());
         builder.AddDedicatedDecorator<ElectricityAccumulatorSpec, ElectricityAccumulatorComponent>(new ElectricityAccumulatorInitializer());

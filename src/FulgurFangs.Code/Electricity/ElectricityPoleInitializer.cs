@@ -8,5 +8,6 @@ public sealed class ElectricityPoleInitializer : IDedicatedDecoratorInitializer<
     {
         decorator.SetRange(subject.Range);
         decorator.SetTransmissionLoss(subject.TransmissionLoss);
+        decorator.SetTowerParameters(subject.CableAnchorPoint, subject.MaxConnections, subject.MaxDistance);
     }
 }

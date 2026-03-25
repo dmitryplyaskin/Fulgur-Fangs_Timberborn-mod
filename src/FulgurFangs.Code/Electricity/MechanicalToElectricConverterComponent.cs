@@ -22,7 +22,7 @@ public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPos
 
     public bool IsReady => Enabled && _isFinished;
 
-    public Vector3 WorldPosition => Transform.position;
+    public Vector3 WorldPosition => GetWorldPosition();
 
     public int MaxOutput => _maxOutput;
 
@@ -112,5 +112,16 @@ public sealed class MechanicalToElectricConverterComponent : BaseComponent, IPos
     {
         _isFinished = false;
         _electricityService.RefreshStateWithoutAdvancingTime();
+    }
+
+    private Vector3 GetWorldPosition()
+    {
+        if (!ReferenceEquals(_blockObject, null))
+        {
+            Vector3Int coordinates = _blockObject.CoordinatesAtBaseZ;
+            return new Vector3(coordinates.x + 0.5f, coordinates.z, coordinates.y + 0.5f);
+        }
+
+        return Transform != null ? Transform.position : Vector3.zero;
     }
 }

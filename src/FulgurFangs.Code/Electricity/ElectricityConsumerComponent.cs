@@ -39,7 +39,7 @@ public sealed class ElectricityConsumerComponent : TickableComponent, IPostIniti
 
     public int InstanceId => Transform.GetInstanceID();
 
-    public Vector3 WorldPosition => Transform.position;
+    public Vector3 WorldPosition => GetWorldPosition();
 
     public void PostInitializeEntity()
     {
@@ -144,5 +144,16 @@ public sealed class ElectricityConsumerComponent : TickableComponent, IPostIniti
     private void UpdateStatus()
     {
         _noPowerStatusToggle?.Toggle(IsReady && _demand > 0 && SupplyFraction < 0.999f);
+    }
+
+    private Vector3 GetWorldPosition()
+    {
+        if (!ReferenceEquals(_blockObject, null))
+        {
+            Vector3Int coordinates = _blockObject.CoordinatesAtBaseZ;
+            return new Vector3(coordinates.x + 0.5f, coordinates.z, coordinates.y + 0.5f);
+        }
+
+        return Transform != null ? Transform.position : Vector3.zero;
     }
 }

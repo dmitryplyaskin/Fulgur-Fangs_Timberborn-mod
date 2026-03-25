@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Timberborn.BaseComponentSystem;
@@ -5,7 +6,6 @@ using Timberborn.MechanicalSystem;
 using Timberborn.SingletonSystem;
 using Timberborn.TimeSystem;
 using Timberborn.TickSystem;
-using Timberborn.ZiplineSystem;
 using UnityEngine;
 
 namespace FulgurFangs.Code.Electricity;
@@ -13,6 +13,7 @@ namespace FulgurFangs.Code.Electricity;
 public sealed class ElectricityService : ITickableSingleton
 {
     private readonly IDayNightCycle _dayNightCycle;
+    private readonly ElectricityConnectionService _electricityConnectionService;
     private readonly HashSet<ElectricityPoleComponent> _nodes = new();
     private readonly HashSet<MechanicalToElectricConverterComponent> _converters = new();
     private readonly HashSet<ElectricityConsumerComponent> _consumers = new();
@@ -21,14 +22,23 @@ public sealed class ElectricityService : ITickableSingleton
     private readonly Dictionary<int, ElectricitySubnetworkSnapshot> _consumerSnapshots = new();
     private readonly Dictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> _consumerNetworkNodes = new();
     private readonly Dictionary<int, ElectricitySubnetworkSnapshot> _accumulatorSnapshots = new();
+    private readonly Dictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> _nodeConnections = new();
+    private IReadOnlyList<ElectricityCableConnectionSnapshot> _currentConnections = Array.Empty<ElectricityCableConnectionSnapshot>();
 
     public static ElectricityService? Instance { get; private set; }
 
     public ElectricityNetworkState CurrentState { get; private set; }
 
-    public ElectricityService(IDayNightCycle dayNightCycle)
+    public IReadOnlyList<ElectricityCableConnectionSnapshot> CurrentConnections => _currentConnections;
+
+    public event Action<IReadOnlyList<ElectricityCableConnectionSnapshot>>? ConnectionsChanged;
+
+    public ElectricityService(
+        IDayNightCycle dayNightCycle,
+        ElectricityConnectionService electricityConnectionService)
     {
         _dayNightCycle = dayNightCycle;
+        _electricityConnectionService = electricityConnectionService;
         Instance = this;
     }
 
@@ -120,7 +130,7 @@ public sealed class ElectricityService : ITickableSingleton
     {
         if (consumer == null || !consumer.IsReady)
         {
-            return System.Array.Empty<ElectricityPoleComponent>();
+            return Array.Empty<ElectricityPoleComponent>();
         }
 
         if (_consumerNetworkNodes.TryGetValue(consumer.InstanceId, out IReadOnlyCollection<ElectricityPoleComponent>? nodes))
@@ -134,10 +144,11 @@ public sealed class ElectricityService : ITickableSingleton
             .ToArray();
         if (activeNodes.Length == 0)
         {
-            return System.Array.Empty<ElectricityPoleComponent>();
+            return Array.Empty<ElectricityPoleComponent>();
         }
 
-        foreach (ElectricitySubnetwork subnetwork in BuildSubnetworks(activeNodes))
+        ConnectionGraph connectionGraph = BuildConnectionGraph(activeNodes, _electricityConnectionService);
+        foreach (ElectricitySubnetwork subnetwork in BuildSubnetworks(activeNodes, connectionGraph.Adjacency))
         {
             if (subnetwork.Distributors.Any(distributor => distributor.InRangeOf(consumer.WorldPosition)))
             {
@@ -145,7 +156,7 @@ public sealed class ElectricityService : ITickableSingleton
             }
         }
 
-        return System.Array.Empty<ElectricityPoleComponent>();
+        return Array.Empty<ElectricityPoleComponent>();
     }
 
     public IEnumerable<BaseComponent> GetElectricObjectsInRange(ElectricityPoleComponent node)
@@ -182,40 +193,23 @@ public sealed class ElectricityService : ITickableSingleton
 
     public IReadOnlyCollection<ElectricityPoleComponent> GetConnectedPoles(ElectricityPoleComponent rootPole)
     {
-        if (rootPole == null)
+        if (rootPole == null || !rootPole.IsReady)
         {
-            return System.Array.Empty<ElectricityPoleComponent>();
+            return Array.Empty<ElectricityPoleComponent>();
         }
 
-        Dictionary<ZiplineTower, ElectricityPoleComponent> nodesByTower = _nodes
-            .Where(static node => node != null && node.GameObject && node.IsReady && node.Tower != null)
-            .GroupBy(static node => node.Tower!)
-            .ToDictionary(static group => group.Key, static group => group.First());
-
-        HashSet<ElectricityPoleComponent> visitedNodes = new();
-        Queue<ElectricityPoleComponent> queue = new();
-
-        visitedNodes.Add(rootPole);
-        queue.Enqueue(rootPole);
-
-        while (queue.Count > 0)
+        if (_nodeConnections.Count > 0)
         {
-            ElectricityPoleComponent node = queue.Dequeue();
-            foreach (ZiplineTower targetTower in node.GetConnectionTargetsSafe())
-            {
-                if (!nodesByTower.TryGetValue(targetTower, out ElectricityPoleComponent? connectedNode))
-                {
-                    continue;
-                }
-
-                if (visitedNodes.Add(connectedNode))
-                {
-                    queue.Enqueue(connectedNode);
-                }
-            }
+            return GetConnectedPoles(rootPole, _nodeConnections);
         }
 
-        return visitedNodes.ToArray();
+        ElectricityPoleComponent[] activeNodes = _nodes
+            .Where(static node => node.IsReady)
+            .OrderBy(static node => node.InstanceId)
+            .ToArray();
+
+        ConnectionGraph connectionGraph = BuildConnectionGraph(activeNodes, _electricityConnectionService);
+        return GetConnectedPoles(rootPole, connectionGraph.Adjacency);
     }
 
     public void Tick()
@@ -235,6 +229,7 @@ public sealed class ElectricityService : ITickableSingleton
         _consumerSnapshots.Clear();
         _consumerNetworkNodes.Clear();
         _accumulatorSnapshots.Clear();
+        _nodeConnections.Clear();
 
         ElectricityConsumerComponent[] consumers = _consumers
             .Where(static consumer => consumer.IsReady)
@@ -267,11 +262,15 @@ public sealed class ElectricityService : ITickableSingleton
 
         if (nodes.Length == 0)
         {
+            UpdateConnectionCache(Array.Empty<ElectricityCableConnectionSnapshot>(), new Dictionary<int, IReadOnlyCollection<ElectricityPoleComponent>>());
             CurrentState = default;
             return;
         }
 
-        List<ElectricitySubnetwork> subnetworks = BuildSubnetworks(nodes);
+        ConnectionGraph connectionGraph = BuildConnectionGraph(nodes, _electricityConnectionService);
+        UpdateConnectionCache(connectionGraph.Connections, connectionGraph.Adjacency);
+
+        List<ElectricitySubnetwork> subnetworks = BuildSubnetworks(nodes, connectionGraph.Adjacency);
         HashSet<ElectricityConsumerComponent> assignedConsumers = new();
         HashSet<ElectricityAccumulatorComponent> assignedAccumulators = new();
 
@@ -282,13 +281,13 @@ public sealed class ElectricityService : ITickableSingleton
         foreach (ElectricitySubnetwork subnetwork in subnetworks)
         {
             ElectricityConsumerComponent[] networkConsumers = subnetwork.Distributors.Count == 0
-                ? System.Array.Empty<ElectricityConsumerComponent>()
+                ? Array.Empty<ElectricityConsumerComponent>()
                 : consumers
                     .Where(consumer => !assignedConsumers.Contains(consumer) && subnetwork.Distributors.Any(distributor => distributor.InRangeOf(consumer.WorldPosition)))
                     .OrderBy(static consumer => consumer.InstanceId)
                     .ToArray();
             ElectricityAccumulatorComponent[] networkAccumulators = subnetwork.Distributors.Count == 0
-                ? System.Array.Empty<ElectricityAccumulatorComponent>()
+                ? Array.Empty<ElectricityAccumulatorComponent>()
                 : readyAccumulators
                     .Where(accumulator => !assignedAccumulators.Contains(accumulator) && subnetwork.Distributors.Any(distributor => distributor.InRangeOf(accumulator.WorldPosition)))
                     .OrderBy(static accumulator => accumulator.InstanceId)
@@ -381,10 +380,24 @@ public sealed class ElectricityService : ITickableSingleton
 
     private void CleanupRegistries()
     {
-        _nodes.RemoveWhere(static node => node == null || !node.GameObject);
-        _converters.RemoveWhere(static converter => converter == null || !converter.GameObject);
-        _consumers.RemoveWhere(static consumer => consumer == null || !consumer.GameObject);
-        _accumulators.RemoveWhere(static accumulator => accumulator == null || !accumulator.GameObject);
+        _nodes.RemoveWhere(static node => node == null || !node.GameObject || node.Transform == null);
+        _converters.RemoveWhere(static converter => converter == null || !converter.GameObject || converter.Transform == null);
+        _consumers.RemoveWhere(static consumer => consumer == null || !consumer.GameObject || consumer.Transform == null);
+        _accumulators.RemoveWhere(static accumulator => accumulator == null || !accumulator.GameObject || accumulator.Transform == null);
+    }
+
+    private void UpdateConnectionCache(
+        IReadOnlyList<ElectricityCableConnectionSnapshot> connections,
+        IReadOnlyDictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> adjacency)
+    {
+        _currentConnections = connections;
+        _nodeConnections.Clear();
+        foreach (KeyValuePair<int, IReadOnlyCollection<ElectricityPoleComponent>> entry in adjacency)
+        {
+            _nodeConnections[entry.Key] = entry.Value;
+        }
+
+        ConnectionsChanged?.Invoke(_currentConnections);
     }
 
     private static float ComputeGeneration(IReadOnlyCollection<MechanicalToElectricConverterComponent> converters)
@@ -490,13 +503,99 @@ public sealed class ElectricityService : ITickableSingleton
         return chargedPower;
     }
 
-    private List<ElectricitySubnetwork> BuildSubnetworks(IReadOnlyList<ElectricityPoleComponent> nodes)
+    private static IReadOnlyCollection<ElectricityPoleComponent> GetConnectedPoles(
+        ElectricityPoleComponent rootPole,
+        IReadOnlyDictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> adjacency)
     {
-        Dictionary<ZiplineTower, ElectricityPoleComponent> nodesByTower = nodes
-            .Where(static node => node.IsReady && node.Tower != null)
-            .GroupBy(static node => node.Tower!)
-            .ToDictionary(static group => group.Key, static group => group.First());
+        if (!adjacency.TryGetValue(rootPole.InstanceId, out _))
+        {
+            return Array.Empty<ElectricityPoleComponent>();
+        }
 
+        HashSet<ElectricityPoleComponent> visitedNodes = new() { rootPole };
+        Queue<ElectricityPoleComponent> queue = new();
+        queue.Enqueue(rootPole);
+
+        while (queue.Count > 0)
+        {
+            ElectricityPoleComponent currentNode = queue.Dequeue();
+            if (!adjacency.TryGetValue(currentNode.InstanceId, out IReadOnlyCollection<ElectricityPoleComponent>? neighbors))
+            {
+                continue;
+            }
+
+            foreach (ElectricityPoleComponent neighbor in neighbors)
+            {
+                if (visitedNodes.Add(neighbor))
+                {
+                    queue.Enqueue(neighbor);
+                }
+            }
+        }
+
+        return visitedNodes.ToArray();
+    }
+
+    private static ConnectionGraph BuildConnectionGraph(
+        IReadOnlyList<ElectricityPoleComponent> nodes,
+        ElectricityConnectionService electricityConnectionService)
+    {
+        electricityConnectionService.CleanupNodes(nodes);
+
+        Dictionary<int, List<ElectricityPoleComponent>> adjacency = nodes
+            .ToDictionary(static node => node.InstanceId, static _ => new List<ElectricityPoleComponent>());
+        Dictionary<int, ElectricityPoleComponent> nodesById = nodes
+            .ToDictionary(static node => node.InstanceId);
+        List<ElectricityCableConnectionSnapshot> connections = new();
+
+        foreach (ElectricityConnectionKey explicitConnection in electricityConnectionService.ExplicitConnections
+                     .OrderBy(static connection => connection.FirstNodeId)
+                     .ThenBy(static connection => connection.SecondNodeId))
+        {
+            if (!nodesById.TryGetValue(explicitConnection.FirstNodeId, out ElectricityPoleComponent? first) ||
+                !nodesById.TryGetValue(explicitConnection.SecondNodeId, out ElectricityPoleComponent? second))
+            {
+                continue;
+            }
+
+            if (first.MaxConnections <= 0 || second.MaxConnections <= 0)
+            {
+                continue;
+            }
+
+            if (adjacency[first.InstanceId].Count >= first.MaxConnections ||
+                adjacency[second.InstanceId].Count >= second.MaxConnections)
+            {
+                continue;
+            }
+
+            float distance = Vector3.Distance(first.CableAnchorWorldPosition, second.CableAnchorWorldPosition);
+            if (distance > Mathf.Min(first.MaxDistance, second.MaxDistance))
+            {
+                continue;
+            }
+
+            adjacency[first.InstanceId].Add(second);
+            adjacency[second.InstanceId].Add(first);
+            connections.Add(new ElectricityCableConnectionSnapshot(
+                first.InstanceId,
+                first.CableAnchorWorldPosition,
+                second.InstanceId,
+                second.CableAnchorWorldPosition));
+        }
+
+        Dictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> finalizedAdjacency = adjacency
+            .ToDictionary(
+                static pair => pair.Key,
+                static pair => (IReadOnlyCollection<ElectricityPoleComponent>)pair.Value.ToArray());
+
+        return new ConnectionGraph(finalizedAdjacency, connections.ToArray());
+    }
+
+    private List<ElectricitySubnetwork> BuildSubnetworks(
+        IReadOnlyList<ElectricityPoleComponent> nodes,
+        IReadOnlyDictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> adjacency)
+    {
         HashSet<ElectricityPoleComponent> visitedNodes = new();
         List<ElectricitySubnetwork> subnetworks = new();
 
@@ -516,13 +615,13 @@ public sealed class ElectricityService : ITickableSingleton
                 ElectricityPoleComponent currentNode = queue.Dequeue();
                 subnetworkNodes.Add(currentNode);
 
-                foreach (ZiplineTower targetTower in currentNode.GetConnectionTargetsSafe())
+                if (!adjacency.TryGetValue(currentNode.InstanceId, out IReadOnlyCollection<ElectricityPoleComponent>? neighbors))
                 {
-                    if (!nodesByTower.TryGetValue(targetTower, out ElectricityPoleComponent? connectedNode))
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
+                foreach (ElectricityPoleComponent connectedNode in neighbors)
+                {
                     if (visitedNodes.Add(connectedNode))
                     {
                         queue.Enqueue(connectedNode);
@@ -563,4 +662,7 @@ public sealed class ElectricityService : ITickableSingleton
 
         public IReadOnlyList<MechanicalToElectricConverterComponent> Converters { get; }
     }
+    private readonly record struct ConnectionGraph(
+        IReadOnlyDictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> Adjacency,
+        IReadOnlyList<ElectricityCableConnectionSnapshot> Connections);
 }

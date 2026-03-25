@@ -27,6 +27,9 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
+    <Reference Include="Timberborn.AssetSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.AssetSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Bindito.Core">
       <HintPath>$(TimberbornManagedDir)\Bindito.Core.dll</HintPath>
     </Reference>
@@ -47,6 +50,9 @@
     </Reference>
     <Reference Include="Timberborn.Common">
       <HintPath>$(TimberbornManagedDir)\Timberborn.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.ConstructionMode">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.ConstructionMode.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.CoreUI">
       <HintPath>$(TimberbornManagedDir)\Timberborn.CoreUI.dll</HintPath>
@@ -78,8 +84,14 @@
     <Reference Include="Timberborn.NeedSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.NeedSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.Navigation">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.Navigation.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.Localization">
       <HintPath>$(TimberbornManagedDir)\Timberborn.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.InputSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.StatusSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.StatusSystem.dll</HintPath>
@@ -111,6 +123,12 @@
     <Reference Include="Timberborn.TimeSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TimeSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.ToolSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.ToolSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.ToolSystemUI">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.ToolSystemUI.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.TooltipSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TooltipSystem.dll</HintPath>
     </Reference>
@@ -123,6 +141,9 @@
     <Reference Include="Timberborn.UILayoutSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.UILayoutSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.UISound">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.UISound.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.WorldPersistence">
       <HintPath>$(TimberbornManagedDir)\Timberborn.WorldPersistence.dll</HintPath>
     </Reference>
@@ -131,6 +152,9 @@
     </Reference>
     <Reference Include="Timberborn.ZiplineSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.ZiplineSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.ZiplineSystemUI">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.ZiplineSystemUI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(TimberbornManagedDir)\UnityEngine.CoreModule.dll</HintPath>

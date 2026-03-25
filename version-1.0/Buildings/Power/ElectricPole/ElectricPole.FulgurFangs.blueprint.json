@@ -110,36 +110,16 @@
       0.0
     ]
   },
-  "PathSpec": {
-    "MainPathCoordinates": {
-      "X": 0,
-      "Y": 0,
-      "Z": 3
-    }
-  },
-  "ZiplineTowerSpec": {
+  "ElectricityRangeSpec": {
+    "Range": 0,
+    "TransmissionLoss": 10,
     "CableAnchorPoint": {
       "X": 0.5,
       "Y": 3.85,
       "Z": 0.5
     },
     "MaxConnections": 2,
-    "MaxDistance": 20,
-    "UnobstructedCoordinates": [
-      {
-        "X": 0,
-        "Y": 0,
-        "Z": 2
-      }
-    ]
-  },
-  "ElectricityRangeSpec": {
-    "Range": 0,
-    "TransmissionLoss": 10
-  },
-  "BlockObjectWithPathRangeSpec": {},
-  "MovementSpeedBoostingBuildingSpec": {
-    "BoostPercentage": 150
+    "MaxDistance": 20.0
   },
   "BlockObjectNavMeshSettingsSpec": {
     "NoAutoWalls": false,
@@ -171,7 +151,7 @@
   "Children": {
     "#Finished": {
       "TimbermeshSpec": {
-        "Model": "Buildings/Paths/ZiplinePylon/ZiplinePylon.Folktails.Model"
+        "Model": "Buildings/Power/ElectricPole/ElectricalPillar.Folktails.Model"
       },
       "CollidersSpec": {
         "BoxColliders": [

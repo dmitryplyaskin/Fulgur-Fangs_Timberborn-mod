@@ -56,5 +56,34 @@ Electricity.Panel.InputAndMax,Power input / maximum,Input and maximum power labe
 Electricity.Panel.GenerationAndConsumption,Generation / network consumption,Generation and network consumption label for an electric consumer
 Electricity.Panel.NetworkCharge,Network charge,Network charge label in the entity panel
 Electricity.Panel.AccumulatorCharge,Accumulator charge,Accumulator local charge label in the entity panel
+Electricity.Connection.Title,Manual wires,Manual wire configuration section title
+Electricity.Connection.Target,Tower,Label for a connected tower in the manual wire list
+Electricity.Connection.Empty,"No manual wires yet. Add a wire and pick another tower.",Empty state text for the manual wire list
+Electricity.Connection.Section.Connections,Connected lines,Header for the list of active wires
+Electricity.Connection.Section.FreeSlots,Free slots,Header for the free connection slot section
+Electricity.Connection.Button.Add,Add wire,Button that switches to the second-tower selection tool
+Electricity.Connection.Button.CancelAdd,Cancel selection,Button that leaves the second-tower selection tool
+Electricity.Connection.Button.Remove,Remove,Button that removes a single manual wire
+Electricity.Connection.Tooltip.SelectTarget,Select and focus on the connected tower.,Tooltip for the connected tower button
+Electricity.Connection.Tooltip.Remove,Remove this wire.,Tooltip for the remove wire button
+Electricity.Connection.Tooltip.Add,Enter the second-tower selection mode for a new wire.,Tooltip for the add wire button
+Electricity.Connection.Tooltip.CancelAdd,Leave the second-tower selection mode.,Tooltip for the cancel add button
+Electricity.Connection.Button.SetStart,Set start,Button for selecting the start node for a manual wire
+Electricity.Connection.Button.ResetStart,Reset start,Button for clearing the selected start node
+Electricity.Connection.Button.Connect,Connect,Button for creating a manual wire
+Electricity.Connection.Button.Disconnect,Disconnect,Button for removing a manual wire
+Electricity.Connection.Button.Cancel,Cancel,Button for leaving the manual connection mode
+Electricity.Connection.Button.Clear,Clear wires,Button for removing all manual wires from the current node
+Electricity.Connection.Tool.Title,Wire placement,Title of the manual wire placement tool
+Electricity.Connection.Tool.Description,"Pick another tower to create a wire. After connecting, you can continue chaining from the newly selected tower.",Description of the manual wire placement tool
+Electricity.Connection.Status.ToolActive,Wire placement mode is active. Click another network tower to create a wire.,Hint shown when the add-wire tool is active
+Electricity.Connection.Status.ConnectedSlots,Used slots,Label for the occupied connection count
+Electricity.Connection.Status.NoPending,"Select the start node first, then open another node and connect them.",Hint shown when no manual wire start is selected
+Electricity.Connection.Status.StartSelected,The start node is selected. Now choose another node in the network.,Hint shown when the current node is the selected start
+Electricity.Connection.Status.Ready,These nodes are ready for a manual wire connection.,Hint shown when the current node can connect to the start node
+Electricity.Connection.Status.AlreadyConnected,These nodes already share a manual wire.,Hint shown when the selected nodes already have a manual connection
+Electricity.Connection.Status.TooFar,These nodes are too far apart for a wire connection.,Hint shown when the nodes are too far apart
+Electricity.Connection.Status.ConnectionLimit,One of these nodes has reached its wire connection limit.,Hint shown when a node has no free wire slots left
+Electricity.Connection.Status.Invalid,These nodes cannot be connected right now.,Fallback hint for an invalid manual connection state
 Status.Electricity.NoPower,No electricity,Status for a building without electrical supply
 Status.Electricity.NoPower.Short,The building is disconnected from the electric grid or the grid cannot cover its demand.,Short warning about missing electricity

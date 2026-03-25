@@ -7,19 +7,23 @@ public sealed class ElectricityEntityPanelModuleProvider : IProvider<EntityPanel
 {
     private readonly ElectricityBatteryFragment _electricityBatteryFragment;
     private readonly ElectricityNetworkFragment _electricityNetworkFragment;
+    private readonly ElectricityTowerFragment _electricityTowerFragment;
 
     public ElectricityEntityPanelModuleProvider(
         ElectricityBatteryFragment electricityBatteryFragment,
-        ElectricityNetworkFragment electricityNetworkFragment)
+        ElectricityNetworkFragment electricityNetworkFragment,
+        ElectricityTowerFragment electricityTowerFragment)
     {
         _electricityBatteryFragment = electricityBatteryFragment;
         _electricityNetworkFragment = electricityNetworkFragment;
+        _electricityTowerFragment = electricityTowerFragment;
     }
 
     public EntityPanelModule Get()
     {
         var builder = new EntityPanelModule.Builder();
         builder.AddMiddleFragment(_electricityBatteryFragment, 0);
+        builder.AddMiddleFragment(_electricityTowerFragment, 1);
         builder.AddTopFragment(_electricityNetworkFragment, 10);
         return builder.Build();
     }

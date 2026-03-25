@@ -42,7 +42,7 @@ public sealed class ElectricityAccumulatorComponent : BaseComponent, IPostInitia
 
     public int InstanceId => Transform.GetInstanceID();
 
-    public Vector3 WorldPosition => Transform.position;
+    public Vector3 WorldPosition => GetWorldPosition();
 
     public void PostInitializeEntity()
     {
@@ -149,5 +149,16 @@ public sealed class ElectricityAccumulatorComponent : BaseComponent, IPostInitia
     {
         _isFinished = false;
         _electricityService.RefreshStateWithoutAdvancingTime();
+    }
+
+    private Vector3 GetWorldPosition()
+    {
+        if (!ReferenceEquals(_blockObject, null))
+        {
+            Vector3Int coordinates = _blockObject.CoordinatesAtBaseZ;
+            return new Vector3(coordinates.x + 0.5f, coordinates.z, coordinates.y + 0.5f);
+        }
+
+        return Transform != null ? Transform.position : Vector3.zero;
     }
 }

@@ -37,6 +37,8 @@ Building.MechanicalToElectricConverter.DisplayName,Basic Dynamo Converter,Mechan
 Building.MechanicalToElectricConverter.Description,"An early bridge between mechanical power and the Fulgur Fangs electric grid. Pulls rotation from shafts and feeds up to 500 kW into the wire network.",Mechanical to electric converter description
 Building.UnlimitedMechanicalToElectricConverter.DisplayName,Advanced Dynamo Converter,Advanced mechanical to electric converter name
 Building.UnlimitedMechanicalToElectricConverter.Description,"A heavy-duty converter for industrial districts. Draws up to 2000 mechanical power and feeds it into the electric network.",Advanced mechanical to electric converter description
+Building.HydroelectricValve.DisplayName,Hydroelectric Valve,Hydroelectric valve name
+Building.HydroelectricValve.Description,"A test hydro plant for Fulgur Fangs built on the Iron Teeth valve shell. It keeps the vanilla flow controls, generates up to 500 kW from real water flow, and supplies the grid through a distributor area like an accumulator.",Hydroelectric valve description
 Building.ElectricPole.DisplayName,Electric Pole,Electric pole name
 Building.ElectricPole.Description,"The basic support for local transmission lines. Carries electricity for 20 m, only supports a straight pass-through, and loses 10 kW while the line is actively serving consumers.",Electric pole description
 Building.Splitter.DisplayName,Splitter,Splitter name
@@ -56,6 +58,9 @@ Electricity.Panel.InputAndMax,Power input / maximum,Input and maximum power labe
 Electricity.Panel.GenerationAndConsumption,Generation / network consumption,Generation and network consumption label for an electric consumer
 Electricity.Panel.NetworkCharge,Network charge,Network charge label in the entity panel
 Electricity.Panel.AccumulatorCharge,Accumulator charge,Accumulator local charge label in the entity panel
+Electricity.Panel.Output,Output,Current hydro generator output label
+Electricity.Panel.Flow,Water flow,Current water flow through the hydro generator
+Electricity.Panel.NoDistributorCoverage,Outside distributor coverage.,Hydro generator status outside a distributor area
 Electricity.Connection.Title,Manual wires,Manual wire configuration section title
 Electricity.Connection.Target,Tower,Label for a connected tower in the manual wire list
 Electricity.Connection.Empty,"No manual wires yet. Add a wire and pick another tower.",Empty state text for the manual wire list

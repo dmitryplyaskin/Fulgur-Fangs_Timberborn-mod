@@ -16,12 +16,14 @@ public sealed class ElectricityService : ITickableSingleton
     private readonly ElectricityConnectionService _electricityConnectionService;
     private readonly HashSet<ElectricityPoleComponent> _nodes = new();
     private readonly HashSet<MechanicalToElectricConverterComponent> _converters = new();
+    private readonly HashSet<HydroelectricGeneratorComponent> _hydroelectricGenerators = new();
     private readonly HashSet<ElectricityConsumerComponent> _consumers = new();
     private readonly HashSet<ElectricityAccumulatorComponent> _accumulators = new();
     private readonly Dictionary<int, ElectricitySubnetworkSnapshot> _nodeSnapshots = new();
     private readonly Dictionary<int, ElectricitySubnetworkSnapshot> _consumerSnapshots = new();
     private readonly Dictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> _consumerNetworkNodes = new();
     private readonly Dictionary<int, ElectricitySubnetworkSnapshot> _accumulatorSnapshots = new();
+    private readonly Dictionary<int, ElectricitySubnetworkSnapshot> _hydroelectricSnapshots = new();
     private readonly Dictionary<int, IReadOnlyCollection<ElectricityPoleComponent>> _nodeConnections = new();
     private IReadOnlyList<ElectricityCableConnectionSnapshot> _currentConnections = Array.Empty<ElectricityCableConnectionSnapshot>();
 
@@ -78,6 +80,18 @@ public sealed class ElectricityService : ITickableSingleton
         RefreshStateWithoutAdvancingTime();
     }
 
+    public void RegisterHydroelectricGenerator(HydroelectricGeneratorComponent hydroelectricGenerator)
+    {
+        _hydroelectricGenerators.Add(hydroelectricGenerator);
+        RefreshStateWithoutAdvancingTime();
+    }
+
+    public void UnregisterHydroelectricGenerator(HydroelectricGeneratorComponent hydroelectricGenerator)
+    {
+        _hydroelectricGenerators.Remove(hydroelectricGenerator);
+        RefreshStateWithoutAdvancingTime();
+    }
+
     public void RegisterAccumulator(ElectricityAccumulatorComponent accumulator)
     {
         _accumulators.Add(accumulator);
@@ -110,6 +124,18 @@ public sealed class ElectricityService : ITickableSingleton
         }
 
         return _accumulatorSnapshots.TryGetValue(accumulator.InstanceId, out ElectricitySubnetworkSnapshot snapshot)
+            ? snapshot
+            : null;
+    }
+
+    public ElectricitySubnetworkSnapshot? GetHydroelectricSnapshot(HydroelectricGeneratorComponent? hydroelectricGenerator)
+    {
+        if (hydroelectricGenerator == null)
+        {
+            return null;
+        }
+
+        return _hydroelectricSnapshots.TryGetValue(hydroelectricGenerator.InstanceId, out ElectricitySubnetworkSnapshot snapshot)
             ? snapshot
             : null;
     }
@@ -174,6 +200,17 @@ public sealed class ElectricityService : ITickableSingleton
             }
         }
 
+        foreach (HydroelectricGeneratorComponent hydroelectricGenerator in _hydroelectricGenerators)
+        {
+            if (hydroelectricGenerator != null &&
+                hydroelectricGenerator.GameObject &&
+                hydroelectricGenerator.IsReady &&
+                node.InRangeOf(hydroelectricGenerator.WorldPosition))
+            {
+                yield return hydroelectricGenerator;
+            }
+        }
+
         foreach (ElectricityAccumulatorComponent accumulator in _accumulators)
         {
             if (accumulator != null && accumulator.GameObject && accumulator.IsReady && node.InRangeOf(accumulator.WorldPosition))
@@ -229,6 +266,7 @@ public sealed class ElectricityService : ITickableSingleton
         _consumerSnapshots.Clear();
         _consumerNetworkNodes.Clear();
         _accumulatorSnapshots.Clear();
+        _hydroelectricSnapshots.Clear();
         _nodeConnections.Clear();
 
         ElectricityConsumerComponent[] consumers = _consumers
@@ -273,6 +311,7 @@ public sealed class ElectricityService : ITickableSingleton
         List<ElectricitySubnetwork> subnetworks = BuildSubnetworks(nodes, connectionGraph.Adjacency);
         HashSet<ElectricityConsumerComponent> assignedConsumers = new();
         HashSet<ElectricityAccumulatorComponent> assignedAccumulators = new();
+        HashSet<HydroelectricGeneratorComponent> assignedHydroelectricGenerators = new();
 
         float totalSupply = 0f;
         float totalDemand = 0f;
@@ -292,6 +331,14 @@ public sealed class ElectricityService : ITickableSingleton
                     .Where(accumulator => !assignedAccumulators.Contains(accumulator) && subnetwork.Distributors.Any(distributor => distributor.InRangeOf(accumulator.WorldPosition)))
                     .OrderBy(static accumulator => accumulator.InstanceId)
                     .ToArray();
+            HydroelectricGeneratorComponent[] networkHydroelectricGenerators = subnetwork.Distributors.Count == 0
+                ? Array.Empty<HydroelectricGeneratorComponent>()
+                : _hydroelectricGenerators
+                    .Where(hydroelectricGenerator => hydroelectricGenerator.IsReady &&
+                                                    !assignedHydroelectricGenerators.Contains(hydroelectricGenerator) &&
+                                                    subnetwork.Distributors.Any(distributor => distributor.InRangeOf(hydroelectricGenerator.WorldPosition)))
+                    .OrderBy(static hydroelectricGenerator => hydroelectricGenerator.InstanceId)
+                    .ToArray();
 
             foreach (ElectricityConsumerComponent consumer in networkConsumers)
             {
@@ -303,7 +350,12 @@ public sealed class ElectricityService : ITickableSingleton
                 assignedAccumulators.Add(accumulator);
             }
 
-            float generation = ComputeGeneration(subnetwork.Converters);
+            foreach (HydroelectricGeneratorComponent hydroelectricGenerator in networkHydroelectricGenerators)
+            {
+                assignedHydroelectricGenerators.Add(hydroelectricGenerator);
+            }
+
+            float generation = ComputeGeneration(subnetwork.Converters, networkHydroelectricGenerators);
             float consumerDemand = networkConsumers.Sum(static consumer => Mathf.Max(0, consumer.Demand));
             float transmissionLoss = networkConsumers.Length > 0
                 ? subnetwork.Nodes.Sum(static node => node.TransmissionLoss)
@@ -357,6 +409,11 @@ public sealed class ElectricityService : ITickableSingleton
                 _accumulatorSnapshots[accumulator.InstanceId] = snapshot;
             }
 
+            foreach (HydroelectricGeneratorComponent hydroelectricGenerator in networkHydroelectricGenerators)
+            {
+                _hydroelectricSnapshots[hydroelectricGenerator.InstanceId] = snapshot;
+            }
+
             totalSupply += generation + discharged;
             totalDemand += networkLoad + charged;
             totalConsumption += lossesConsumed + consumerPower + charged;
@@ -382,6 +439,7 @@ public sealed class ElectricityService : ITickableSingleton
     {
         _nodes.RemoveWhere(static node => node == null || !node.GameObject || node.Transform == null);
         _converters.RemoveWhere(static converter => converter == null || !converter.GameObject || converter.Transform == null);
+        _hydroelectricGenerators.RemoveWhere(static hydroelectricGenerator => hydroelectricGenerator == null || !hydroelectricGenerator.GameObject || hydroelectricGenerator.Transform == null);
         _consumers.RemoveWhere(static consumer => consumer == null || !consumer.GameObject || consumer.Transform == null);
         _accumulators.RemoveWhere(static accumulator => accumulator == null || !accumulator.GameObject || accumulator.Transform == null);
     }
@@ -400,7 +458,9 @@ public sealed class ElectricityService : ITickableSingleton
         ConnectionsChanged?.Invoke(_currentConnections);
     }
 
-    private static float ComputeGeneration(IReadOnlyCollection<MechanicalToElectricConverterComponent> converters)
+    private static float ComputeGeneration(
+        IReadOnlyCollection<MechanicalToElectricConverterComponent> converters,
+        IReadOnlyCollection<HydroelectricGeneratorComponent> hydroelectricGenerators)
     {
         Dictionary<MechanicalGraph, int> availableGraphPower = new();
         float totalSupply = 0f;
@@ -432,6 +492,11 @@ public sealed class ElectricityService : ITickableSingleton
             int convertedPower = Mathf.Min(remainingGraphPower, converter.PreferredMechanicalInput);
             availableGraphPower[graph] = remainingGraphPower - convertedPower;
             totalSupply += convertedPower;
+        }
+
+        foreach (HydroelectricGeneratorComponent hydroelectricGenerator in hydroelectricGenerators)
+        {
+            totalSupply += hydroelectricGenerator.CurrentOutput;
         }
 
         return totalSupply;

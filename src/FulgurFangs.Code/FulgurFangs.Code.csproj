@@ -123,6 +123,9 @@
     <Reference Include="Timberborn.TimeSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TimeSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.WaterSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.WaterSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.ToolSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.ToolSystem.dll</HintPath>
     </Reference>

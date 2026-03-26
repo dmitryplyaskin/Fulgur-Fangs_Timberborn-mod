@@ -19,6 +19,7 @@ public sealed class ElectricityNetworkFragment : IEntityPanelFragment
     private ElectricityPoleComponent? _node;
     private ElectricityAccumulatorComponent? _accumulator;
     private ElectricityConsumerComponent? _consumer;
+    private HydroelectricGeneratorComponent? _hydroelectricGenerator;
 
     public ElectricityNetworkFragment(VisualElementLoader visualElementLoader, ILoc loc)
     {
@@ -51,6 +52,7 @@ public sealed class ElectricityNetworkFragment : IEntityPanelFragment
         _node = entity.GetComponent<ElectricityPoleComponent>();
         _accumulator = entity.GetComponent<ElectricityAccumulatorComponent>();
         _consumer = entity.GetComponent<ElectricityConsumerComponent>();
+        _hydroelectricGenerator = entity.GetComponent<HydroelectricGeneratorComponent>();
     }
 
     public void UpdateFragment()
@@ -68,6 +70,12 @@ public sealed class ElectricityNetworkFragment : IEntityPanelFragment
             return;
         }
 
+        if (_hydroelectricGenerator != null)
+        {
+            RenderHydroelectricGenerator(service, _hydroelectricGenerator);
+            return;
+        }
+
         ElectricitySubnetworkSnapshot? snapshot = _node != null
             ? service?.GetNodeSnapshot(_node)
             : service?.GetAccumulatorSnapshot(_accumulator);
@@ -79,11 +87,11 @@ public sealed class ElectricityNetworkFragment : IEntityPanelFragment
         }
 
         ElectricitySubnetworkSnapshot value = snapshot.Value;
-        _generatorLabel.style.display = DisplayStyle.None;
+        _generatorLabel.style.display = DisplayStyle.Flex;
         _consumerLabel.style.display = DisplayStyle.Flex;
-        _networkLabel.style.display = DisplayStyle.Flex;
-        _consumerLabel.text = $"{_loc.T("Electricity.Panel.Active")}: {value.Supply} kW";
-        _networkLabel.text = $"{_loc.T("Electricity.Panel.NetworkCharge")}: {value.StoredCharge} / {value.StorageCapacity} kWh";
+        _networkLabel.style.display = DisplayStyle.None;
+        _generatorLabel.text = $"{_loc.T("Electricity.Panel.GenerationAndConsumption")}: {value.Supply} / {value.Consumption} kW";
+        _consumerLabel.text = $"{_loc.T("Electricity.Panel.NetworkCharge")}: {value.StoredCharge} / {value.StorageCapacity} kWh";
         SetVisible(true);
     }
 
@@ -92,6 +100,7 @@ public sealed class ElectricityNetworkFragment : IEntityPanelFragment
         _node = null;
         _accumulator = null;
         _consumer = null;
+        _hydroelectricGenerator = null;
         SetVisible(false);
     }
 
@@ -109,12 +118,39 @@ public sealed class ElectricityNetworkFragment : IEntityPanelFragment
         int efficiency = demand > 0 ? Mathf.RoundToInt(consumer.SupplyFraction * 100f) : 0;
         int networkSupply = snapshot?.Supply ?? 0;
         int networkConsumption = snapshot?.Consumption ?? 0;
+        int storedCharge = snapshot?.StoredCharge ?? 0;
+        int storageCapacity = snapshot?.StorageCapacity ?? 0;
 
         _generatorLabel.style.display = DisplayStyle.Flex;
         _consumerLabel.style.display = DisplayStyle.Flex;
-        _networkLabel.style.display = DisplayStyle.None;
+        _networkLabel.style.display = DisplayStyle.Flex;
         _generatorLabel.text = $"{_loc.T("Electricity.Panel.InputAndMax")}: {deliveredPower} / {demand} kW ({efficiency}%)";
         _consumerLabel.text = $"{_loc.T("Electricity.Panel.GenerationAndConsumption")}: {networkSupply} / {networkConsumption} kW";
+        _networkLabel.text = $"{_loc.T("Electricity.Panel.NetworkCharge")}: {storedCharge} / {storageCapacity} kWh";
+        SetVisible(true);
+    }
+
+    private void RenderHydroelectricGenerator(ElectricityService? service, HydroelectricGeneratorComponent hydroelectricGenerator)
+    {
+        if (_generatorLabel == null || _consumerLabel == null || _networkLabel == null)
+        {
+            SetVisible(false);
+            return;
+        }
+
+        int currentOutput = Mathf.RoundToInt(hydroelectricGenerator.CurrentOutput);
+        int maxOutput = Mathf.Max(0, hydroelectricGenerator.MaxOutput);
+        float currentFlow = hydroelectricGenerator.CurrentFlow;
+        ElectricitySubnetworkSnapshot? snapshot = service?.GetHydroelectricSnapshot(hydroelectricGenerator);
+
+        _generatorLabel.style.display = DisplayStyle.Flex;
+        _consumerLabel.style.display = DisplayStyle.Flex;
+        _networkLabel.style.display = DisplayStyle.Flex;
+        _generatorLabel.text = $"{_loc.T("Electricity.Panel.Output")}: {currentOutput} / {maxOutput} kW";
+        _consumerLabel.text = $"{_loc.T("Electricity.Panel.Flow")}: {currentFlow:0.00}";
+        _networkLabel.text = snapshot.HasValue
+            ? $"{_loc.T("Electricity.Panel.GenerationAndConsumption")}: {snapshot.Value.Supply} / {snapshot.Value.Consumption} kW"
+            : _loc.T("Electricity.Panel.NoDistributorCoverage");
         SetVisible(true);
     }
 

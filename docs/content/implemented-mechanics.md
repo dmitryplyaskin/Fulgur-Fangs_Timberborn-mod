@@ -15,6 +15,7 @@
 
 - `Basic Dynamo Converter`
 - `Advanced Dynamo Converter`
+- `Hydroelectric Valve`
 - `Electric Pole`
 - `Splitter`
 - `Transmission Tower`

@@ -6,6 +6,11 @@
   converts mechanical power into electricity with a cap of `500 kW`.
 - `Advanced Dynamo Converter`
   converts mechanical power into electricity with a cap of `2000 kW`.
+- `Hydroelectric Valve`
+  reuses the Iron Teeth valve behavior,
+  keeps manual and automation flow control,
+  generates up to `500 kW` from the real water flow through the structure,
+  and supplies the grid only through `Distributor` area coverage like an accumulator.
 - `Electric Pole`
   short-range transmission node with `20m` wire reach,
   `2` wire connections,

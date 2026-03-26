@@ -21,6 +21,7 @@ public sealed class FulgurFangsGameConfigurator : Configurator
         Bind<ElectricityPoleComponent>().AsTransient();
         Bind<ElectricityTowerPreview>().AsTransient();
         Bind<MechanicalToElectricConverterComponent>().AsTransient();
+        Bind<HydroelectricGeneratorComponent>().AsTransient();
         Bind<ElectricityConsumerComponent>().AsTransient();
         Bind<ElectricityAccumulatorComponent>().AsTransient();
         Bind<PoweredDwellingNeedComponent>().AsTransient();
@@ -37,6 +38,7 @@ public sealed class FulgurFangsGameConfigurator : Configurator
         builder.AddDedicatedDecorator<ElectricityRangeSpec, ElectricityPoleComponent>(new ElectricityPoleInitializer());
         builder.AddDecorator<ElectricityPoleComponent, ElectricityTowerPreview>();
         builder.AddDedicatedDecorator<MechanicalToElectricConverterSpec, MechanicalToElectricConverterComponent>(new MechanicalToElectricConverterInitializer());
+        builder.AddDedicatedDecorator<HydroelectricGeneratorSpec, HydroelectricGeneratorComponent>(new HydroelectricGeneratorInitializer());
         builder.AddDedicatedDecorator<ElectricityConsumerSpec, ElectricityConsumerComponent>(new ElectricityConsumerInitializer());
         builder.AddDedicatedDecorator<ElectricityAccumulatorSpec, ElectricityAccumulatorComponent>(new ElectricityAccumulatorInitializer());
         builder.AddDedicatedDecorator<PoweredDwellingNeedSpec, PoweredDwellingNeedComponent>(new PoweredDwellingNeedInitializer());

@@ -10,12 +10,14 @@
 - Separate electricity simulation exists on top of Timberborn mechanics.
 - Electricity is shown locally in the selected building card.
 - No global top-bar counter is used because multiple isolated subnetworks can exist.
+- A reusable multi-port hydraulic transfer runtime now exists for future hydro plants.
 
 ## Electricity Buildings
 
 - `Basic Dynamo Converter`
 - `Advanced Dynamo Converter`
 - `Hydroelectric Valve`
+- `Throttling Hydro Plant`
 - `Electric Pole`
 - `Splitter`
 - `Transmission Tower`

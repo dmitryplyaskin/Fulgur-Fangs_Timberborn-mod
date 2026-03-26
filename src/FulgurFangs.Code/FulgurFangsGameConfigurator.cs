@@ -1,5 +1,6 @@
 using Bindito.Core;
 using FulgurFangs.Code.Electricity;
+using FulgurFangs.Code.Hydraulics;
 using FulgurFangs.Code.UI;
 using Timberborn.EntityPanelSystem;
 using Timberborn.TemplateInstantiation;
@@ -22,11 +23,14 @@ public sealed class FulgurFangsGameConfigurator : Configurator
         Bind<ElectricityTowerPreview>().AsTransient();
         Bind<MechanicalToElectricConverterComponent>().AsTransient();
         Bind<HydroelectricGeneratorComponent>().AsTransient();
+        Bind<HydraulicTransferComponent>().AsTransient();
+        Bind<MultiCellValveComponent>().AsTransient();
         Bind<ElectricityConsumerComponent>().AsTransient();
         Bind<ElectricityAccumulatorComponent>().AsTransient();
         Bind<PoweredDwellingNeedComponent>().AsTransient();
         Bind<ElectricityBatteryFragment>().AsSingleton();
         Bind<ElectricityNetworkFragment>().AsSingleton();
+        Bind<HydraulicTransferFragment>().AsSingleton();
         Bind<ElectricityTowerFragment>().AsSingleton();
         MultiBind<EntityPanelModule>().ToProvider<ElectricityEntityPanelModuleProvider>().AsSingleton();
         MultiBind<TemplateModule>().ToProvider(ProvideTemplateModule).AsSingleton();
@@ -39,6 +43,8 @@ public sealed class FulgurFangsGameConfigurator : Configurator
         builder.AddDecorator<ElectricityPoleComponent, ElectricityTowerPreview>();
         builder.AddDedicatedDecorator<MechanicalToElectricConverterSpec, MechanicalToElectricConverterComponent>(new MechanicalToElectricConverterInitializer());
         builder.AddDedicatedDecorator<HydroelectricGeneratorSpec, HydroelectricGeneratorComponent>(new HydroelectricGeneratorInitializer());
+        builder.AddDedicatedDecorator<HydraulicTransferSpec, HydraulicTransferComponent>(new HydraulicTransferInitializer());
+        builder.AddDedicatedDecorator<MultiCellValveSpec, MultiCellValveComponent>(new MultiCellValveInitializer());
         builder.AddDedicatedDecorator<ElectricityConsumerSpec, ElectricityConsumerComponent>(new ElectricityConsumerInitializer());
         builder.AddDedicatedDecorator<ElectricityAccumulatorSpec, ElectricityAccumulatorComponent>(new ElectricityAccumulatorInitializer());
         builder.AddDedicatedDecorator<PoweredDwellingNeedSpec, PoweredDwellingNeedComponent>(new PoweredDwellingNeedInitializer());

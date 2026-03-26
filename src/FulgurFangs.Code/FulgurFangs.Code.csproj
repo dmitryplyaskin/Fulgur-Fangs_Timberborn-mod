@@ -27,6 +27,9 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>$(TimberbornManagedDir)\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.AssetSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.AssetSystem.dll</HintPath>
     </Reference>
@@ -50,6 +53,9 @@
     </Reference>
     <Reference Include="Timberborn.Common">
       <HintPath>$(TimberbornManagedDir)\Timberborn.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.Coordinates">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.Coordinates.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.ConstructionMode">
       <HintPath>$(TimberbornManagedDir)\Timberborn.ConstructionMode.dll</HintPath>

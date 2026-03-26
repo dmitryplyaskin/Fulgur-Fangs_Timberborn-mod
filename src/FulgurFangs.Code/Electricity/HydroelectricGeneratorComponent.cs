@@ -3,6 +3,7 @@ using Timberborn.BlockSystem;
 using Timberborn.EntitySystem;
 using Timberborn.WaterSystem;
 using UnityEngine;
+using FulgurFangs.Code.Hydraulics;
 
 namespace FulgurFangs.Code.Electricity;
 
@@ -12,6 +13,8 @@ public sealed class HydroelectricGeneratorComponent : BaseComponent, IPostInitia
     private readonly IThreadSafeWaterMap _threadSafeWaterMap;
     private BlockObject? _blockObject;
     private bool _isFinished;
+    private HydraulicTransferComponent? _hydraulicTransferComponent;
+    private MultiCellValveComponent? _multiCellValveComponent;
     private int _maxOutput;
     private float _powerPerFlowUnit;
 
@@ -35,6 +38,16 @@ public sealed class HydroelectricGeneratorComponent : BaseComponent, IPostInitia
     {
         get
         {
+            if (_multiCellValveComponent != null)
+            {
+                return Mathf.Max(0f, _multiCellValveComponent.CurrentFlow);
+            }
+
+            if (_hydraulicTransferComponent != null)
+            {
+                return Mathf.Max(0f, _hydraulicTransferComponent.CurrentTransferPerSecond);
+            }
+
             if (!IsReady || _blockObject == null)
             {
                 return 0f;
@@ -56,6 +69,8 @@ public sealed class HydroelectricGeneratorComponent : BaseComponent, IPostInitia
     {
         _blockObject = GetComponent<BlockObject>() ?? Transform.GetComponentInParent<BlockObject>();
         _isFinished = _blockObject != null && _blockObject.IsFinished;
+        _hydraulicTransferComponent = GetComponent<HydraulicTransferComponent>();
+        _multiCellValveComponent = GetComponent<MultiCellValveComponent>();
         _electricityService.RegisterHydroelectricGenerator(this);
     }
 

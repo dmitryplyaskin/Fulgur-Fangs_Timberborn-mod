@@ -11,6 +11,10 @@
   keeps manual and automation flow control,
   generates up to `500 kW` from the real water flow through the structure,
   and supplies the grid only through `Distributor` area coverage like an accumulator.
+- `Throttling Hydro Plant`
+  is the first large test building on the reusable multi-port hydraulic runtime,
+  uses `3` rear upper intake ports and `3` front lower discharge ports,
+  and generates up to `1500 kW` through `Distributor` coverage.
 - `Electric Pole`
   short-range transmission node with `20m` wire reach,
   `2` wire connections,

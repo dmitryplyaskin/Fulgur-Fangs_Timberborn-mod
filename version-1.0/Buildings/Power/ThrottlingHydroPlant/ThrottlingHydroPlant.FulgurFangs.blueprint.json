@@ -1,0 +1,367 @@
+{
+  "BuildingSpec": {
+    "SelectionSoundName": "Floodgate",
+    "LoopingSoundName": "",
+    "BuildingCost": [
+      {
+        "Id": "TreatedPlank",
+        "Amount": 20
+      },
+      {
+        "Id": "MetalBlock",
+        "Amount": 30
+      },
+      {
+        "Id": "Gear",
+        "Amount": 15
+      }
+    ],
+    "ScienceCost": 1200,
+    "PlaceFinished": false,
+    "FinishableWithBeaversOnSite": false,
+    "DrawRangeBoundsOnIt": false
+  },
+  "BuildingModelSpec": {
+    "FinishedModelName": "#Finished",
+    "UnfinishedModelName": "#Unfinished",
+    "FinishedUncoveredModelName": "",
+    "UndergroundModelName": "",
+    "ConstructionModeModel": "Finished",
+    "UndergroundModelDepth": 0
+  },
+  "TemplateSpec": {
+    "TemplateName": "ThrottlingHydroPlant.FulgurFangs",
+    "BackwardCompatibleTemplateNames": [],
+    "RequiredFeatureToggle": "",
+    "DisablingFeatureToggle": ""
+  },
+  "BlockObjectSpec": {
+    "Size": {
+      "X": 3,
+      "Y": 2,
+      "Z": 2
+    },
+    "Blocks": [
+      {
+        "MatterBelow": "GroundOrStackable",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "GroundOrStackable",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "GroundOrStackable",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "GroundOrStackable",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "GroundOrStackable",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "GroundOrStackable",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "All",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      }
+    ],
+    "Entrance": {
+      "HasEntrance": false,
+      "Coordinates": {
+        "X": 0,
+        "Y": 0,
+        "Z": 0
+      }
+    },
+    "BaseZ": 0,
+    "Overridable": false,
+    "Flippable": false
+  },
+  "BlockObjectNavMeshSettingsSpec": {
+    "NoAutoWalls": false,
+    "GenerateFloorsOnStackable": false,
+    "EdgeGroups": [],
+    "UnblockedCoordinates": [],
+    "BlockedEdges": []
+  },
+  "PlaceableBlockObjectSpec": {
+    "ToolGroupId": "Electricity",
+    "ToolOrder": 73,
+    "ToolShape": "Square",
+    "Layout": "Single",
+    "CustomPivot": {
+      "HasCustomPivot": false,
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    "CanBeAttachedToTerrainSide": false,
+    "DevModeTool": false
+  },
+  "LabeledEntitySpec": {
+    "DisplayNameLocKey": "Building.ThrottlingHydroPlant.DisplayName",
+    "DescriptionLocKey": "Building.ThrottlingHydroPlant.Description",
+    "FlavorDescriptionLocKey": "",
+    "Icon": "Buildings/Landscaping/Valve/ValveIcon"
+  },
+  "MultiCellValveSpec": {
+    "FlowCoordinates": [
+      {
+        "X": 0,
+        "Y": 0,
+        "Z": 0
+      },
+      {
+        "X": 1,
+        "Y": 0,
+        "Z": 0
+      },
+      {
+        "X": 2,
+        "Y": 0,
+        "Z": 0
+      },
+      {
+        "X": 0,
+        "Y": 0,
+        "Z": 1
+      },
+      {
+        "X": 1,
+        "Y": 0,
+        "Z": 1
+      },
+      {
+        "X": 2,
+        "Y": 0,
+        "Z": 1
+      }
+    ],
+    "MaxOutflowLimit": 2.0,
+    "OutflowLimitStep": 0.01,
+    "DefaultOutflowLimit": 1.0
+  },
+  "HydroelectricGeneratorSpec": {
+    "MaxOutput": 1500,
+    "PowerPerFlowUnit": 250.0
+  },
+  "WaterObstacleSpec": {
+    "Coordinates": [
+      {
+        "X": 0,
+        "Y": 1
+      },
+      {
+        "X": 1,
+        "Y": 1
+      },
+      {
+        "X": 2,
+        "Y": 1
+      }
+    ]
+  },
+  "FinishableWaterObstacleSpec": {
+    "Height": 1.0
+  },
+  "FinishableHorizontalWaterObstacleSpec": {
+    "Obstacles": [
+      {
+        "X": 0,
+        "Y": 0,
+        "Z": 0
+      },
+      {
+        "X": 1,
+        "Y": 0,
+        "Z": 0
+      },
+      {
+        "X": 2,
+        "Y": 0,
+        "Z": 0
+      },
+      {
+        "X": 0,
+        "Y": 0,
+        "Z": 1
+      },
+      {
+        "X": 1,
+        "Y": 0,
+        "Z": 1
+      },
+      {
+        "X": 2,
+        "Y": 0,
+        "Z": 1
+      }
+    ]
+  },
+  "ConstructionSiteProgressVisualizerSpec": {
+    "ProgressThresholds": [
+      0.0
+    ]
+  },
+  "Children": {
+    "#Finished": {
+      "Children": {
+        "ModelRoot": {
+          "TransformSpec": {
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 1.0
+            },
+            "Rotation": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "Scale": {
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
+            }
+          },
+          "TimbermeshSpec": {
+            "Model": "Buildings/Power/ThrottlingHydroPlant/ThrottlingHydroPlant.FulgurFangs.Model"
+          },
+          "CollidersSpec": {
+            "BoxColliders": [
+              {
+                "Center": {
+                  "X": 1.5,
+                  "Y": 1.0,
+                  "Z": 1.0
+                },
+                "Size": {
+                  "X": 3.0,
+                  "Y": 2.0,
+                  "Z": 2.0
+                }
+              }
+            ],
+            "SphereColliders": [],
+            "CapsuleColliders": []
+          }
+        }
+      }
+    },
+    "#Unfinished": {
+      "Children": {
+        "ConstructionBase3x2#nested": {
+          "BlueprintPath": "ConstructionBases/ConstructionBase3x2/ConstructionBase3x2.blueprint"
+        },
+        "ConstructionStage0": {
+          "Children": {
+            "ModelRoot": {
+              "TransformSpec": {
+                "Position": {
+                  "X": 0.0,
+                  "Y": 0.0,
+                  "Z": 1.0
+                },
+                "Rotation": {
+                  "X": 0.0,
+                  "Y": 0.0,
+                  "Z": 0.0
+                },
+                "Scale": {
+                  "X": 1.0,
+                  "Y": 1.0,
+                  "Z": 1.0
+                }
+              },
+              "TimbermeshSpec": {
+                "Model": "Buildings/Power/ThrottlingHydroPlant/ThrottlingHydroPlant.FulgurFangs.Model"
+              },
+              "CollidersSpec": {
+                "BoxColliders": [
+                  {
+                    "Center": {
+                      "X": 1.5,
+                      "Y": 1.0,
+                      "Z": 1.0
+                    },
+                    "Size": {
+                      "X": 3.0,
+                      "Y": 2.0,
+                      "Z": 2.0
+                    }
+                  }
+                ],
+                "SphereColliders": [],
+                "CapsuleColliders": []
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

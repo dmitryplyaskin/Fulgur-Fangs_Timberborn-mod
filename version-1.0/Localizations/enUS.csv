@@ -39,6 +39,8 @@ Building.UnlimitedMechanicalToElectricConverter.DisplayName,Advanced Dynamo Conv
 Building.UnlimitedMechanicalToElectricConverter.Description,"A heavy-duty converter for industrial districts. Draws up to 2000 mechanical power and feeds it into the electric network.",Advanced mechanical to electric converter description
 Building.HydroelectricValve.DisplayName,Hydroelectric Valve,Hydroelectric valve name
 Building.HydroelectricValve.Description,"A test hydro plant for Fulgur Fangs built on the Iron Teeth valve shell. It keeps the vanilla flow controls, generates up to 500 kW from real water flow, and supplies the grid through a distributor area like an accumulator.",Hydroelectric valve description
+Building.ThrottlingHydroPlant.DisplayName,Throttling Hydro Plant,Large custom hydro plant name
+Building.ThrottlingHydroPlant.Description,"A larger 3x2x2 Fulgur Fangs hydro prototype built on a custom model. It works as a multi-cell valve: native water simulation passes through a wide spillway, one shared gate regulates the flow, and the building can generate up to 1500 kW through distributor coverage.",Large custom hydro plant description
 Building.ElectricPole.DisplayName,Electric Pole,Electric pole name
 Building.ElectricPole.Description,"The basic support for local transmission lines. Carries electricity for 20 m, only supports a straight pass-through, and loses 10 kW while the line is actively serving consumers.",Electric pole description
 Building.Splitter.DisplayName,Splitter,Splitter name
@@ -61,6 +63,8 @@ Electricity.Panel.AccumulatorCharge,Accumulator charge,Accumulator local charge 
 Electricity.Panel.Output,Output,Current hydro generator output label
 Electricity.Panel.Flow,Water flow,Current water flow through the hydro generator
 Electricity.Panel.NoDistributorCoverage,Outside distributor coverage.,Hydro generator status outside a distributor area
+Hydraulics.Panel.FlowLimit,Flow limit: {0},Flow limit label for reusable hydraulics
+Hydraulics.Panel.CurrentFlow,Actual flow: {0},Actual water throughput label for reusable hydraulics
 Electricity.Connection.Title,Manual wires,Manual wire configuration section title
 Electricity.Connection.Target,Tower,Label for a connected tower in the manual wire list
 Electricity.Connection.Empty,"No manual wires yet. Add a wire and pick another tower.",Empty state text for the manual wire list

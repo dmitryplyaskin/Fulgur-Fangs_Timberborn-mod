@@ -25,6 +25,7 @@ public sealed class FulgurFangsGameConfigurator : Configurator
         Bind<HydroelectricGeneratorComponent>().AsTransient();
         Bind<HydraulicTransferComponent>().AsTransient();
         Bind<MultiCellValveComponent>().AsTransient();
+        Bind<ValveSectionArrayComponent>().AsTransient();
         Bind<ElectricityConsumerComponent>().AsTransient();
         Bind<ElectricityAccumulatorComponent>().AsTransient();
         Bind<PoweredDwellingNeedComponent>().AsTransient();
@@ -45,6 +46,7 @@ public sealed class FulgurFangsGameConfigurator : Configurator
         builder.AddDedicatedDecorator<HydroelectricGeneratorSpec, HydroelectricGeneratorComponent>(new HydroelectricGeneratorInitializer());
         builder.AddDedicatedDecorator<HydraulicTransferSpec, HydraulicTransferComponent>(new HydraulicTransferInitializer());
         builder.AddDedicatedDecorator<MultiCellValveSpec, MultiCellValveComponent>(new MultiCellValveInitializer());
+        builder.AddDedicatedDecorator<ValveSectionArraySpec, ValveSectionArrayComponent>(new ValveSectionArrayInitializer());
         builder.AddDedicatedDecorator<ElectricityConsumerSpec, ElectricityConsumerComponent>(new ElectricityConsumerInitializer());
         builder.AddDedicatedDecorator<ElectricityAccumulatorSpec, ElectricityAccumulatorComponent>(new ElectricityAccumulatorInitializer());
         builder.AddDedicatedDecorator<PoweredDwellingNeedSpec, PoweredDwellingNeedComponent>(new PoweredDwellingNeedInitializer());

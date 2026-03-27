@@ -15,6 +15,7 @@ public sealed class HydroelectricGeneratorComponent : BaseComponent, IPostInitia
     private bool _isFinished;
     private HydraulicTransferComponent? _hydraulicTransferComponent;
     private MultiCellValveComponent? _multiCellValveComponent;
+    private ValveSectionArrayComponent? _valveSectionArrayComponent;
     private int _maxOutput;
     private float _powerPerFlowUnit;
 
@@ -41,6 +42,11 @@ public sealed class HydroelectricGeneratorComponent : BaseComponent, IPostInitia
             if (_multiCellValveComponent != null)
             {
                 return Mathf.Max(0f, _multiCellValveComponent.CurrentFlow);
+            }
+
+            if (_valveSectionArrayComponent != null)
+            {
+                return Mathf.Max(0f, _valveSectionArrayComponent.CurrentFlow);
             }
 
             if (_hydraulicTransferComponent != null)
@@ -71,6 +77,7 @@ public sealed class HydroelectricGeneratorComponent : BaseComponent, IPostInitia
         _isFinished = _blockObject != null && _blockObject.IsFinished;
         _hydraulicTransferComponent = GetComponent<HydraulicTransferComponent>();
         _multiCellValveComponent = GetComponent<MultiCellValveComponent>();
+        _valveSectionArrayComponent = GetComponent<ValveSectionArrayComponent>();
         _electricityService.RegisterHydroelectricGenerator(this);
     }
 

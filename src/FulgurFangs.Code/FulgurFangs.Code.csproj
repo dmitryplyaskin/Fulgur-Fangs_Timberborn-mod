@@ -60,6 +60,9 @@
     <Reference Include="Timberborn.ConstructionMode">
       <HintPath>$(TimberbornManagedDir)\Timberborn.ConstructionMode.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.ConstructionSites">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.ConstructionSites.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.CoreUI">
       <HintPath>$(TimberbornManagedDir)\Timberborn.CoreUI.dll</HintPath>
     </Reference>
@@ -120,6 +123,9 @@
     <Reference Include="Timberborn.TemplateInstantiation">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TemplateInstantiation.dll</HintPath>
     </Reference>
+    <Reference Include="Timberborn.TemplateSystem">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.TemplateSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Timberborn.TickSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.TickSystem.dll</HintPath>
     </Reference>
@@ -131,6 +137,9 @@
     </Reference>
     <Reference Include="Timberborn.WaterSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.WaterSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Timberborn.WaterBuildings">
+      <HintPath>$(TimberbornManagedDir)\Timberborn.WaterBuildings.dll</HintPath>
     </Reference>
     <Reference Include="Timberborn.ToolSystem">
       <HintPath>$(TimberbornManagedDir)\Timberborn.ToolSystem.dll</HintPath>

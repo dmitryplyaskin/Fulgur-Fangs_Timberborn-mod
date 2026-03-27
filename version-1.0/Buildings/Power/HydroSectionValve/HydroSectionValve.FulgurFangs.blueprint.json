@@ -1,0 +1,104 @@
+{
+  "BuildingSpec": {
+    "SelectionSoundName": "Floodgate",
+    "LoopingSoundName": "",
+    "BuildingCost": [],
+    "ScienceCost": 0,
+    "PlaceFinished": true,
+    "FinishableWithBeaversOnSite": false,
+    "DrawRangeBoundsOnIt": false
+  },
+  "BuildingModelSpec": {
+    "FinishedModelName": "#Finished",
+    "UnfinishedModelName": "#Unfinished",
+    "FinishedUncoveredModelName": "",
+    "UndergroundModelName": "",
+    "ConstructionModeModel": "Finished",
+    "UndergroundModelDepth": 0
+  },
+  "TemplateSpec": {
+    "TemplateName": "HydroSectionValve.FulgurFangs",
+    "BackwardCompatibleTemplateNames": [],
+    "RequiredFeatureToggle": "FulgurFangs.Internal.HiddenHydroSection",
+    "DisablingFeatureToggle": ""
+  },
+  "BlockObjectSpec": {
+    "Size": {
+      "X": 1,
+      "Y": 1,
+      "Z": 2
+    },
+    "Blocks": [
+      {
+        "MatterBelow": "GroundOrStackable",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      }
+    ],
+    "Entrance": {
+      "HasEntrance": false,
+      "Coordinates": {
+        "X": 0,
+        "Y": 0,
+        "Z": 0
+      }
+    },
+    "BaseZ": 0,
+    "Overridable": false,
+    "Flippable": false
+  },
+  "BlockObjectNavMeshSettingsSpec": {
+    "NoAutoWalls": false,
+    "GenerateFloorsOnStackable": false,
+    "EdgeGroups": [],
+    "UnblockedCoordinates": [],
+    "BlockedEdges": []
+  },
+  "ValveSpec": {
+    "MaxOutflowLimit": 2.0,
+    "OutflowLimitStep": 0.01,
+    "DefaultOutflowLimitEnabled": true,
+    "DefaultOutflowLimit": 1.0,
+    "DefaultAutomationOutflowLimitEnabled": true,
+    "DefaultAutomationOutflowLimit": 0.0,
+    "RateOfChangeHighPrimary": 0.5,
+    "RateOfChangeHighSecondary": 0.1,
+    "RateOfChangeLowPrimary": 0.003,
+    "RateOfChangeLowSecondary": 0.0005,
+    "RateOfChangePrimaryTicks": 1,
+    "RateOfChangePrimaryToSecondaryTicks": 30,
+    "ReactionSpeedExponent": 7.0,
+    "ReactionSpeedStep": 0.01
+  },
+  "FinishableHorizontalWaterObstacleSpec": {
+    "Obstacles": [
+      {
+        "X": 0,
+        "Y": 0,
+        "Z": 0
+      },
+      {
+        "X": 0,
+        "Y": 0,
+        "Z": 1
+      }
+    ]
+  },
+  "Children": {
+    "#Finished": {
+      "Children": {}
+    },
+    "#Unfinished": {
+      "Children": {}
+    }
+  }
+}

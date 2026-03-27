@@ -38,13 +38,27 @@
   "BlockObjectSpec": {
     "Size": {
       "X": 3,
-      "Y": 2,
+      "Y": 3,
       "Z": 2
     },
     "Blocks": [
       {
-        "MatterBelow": "GroundOrStackable",
-        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "MatterBelow": "Any",
+        "Occupations": "Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "Middle",
         "Stackable": "None",
         "OccupyAllBelow": false,
         "Underground": false
@@ -80,6 +94,34 @@
       {
         "MatterBelow": "GroundOrStackable",
         "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "GroundOrStackable",
+        "Occupations": "Bottom, Top, Corners, Path, Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "Middle",
+        "Stackable": "None",
+        "OccupyAllBelow": false,
+        "Underground": false
+      },
+      {
+        "MatterBelow": "Any",
+        "Occupations": "Middle",
         "Stackable": "None",
         "OccupyAllBelow": false,
         "Underground": false
@@ -172,32 +214,32 @@
     "FlowCoordinates": [
       {
         "X": 0,
-        "Y": 0,
+        "Y": 1,
         "Z": 0
       },
       {
         "X": 1,
-        "Y": 0,
+        "Y": 1,
         "Z": 0
       },
       {
         "X": 2,
-        "Y": 0,
+        "Y": 1,
         "Z": 0
       },
       {
         "X": 0,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       },
       {
         "X": 1,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       },
       {
         "X": 2,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       }
     ],
@@ -213,15 +255,15 @@
     "Coordinates": [
       {
         "X": 0,
-        "Y": 1
+        "Y": 2
       },
       {
         "X": 1,
-        "Y": 1
+        "Y": 2
       },
       {
         "X": 2,
-        "Y": 1
+        "Y": 2
       }
     ]
   },
@@ -232,32 +274,32 @@
     "Obstacles": [
       {
         "X": 0,
-        "Y": 0,
+        "Y": 1,
         "Z": 0
       },
       {
         "X": 1,
-        "Y": 0,
+        "Y": 1,
         "Z": 0
       },
       {
         "X": 2,
-        "Y": 0,
+        "Y": 1,
         "Z": 0
       },
       {
         "X": 0,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       },
       {
         "X": 1,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       },
       {
         "X": 2,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       }
     ]
@@ -275,7 +317,7 @@
             "Position": {
               "X": 0.0,
               "Y": 0.0,
-              "Z": 1.0
+              "Z": 2.0
             },
             "Rotation": {
               "X": 0.0,
@@ -297,7 +339,7 @@
                 "Center": {
                   "X": 1.5,
                   "Y": 1.0,
-                  "Z": 1.0
+                  "Z": 2.0
                 },
                 "Size": {
                   "X": 3.0,
@@ -314,8 +356,8 @@
     },
     "#Unfinished": {
       "Children": {
-        "ConstructionBase3x2#nested": {
-          "BlueprintPath": "ConstructionBases/ConstructionBase3x2/ConstructionBase3x2.blueprint"
+        "ConstructionBase3x3#nested": {
+          "BlueprintPath": "ConstructionBases/ConstructionBase3x3/ConstructionBase3x3.blueprint"
         },
         "ConstructionStage0": {
           "Children": {
@@ -324,7 +366,7 @@
                 "Position": {
                   "X": 0.0,
                   "Y": 0.0,
-                  "Z": 1.0
+                  "Z": 2.0
                 },
                 "Rotation": {
                   "X": 0.0,
@@ -346,7 +388,7 @@
                     "Center": {
                       "X": 1.5,
                       "Y": 1.0,
-                      "Z": 1.0
+                      "Z": 2.0
                     },
                     "Size": {
                       "X": 3.0,

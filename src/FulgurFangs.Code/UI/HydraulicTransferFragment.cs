@@ -20,6 +20,7 @@ public sealed class HydraulicTransferFragment : IEntityPanelFragment
     private Label? _flowLimitStateLabel;
     private HydraulicTransferComponent? _hydraulicTransferComponent;
     private MultiCellValveComponent? _multiCellValveComponent;
+    private ValveSectionArrayComponent? _valveSectionArrayComponent;
 
     public HydraulicTransferFragment(VisualElementLoader visualElementLoader, ILoc loc)
     {
@@ -52,8 +53,15 @@ public sealed class HydraulicTransferFragment : IEntityPanelFragment
     {
         _hydraulicTransferComponent = entity.GetComponent<HydraulicTransferComponent>();
         _multiCellValveComponent = entity.GetComponent<MultiCellValveComponent>();
+        _valveSectionArrayComponent = entity.GetComponent<ValveSectionArrayComponent>();
         if (_flowLimitSlider == null)
         {
+            return;
+        }
+
+        if (_valveSectionArrayComponent != null)
+        {
+            _flowLimitSlider.SetStepWithoutNotify(_valveSectionArrayComponent.OutflowLimitStep);
             return;
         }
 
@@ -74,6 +82,18 @@ public sealed class HydraulicTransferFragment : IEntityPanelFragment
         if (_flowLimitSlider == null || _flowLimitLabel == null || _flowLimitStateLabel == null)
         {
             SetVisible(false);
+            return;
+        }
+
+        if (_valveSectionArrayComponent != null)
+        {
+            float maxFlow = _valveSectionArrayComponent.MaxOutflowLimit;
+            float currentLimit = _valveSectionArrayComponent.OutflowLimit;
+            _flowLimitSlider.UpdateValuesWithoutNotify(currentLimit, maxFlow);
+            _flowLimitSlider.SetMarker(_valveSectionArrayComponent.CurrentFlow);
+            _flowLimitLabel.text = _loc.T(_flowLimitPhrase, currentLimit);
+            _flowLimitStateLabel.text = _loc.T(_currentFlowPhrase, _valveSectionArrayComponent.CurrentFlow);
+            SetVisible(true);
             return;
         }
 
@@ -108,11 +128,18 @@ public sealed class HydraulicTransferFragment : IEntityPanelFragment
     {
         _hydraulicTransferComponent = null;
         _multiCellValveComponent = null;
+        _valveSectionArrayComponent = null;
         SetVisible(false);
     }
 
     private void SetFlowLimit(float flowLimit)
     {
+        if (_valveSectionArrayComponent != null)
+        {
+            _valveSectionArrayComponent.SetOutflowLimit(flowLimit);
+            return;
+        }
+
         if (_multiCellValveComponent != null)
         {
             _multiCellValveComponent.SetOutflowLimit(flowLimit);

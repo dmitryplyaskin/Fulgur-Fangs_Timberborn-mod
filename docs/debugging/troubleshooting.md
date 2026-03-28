@@ -28,6 +28,11 @@
   `There are no "Entrance" slots`:
   caused by missing `#Slot#Entrance` in the `Timbermesh`
   while the blueprint still used workshop slot specs.
+- Large hydro spill behaving incorrectly:
+  debug the active valve row and hidden half-wall row first,
+  not the visual mesh.
+- Large hydro hitbox selecting empty space:
+  caused by double offsetting both `ModelRoot` and collider center.
 
 ## Hard Rules For Future Changes
 
@@ -46,6 +51,13 @@
   if the blueprint uses `TransformSlotInitializerSpec`.
 - When swapping a model footprint, update both:
   `BlockObjectSpec` and `CollidersSpec`.
+- For large hydro plants, keep the active valve row inside the footprint.
+- For large hydro plants, use a dedicated test blueprint first,
+  then port the proven hydraulic rows and obstacle rows into the production building.
+- For large hydro plants, if the spill looks wrong,
+  compare `MultiCellValveSpec.FlowCoordinates`,
+  `FinishableHorizontalWaterObstacleSpec.Obstacles`,
+  and `WaterObstacleSpec` before touching the mesh.
 - For quick construction-model testing, reusing the final `Timbermesh`
   as `ConstructionStage0` is acceptable,
   but treat it as temporary.

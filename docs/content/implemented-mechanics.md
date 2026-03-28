@@ -11,6 +11,7 @@
 - Electricity is shown locally in the selected building card.
 - No global top-bar counter is used because multiple isolated subnetworks can exist.
 - A reusable multi-port hydraulic transfer runtime now exists for future hydro plants.
+- A native multi-cell valve runtime exists for large hydro plants and wide spillways.
 
 ## Electricity Buildings
 
@@ -18,6 +19,7 @@
 - `Advanced Dynamo Converter`
 - `Hydroelectric Valve`
 - `Throttling Hydro Plant`
+- `Upper-Tier Hydro Plant`
 - `Electric Pole`
 - `Splitter`
 - `Transmission Tower`
@@ -52,3 +54,12 @@
 - `Pickled Salicornia`
 - `Mine`
 - `Electrified Mine`
+
+## Hydro State
+
+- `Hydroelectric Valve` is the small stable valve-based hydro generator.
+- `Upper-Tier Hydro Plant` is the active hydro test bed for validating flow rows,
+  spill shaping, hitbox alignment, and roof stacking.
+- `Throttling Hydro Plant` now uses the proven large-hydro pattern discovered on the test bed.
+- Practical rules and pitfalls for these buildings are documented in
+  `docs/content/hydro-plants.md`.

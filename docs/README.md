@@ -16,6 +16,8 @@
   Практика по range overlay и грабли с сетками радиуса.
 - `docs/content/implemented-mechanics.md`
   Реализованные игровые механики и уже доступный контент фракции.
+- `docs/content/hydro-plants.md`
+  Рабочие паттерны, ограничения и грабли для крупных ГЭС и клапанных гидроузлов.
 - `docs/content/resource-chains.md`
   Целевой дизайн ресурсных, электрических и энергетических цепочек фракции.
 - `docs/content/building-models-and-slots.md`
@@ -33,6 +35,8 @@
   сначала смотри `docs/electricity/range-overlays.md`.
 - Если меняешь или импортируешь 3D-модель здания:
   сначала смотри `docs/content/building-models-and-slots.md`.
+- Если трогаешь крупные ГЭС, клапанные плотины или форму слива воды:
+  сначала смотри `docs/content/hydro-plants.md`.
 - Если планируешь новые ресурсы, топливо или производственные цепочки:
   сначала смотри `docs/content/resource-chains.md`.
 - Если что-то ломается в игре:

@@ -30,7 +30,7 @@
     "UndergroundModelDepth": 0
   },
   "TemplateSpec": {
-    "TemplateName": "ThrottlingHydroPlant.FulgurFangs",
+    "TemplateName": "UpperFlowHydroPlant.FulgurFangs",
     "BackwardCompatibleTemplateNames": [],
     "RequiredFeatureToggle": "",
     "DisablingFeatureToggle": ""
@@ -86,43 +86,43 @@
       },
       {
         "MatterBelow": "Any",
-        "Occupations": "All",
-        "Stackable": "None",
+        "Occupations": "Floor, Bottom, Corners, Path, Middle",
+        "Stackable": "BlockObject",
         "OccupyAllBelow": false,
         "Underground": false
       },
       {
         "MatterBelow": "Any",
-        "Occupations": "All",
-        "Stackable": "None",
+        "Occupations": "Floor, Bottom, Corners, Path, Middle",
+        "Stackable": "BlockObject",
         "OccupyAllBelow": false,
         "Underground": false
       },
       {
         "MatterBelow": "Any",
-        "Occupations": "All",
-        "Stackable": "None",
+        "Occupations": "Floor, Bottom, Corners, Path, Middle",
+        "Stackable": "BlockObject",
         "OccupyAllBelow": false,
         "Underground": false
       },
       {
         "MatterBelow": "Any",
-        "Occupations": "All",
-        "Stackable": "None",
+        "Occupations": "Floor, Bottom, Corners, Path, Middle",
+        "Stackable": "BlockObject",
         "OccupyAllBelow": false,
         "Underground": false
       },
       {
         "MatterBelow": "Any",
-        "Occupations": "All",
-        "Stackable": "None",
+        "Occupations": "Floor, Bottom, Corners, Path, Middle",
+        "Stackable": "BlockObject",
         "OccupyAllBelow": false,
         "Underground": false
       },
       {
         "MatterBelow": "Any",
-        "Occupations": "All",
-        "Stackable": "None",
+        "Occupations": "Floor, Bottom, Corners, Path, Middle",
+        "Stackable": "BlockObject",
         "OccupyAllBelow": false,
         "Underground": false
       }
@@ -141,14 +141,14 @@
   },
   "BlockObjectNavMeshSettingsSpec": {
     "NoAutoWalls": false,
-    "GenerateFloorsOnStackable": false,
+    "GenerateFloorsOnStackable": true,
     "EdgeGroups": [],
     "UnblockedCoordinates": [],
     "BlockedEdges": []
   },
   "PlaceableBlockObjectSpec": {
     "ToolGroupId": "Electricity",
-    "ToolOrder": 73,
+    "ToolOrder": 74,
     "ToolShape": "Square",
     "Layout": "Single",
     "CustomPivot": {
@@ -163,8 +163,8 @@
     "DevModeTool": false
   },
   "LabeledEntitySpec": {
-    "DisplayNameLocKey": "Building.ThrottlingHydroPlant.DisplayName",
-    "DescriptionLocKey": "Building.ThrottlingHydroPlant.Description",
+    "DisplayNameLocKey": "Building.UpperFlowHydroPlant.DisplayName",
+    "DescriptionLocKey": "Building.UpperFlowHydroPlant.Description",
     "FlavorDescriptionLocKey": "",
     "Icon": "Buildings/Landscaping/Valve/ValveIcon"
   },
@@ -172,32 +172,17 @@
     "FlowCoordinates": [
       {
         "X": 0,
-        "Y": 0,
-        "Z": 0
-      },
-      {
-        "X": 1,
-        "Y": 0,
-        "Z": 0
-      },
-      {
-        "X": 2,
-        "Y": 0,
-        "Z": 0
-      },
-      {
-        "X": 0,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       },
       {
         "X": 1,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       },
       {
         "X": 2,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       }
     ],
@@ -213,15 +198,15 @@
     "Coordinates": [
       {
         "X": 0,
-        "Y": 1
+        "Y": 0
       },
       {
         "X": 1,
-        "Y": 1
+        "Y": 0
       },
       {
         "X": 2,
-        "Y": 1
+        "Y": 0
       }
     ]
   },
@@ -232,32 +217,17 @@
     "Obstacles": [
       {
         "X": 0,
-        "Y": 0,
-        "Z": 0
-      },
-      {
-        "X": 1,
-        "Y": 0,
-        "Z": 0
-      },
-      {
-        "X": 2,
-        "Y": 0,
-        "Z": 0
-      },
-      {
-        "X": 0,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       },
       {
         "X": 1,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       },
       {
         "X": 2,
-        "Y": 0,
+        "Y": 1,
         "Z": 1
       }
     ]
@@ -297,7 +267,7 @@
                 "Center": {
                   "X": 1.5,
                   "Y": 1.0,
-                  "Z": 1.0
+                  "Z": 0.0
                 },
                 "Size": {
                   "X": 3.0,
@@ -346,7 +316,7 @@
                     "Center": {
                       "X": 1.5,
                       "Y": 1.0,
-                      "Z": 1.0
+                      "Z": 0.0
                     },
                     "Size": {
                       "X": 3.0,

@@ -40,7 +40,9 @@ Building.UnlimitedMechanicalToElectricConverter.Description,"A heavy-duty conver
 Building.HydroelectricValve.DisplayName,Hydroelectric Valve,Hydroelectric valve name
 Building.HydroelectricValve.Description,"A test hydro plant for Fulgur Fangs built on the Iron Teeth valve shell. It keeps the vanilla flow controls, generates up to 500 kW from real water flow, and supplies the grid through a distributor area like an accumulator.",Hydroelectric valve description
 Building.ThrottlingHydroPlant.DisplayName,Throttling Hydro Plant,Large custom hydro plant name
-Building.ThrottlingHydroPlant.Description,"A larger Fulgur Fangs hydro prototype built on a custom model. It works as a wide native valve with an additional front service row, passes water through the body, and can generate up to 1500 kW through distributor coverage.",Large custom hydro plant description
+Building.ThrottlingHydroPlant.Description,"A larger 3x2x2 Fulgur Fangs hydro prototype built on a custom model. It works as a multi-cell valve: native water simulation passes through a wide spillway, one shared gate regulates the flow, and the building can generate up to 1500 kW through distributor coverage.",Large custom hydro plant description
+Building.UpperFlowHydroPlant.DisplayName,Upper-Tier Hydro Plant,Upper-tier hydro plant test name
+Building.UpperFlowHydroPlant.Description,"A test version of the large 3x2x2 hydro body that keeps only the upper valve row active. The lower tier is sealed by a hidden half-wall so you can test how an upper-only flow level affects throughput and generation.",Upper-tier hydro plant test description
 Building.ElectricPole.DisplayName,Electric Pole,Electric pole name
 Building.ElectricPole.Description,"The basic support for local transmission lines. Carries electricity for 20 m, only supports a straight pass-through, and loses 10 kW while the line is actively serving consumers.",Electric pole description
 Building.Splitter.DisplayName,Splitter,Splitter name

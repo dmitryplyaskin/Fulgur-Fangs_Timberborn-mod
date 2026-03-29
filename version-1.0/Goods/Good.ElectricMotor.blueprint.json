@@ -1,0 +1,25 @@
+{
+  "GoodSpec": {
+    "Id": "ElectricMotor",
+    "BackwardCompatibleIds": [],
+    "ConsumptionEffects": [],
+    "GoodType": "Box",
+    "StockpileVisualization": "Box",
+    "VisibleContainer": "Box",
+    "ContainerColor": {
+      "r": 0.34117648,
+      "g": 0.549019635,
+      "b": 0.654902,
+      "a": 1.0
+    },
+    "ContainerMaterial": "",
+    "CarryingAnimation": "CarryInHands",
+    "Weight": 4,
+    "GoodGroupId": "Materials",
+    "GoodOrder": 1068,
+    "Icon": "Sprites/Goods/BotLimbIcon",
+    "ForceImport": false,
+    "DisplayNameLocKey": "Good.ElectricMotor.DisplayName",
+    "PluralDisplayNameLocKey": "Good.ElectricMotor.PluralDisplayName"
+  }
+}

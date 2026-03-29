@@ -6,7 +6,10 @@
       "RareEarthConcentrate",
       "Copper",
       "ConductiveComponents",
+      "ElectricMotor",
       "AccumulatorCell",
+      "Charcoal",
+      "SyntheticFuel",
       "Salicornia",
       "FermentedSalicornia"
     ]

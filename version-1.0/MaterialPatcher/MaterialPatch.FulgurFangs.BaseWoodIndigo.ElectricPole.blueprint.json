@@ -1,0 +1,18 @@
+{
+  "MaterialPatchSpec": {
+    "FactionID": "FulgurFangs",
+    "MaterialName": "BaseWood_Indigo.IronTeeth",
+    "TextureEntries": [
+      {
+        "Name": "_MainTex",
+        "Path": "Materials/UberAtlas/Textures/FulgurFangs/BaseWood_1K_D_Indigo.FulgurFangs"
+      },
+      {
+        "Name": "_BaseMap",
+        "Path": "Materials/UberAtlas/Textures/FulgurFangs/BaseWood_1K_D_Indigo.FulgurFangs"
+      }
+    ],
+    "ColorEntries": [],
+    "NumberEntries": []
+  }
+}

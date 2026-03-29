@@ -1,0 +1,30 @@
+{
+  "RecipeSpec": {
+    "Id": "SyntheticFuel",
+    "BackwardCompatibleIds": [],
+    "DisplayLocKey": "Good.SyntheticFuel.PluralDisplayName",
+    "CycleDurationInHours": 4.0,
+    "Ingredients": [
+      {
+        "Id": "Charcoal",
+        "Amount": 1
+      },
+      {
+        "Id": "Extract",
+        "Amount": 1
+      }
+    ],
+    "Products": [
+      {
+        "Id": "SyntheticFuel",
+        "Amount": 10
+      }
+    ],
+    "ProducedSciencePoints": 0,
+    "Fuel": "",
+    "CyclesFuelLasts": 0,
+    "FuelCapacity": 0,
+    "CyclesCapacity": 6,
+    "Icon": "Sprites/Goods/BiofuelIcon"
+  }
+}

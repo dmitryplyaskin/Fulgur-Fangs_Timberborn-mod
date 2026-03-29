@@ -1,0 +1,25 @@
+{
+  "GoodSpec": {
+    "Id": "Charcoal",
+    "BackwardCompatibleIds": [],
+    "ConsumptionEffects": [],
+    "GoodType": "Box",
+    "StockpileVisualization": "Box",
+    "VisibleContainer": "Box",
+    "ContainerColor": {
+      "r": 0.180392161,
+      "g": 0.180392161,
+      "b": 0.180392161,
+      "a": 1.0
+    },
+    "ContainerMaterial": "",
+    "CarryingAnimation": "CarryInHands",
+    "Weight": 2,
+    "GoodGroupId": "Materials",
+    "GoodOrder": 4010,
+    "Icon": "Sprites/Goods/LogIcon",
+    "ForceImport": false,
+    "DisplayNameLocKey": "Good.Charcoal.DisplayName",
+    "PluralDisplayNameLocKey": "Good.Charcoal.PluralDisplayName"
+  }
+}

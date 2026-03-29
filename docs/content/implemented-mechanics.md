@@ -49,11 +49,22 @@
 - `Rare Earth Concentrate`
 - `Copper`
 - `Conductive Components`
+- `Electric Motor`
 - `Accumulator Cell`
+- `Charcoal`
+- `Synthetic Fuel`
 - `Salicornia`
 - `Pickled Salicornia`
 - `Mine`
 - `Electrified Mine`
+
+## Placeholder Production Integration
+
+- `Smelter` now also provides a temporary `Charcoal` recipe.
+- `Bot Part Factory` now also provides a temporary `Electric Motor` recipe.
+- `Centrifuge` now also provides a temporary `Synthetic Fuel` recipe.
+- These are integration placeholders so the full resource chain exists in-game
+  before the dedicated power buildings are implemented.
 
 ## Hydro State
 

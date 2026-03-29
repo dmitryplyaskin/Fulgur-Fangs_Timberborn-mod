@@ -1,7 +1,8 @@
 {
   "ManufactorySpec": {
     "ProductionRecipeIds#append": [
-      "AccumulatorCell"
+      "AccumulatorCell",
+      "ElectricMotor"
     ]
   }
 }

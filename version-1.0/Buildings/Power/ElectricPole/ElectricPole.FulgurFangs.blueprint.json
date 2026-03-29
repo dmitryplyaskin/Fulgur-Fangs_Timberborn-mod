@@ -151,7 +151,7 @@
   "Children": {
     "#Finished": {
       "TimbermeshSpec": {
-        "Model": "Buildings/Power/ElectricPole/ElectricalPillar.Folktails.Model"
+        "Model": "Buildings/Power/ElectricPole/ElectricalPillar.FulgurFangs.Model"
       },
       "CollidersSpec": {
         "BoxColliders": [

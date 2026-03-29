@@ -11,8 +11,14 @@ Good.Copper.DisplayName,Copper,Name of the new metal resource
 Good.Copper.PluralDisplayName,Copper,Plural name of the new metal resource
 Good.ConductiveComponents.DisplayName,Conductive Components,Name of the electrical intermediate
 Good.ConductiveComponents.PluralDisplayName,Conductive Components,Plural name of the electrical intermediate
+Good.ElectricMotor.DisplayName,Electric Motor,Name of the advanced electric machine part
+Good.ElectricMotor.PluralDisplayName,Electric Motors,Plural name of the advanced electric machine part
 Good.AccumulatorCell.DisplayName,Accumulator Cell,Name of the late electrical resource
 Good.AccumulatorCell.PluralDisplayName,Accumulator Cells,Plural name of the late electrical resource
+Good.Charcoal.DisplayName,Charcoal,Name of the solid fuel resource
+Good.Charcoal.PluralDisplayName,Charcoal,Plural name of the solid fuel resource
+Good.SyntheticFuel.DisplayName,Synthetic Fuel,Name of the late liquid fuel
+Good.SyntheticFuel.PluralDisplayName,Synthetic Fuel,Plural name of the late liquid fuel
 Good.Salicornia.DisplayName,Salicornia,Name of the new hydroponic crop
 Good.Salicornia.PluralDisplayName,Salicornia,Plural name of the new hydroponic crop
 Good.FermentedSalicornia.DisplayName,Pickled Salicornia,Name of the new fermented food
